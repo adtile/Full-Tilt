@@ -139,7 +139,7 @@ Arguments:
 
 Returns:
 
-A new [`FULLTILT.Quaternion`](#FULLTILT.Quaternion) object.
+A new [`FULLTILT.Quaternion`](#fulltiltquaternion) object.
 
 Example:
 
@@ -162,11 +162,11 @@ Example:
 
 Sets the value of this quaternion.
 
-##### .copy( [quat](#FULLTILT.Quaternion) ) this` #####
+##### .copy( [quat](#fulltiltquaternion) ) this` #####
 
 Copies the value of the supplied quaternion.
 
-##### .multiply( [quat](#FULLTILT.Quaternion) ) this` #####
+##### .multiply( [quat](#fulltiltquaternion) ) this` #####
 
 Multiplies the current object quaternion by the supplied quaternion.
 
@@ -198,7 +198,7 @@ Arguments:
 
 Returns:
 
-A new [`FULLTILT.RotationMatrix`](#FULLTILT.RotationMatrix) object.
+A new [`FULLTILT.RotationMatrix`](#fulltiltrotationmatrix) object.
 
 Example:
 
@@ -217,11 +217,11 @@ A ByteArray containing the 9 values of the rotation matrix
 
 Sets the component values of this rotation matrix object.
 
-##### .copy( [rotmat](#FULLTILT.RotationMatrix) ) this` #####
+##### .copy( [rotmat](#fulltiltrotationmatrix) ) this` #####
 
 Copies the component values of the supplied rotation matrix.
 
-##### .multiply( [rotmat](#FULLTILT.RotationMatrix) ) this` #####
+##### .multiply( [rotmat](#fulltiltrotationmatrix) ) this` #####
 
 Multiplies the current object rotation matrix by the supplied rotation matrix.
 
@@ -254,7 +254,7 @@ Arguments:
 
 Returns:
 
-A new [`FULLTILT.Euler`](#FULLTILT.Euler) object.
+A new [`FULLTILT.Euler`](#fulltilteuler) object.
 
 Example:
 
@@ -281,7 +281,7 @@ The computed rotation around the z-axis (in Degrees).
 
 Sets the component values of this Euler object.
 
-##### .copy( [euler](#FULLTILT.Euler) ) this` #####
+##### .copy( [euler](#fulltilteuler) ) this` #####
 
 Copies the component values of the supplied Euler object.
 
