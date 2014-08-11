@@ -307,26 +307,26 @@
 
 		normalize: function( matrix ) {
 
-				var R = matrix.elements;
+			var R = matrix.elements;
 
-				// Calculate matrix determinant
-				var determinant = R[0] * R[4] * R[8] - R[0] * R[5] * R[7] - R[1] * R[3] * R[8]
-				                    + R[1] * R[5] * R[6] + R[2] * R[3] * R[7] - R[2] * R[4] * R[6];
+			// Calculate matrix determinant
+			var determinant = R[0] * R[4] * R[8] - R[0] * R[5] * R[7] - R[1] * R[3] * R[8]
+			                    + R[1] * R[5] * R[6] + R[2] * R[3] * R[7] - R[2] * R[4] * R[6];
 
-				// Normalize matrix values
-				R[0] /= determinant;
-				R[1] /= determinant;
-				R[2] /= determinant;
-				R[3] /= determinant;
-				R[4] /= determinant;
-				R[5] /= determinant;
-				R[6] /= determinant;
-				R[7] /= determinant;
-				R[8] /= determinant;
+			// Normalize matrix values
+			R[0] /= determinant;
+			R[1] /= determinant;
+			R[2] /= determinant;
+			R[3] /= determinant;
+			R[4] /= determinant;
+			R[5] /= determinant;
+			R[6] /= determinant;
+			R[7] /= determinant;
+			R[8] /= determinant;
 
-				matrix.elements = R;
+			matrix.elements = R;
 
-				return matrix;
+			return matrix;
 
 		},
 
