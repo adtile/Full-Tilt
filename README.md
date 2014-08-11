@@ -127,15 +127,16 @@ Example:
 
 #### Constructor ####
 
-##### new FULLTILT.Quaternion( [x], [y], [z] ) #####
+##### new FULLTILT.Quaternion( [x], [y], [z], [w] ) #####
 
 Create a new `FULLTILT.Quaternion` object, (optionally) passing in your own `x`, `y` and `z` angles (in Radians).
 
 Arguments:
 
-* `x` - the initial rotation around the x-axis in Radians (optional)
-* `y` - the initial rotation around the y-axis in Radians (optional)
-* `z` - the initial rotation around the z-axis in Radians (optional)
+* `x` - the initial x component (optional)
+* `y` - the initial y component (optional)
+* `z` - the initial z component (optional)
+* `w` - the initial w component (optional)
 
 Returns:
 
@@ -186,15 +187,13 @@ Rotate the current object quaternion around its z-axis by the supplied radians a
 
 #### Constructor ####
 
-##### new FULLTILT.RotationMatrix( [x], [y], [z] ) #####
+##### new FULLTILT.RotationMatrix( [m11, m12, m13, m21, m22, m23, m31, m32, m33] ) #####
 
 Create a new `FULLTILT.RotationMatrix` object, (optionally) passing in your own `x`, `y` and `z` angles (in Radians).
 
 Arguments:
 
-* `x` - the initial rotation around the x-axis in Radians (optional)
-* `y` - the initial rotation around the y-axis in Radians (optional)
-* `z` - the initial rotation around the z-axis in Radians (optional)
+The matrix component values to initially set for the object.
 
 Returns:
 
