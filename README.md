@@ -129,7 +129,7 @@ Example:
 
 ##### new FULLTILT.Quaternion( [x], [y], [z], [w] ) #####
 
-Create a new `FULLTILT.Quaternion` object, (optionally) passing in your own `x`, `y` and `z` angles (in Radians).
+Create a new `FULLTILT.Quaternion` object.
 
 Arguments:
 
@@ -189,11 +189,11 @@ Rotate the current object quaternion around its z-axis by the supplied radians a
 
 ##### new FULLTILT.RotationMatrix( [m11, m12, m13, m21, m22, m23, m31, m32, m33] ) #####
 
-Create a new `FULLTILT.RotationMatrix` object, (optionally) passing in your own `x`, `y` and `z` angles (in Radians).
+Create a new `FULLTILT.RotationMatrix` object.
 
 Arguments:
 
-The matrix component values to initially set for the object.
+The matrix component values to initially set for the object (optional).
 
 Returns:
 
@@ -243,7 +243,7 @@ Rotate the current object rotation matrix around its z-axis by the supplied radi
 
 ##### new FULLTILT.Euler( [x], [y], [z] ) #####
 
-Create a new `FULLTILT.Euler` object, (optionally) passing in your own `x`, `y` and `z` angles (in Radians).
+Create a new `FULLTILT.Euler` object.
 
 Arguments:
 
