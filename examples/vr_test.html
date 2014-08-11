@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<title>
+			FULLTILT DeviceOrientation three.js test page
+		</title>
+		<style type="text/css">
+			body {
+				background-color: #000000;
+				margin: 0;
+				overflow: hidden;
+				font-family: Arial, Helvetica, sans-serif;
+			}
+
+			#info {
+				position: fixed;
+				display: inline-block;
+				top: 0px;
+				left: 0px;
+				color: #ddd;
+				background-color: #000;
+				padding: 5px;
+				font-family: Monospace;
+				font-size: 13px;
+				font-weight: bold;
+				text-align: center;
+				z-index: 1;
+			}
+
+			#info #controllertype {
+				display: inline-block;
+				padding: 2px 5px;
+				margin: 2px 5px;
+				background-color: #ccc;
+				color: #000;
+				border: 1px solid #999;
+			}
+
+      .small {
+        font-size: 0.8em;
+        text-align: center	;
+      }
+		</style>
+	</head>
+	<body>
+		<script src="./resources/libs/three.min.js" type="text/javascript"></script>
+		<script src="./resources/libs/CSS3DRenderer.js" type="text/javascript"></script>
+
+		<script src="../fulltilt.min.js" type="text/javascript"></script>
+
+		<div id="info">
+			&raquo; <a id="controllertype" href="#" name="controllertype">Quaternions</a> &laquo;
+      <p class="small">
+        <span id="data_output"></span>
+      </p>
+		</div>
+
+		<script type="text/javascript">
+			// DEBUG CODE
+
+			var data_output = document.getElementById('data_output');
+
+			// General data value formatting
+			function printDataValue(input) {
+				if( input === undefined )
+					return "undefined";
+				if( input === null )
+					return "null";
+				if( input === true )
+					return "true";
+				if( input === false )
+					return "false";
+				if( Object.prototype.toString.call(input) === "[object Number]" ) {
+					var val = Math.round((input + 0.00001) * 100) / 100;
+					val = val.toFixed(2);
+					if(val >= 0) val = "&nbsp;" + val; // add buffer in place of '-' symbol
+					return val;
+				}
+
+				return (input + ""); // force stringify
+			}
+
+			function debugQuat(quat) {
+				// Debug output
+				data_output.innerHTML = "[ x: " + printDataValue(quat.x) + ", y: " + printDataValue(quat.y) + ", z: " + printDataValue(quat.z) + ", w: " + printDataValue(quat.w) + " ]";
+			}
+
+			function debugRotMat(rotMat) {
+				data_output.innerHTML = "[" + printDataValue(rotMat.elements[0]) + ", " + printDataValue(rotMat.elements[1]) + ", " + printDataValue(rotMat.elements[2]) + ",<br>&nbsp;" + printDataValue(rotMat.elements[3]) + ", " + printDataValue(rotMat.elements[4]) + ", " + printDataValue(rotMat.elements[5]) + ",<br>&nbsp;" + printDataValue(rotMat.elements[6]) + ", " + printDataValue(rotMat.elements[7]) + ", " + printDataValue(rotMat.elements[8]) + " ]";
+			}
+
+			function debugEuler(euler) {
+				data_output.innerHTML = "alpha: " + printDataValue(euler.z) + ", beta: " + printDataValue(euler.x) + ", gamma: " + printDataValue(euler.y);
+			}
+
+		</script>
+
+		<script type="text/javascript">
+
+			var camera, scene, renderer;
+
+			var controlTypes = ['Quaternions', 'Rotation Matrices', 'Euler'];
+			var currentControlType = 0;
+
+			var startClientHeight, startFOVFrustrumHeight;
+
+			// Setup three.js world
+			function setup() {
+
+				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+
+				scene = new THREE.Scene();
+
+				var cube = generateCubeMap('Beach');
+
+				scene.add( cube );
+
+				renderer = new THREE.CSS3DRenderer();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
+
+				startClientHeight = window.innerHeight;
+				startFOVFrustrumHeight = 2000 * Math.tan( THREE.Math.degToRad( ( camera.fov || 75 ) / 2 ) );
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+				// Allow switching between 'Quaternion', 'Rotation Matrix' and 'Euler' representations
+				var controllerSelectorEl = document.querySelector('#controllertype');
+
+				controllerSelectorEl.addEventListener('click', function( event ) {
+					event.preventDefault();
+
+					if (++currentControlType === 3) currentControlType = 0;
+
+					controllerSelectorEl.textContent = controlTypes[ currentControlType ];
+				}, false);
+
+				// Start listening for deviceorientation events
+				FULLTILT.DeviceOrientation.start();
+
+			}
+
+			// Computed device orientation rotation vector
+			var orientationQuat = new THREE.Quaternion();
+
+			// World frame transform (- PI/2 around the x-axis)
+			var worldQuat = new THREE.Quaternion( - Math.sqrt( 0.5 ), 0, 0, Math.sqrt( 0.5 ) );
+
+			// Render three.js world
+			function draw() {
+
+				// Use the currently selected rotation representation to set our camera position
+
+				switch( currentControlType ) {
+					case 0: // Use Quaternion
+
+						var quat = FULLTILT.DeviceOrientation.getDeviceQuaternion();
+
+						orientationQuat.set( quat.x, quat.y, quat.z, quat.w );
+
+						debugQuat(quat);
+
+						break;
+
+					case 1: // Use Rotation Matrix
+
+						var matrix = FULLTILT.DeviceOrientation.getDeviceRotation();
+
+						orientationQuat.setFromRotationMatrix( new THREE.Matrix4(
+							matrix.elements[0], matrix.elements[1], matrix.elements[2], 0,
+							matrix.elements[3], matrix.elements[4], matrix.elements[5], 0,
+							matrix.elements[6], matrix.elements[7], matrix.elements[8], 0,
+							0                 , 0                 , 0                 , 1
+						) );
+
+						debugRotMat(matrix);
+
+						break;
+
+					case 2: // Use Euler
+
+						var euler = FULLTILT.DeviceOrientation.getDeviceEuler();
+
+						orientationQuat.setFromEuler( new THREE.Euler(
+							THREE.Math.degToRad( euler.x ),
+							THREE.Math.degToRad( euler.y ),
+							THREE.Math.degToRad( euler.z ),
+							'ZXY'
+						) );
+
+						debugEuler(euler);
+
+						break;
+				};
+
+				// IMPORTANT! set deviceorientation camera to three.js world frame
+				// (i.e. make camera look out the back of the screen by rotating the camera x-axis by -PI/2)
+				camera.quaternion.multiplyQuaternions( worldQuat, orientationQuat );
+
+				// Render scene
+				renderer.render( scene, camera );
+
+				// Re-draw at next browser paint
+				requestAnimationFrame( draw );
+
+			}
+
+			// Generate scene assets
+			function generateCubeMap( folderName ) {
+
+				var sides = [
+					{
+						url: './resources/textures/cube/' + folderName + '/posx.jpg',
+						position: [ -512, 0, 0 ],
+						rotation: [ 0, Math.PI / 2, 0 ]
+					},
+					{
+						url: './resources/textures/cube/' + folderName + '/negx.jpg',
+						position: [ 512, 0, 0 ],
+						rotation: [ 0, -Math.PI / 2, 0 ]
+					},
+					{
+						url: './resources/textures/cube/' + folderName + '/posy.jpg',
+						position: [ 0,	512, 0 ],
+						rotation: [ Math.PI / 2, 0, Math.PI ]
+					},
+					{
+						url: './resources/textures/cube/' + folderName + '/negy.jpg',
+						position: [ 0, -512, 0 ],
+						rotation: [ - Math.PI / 2, 0, Math.PI ]
+					},
+					{
+						url: './resources/textures/cube/' + folderName + '/posz.jpg',
+						position: [ 0, 0,	512 ],
+						rotation: [ 0, Math.PI, 0 ]
+					},
+					{
+						url: './resources/textures/cube/' + folderName + '/negz.jpg',
+						position: [ 0, 0, -512 ],
+						rotation: [ 0, 0, 0 ]
+					}
+				];
+
+				var cube = new THREE.Object3D();
+
+				for ( var i = 0; i < sides.length; i ++ ) {
+
+					var side = sides[ i ];
+
+					var element = document.createElement( 'img' );
+					element.width = 1026; // 2 pixels extra to close the gap.
+					element.src = side.url;
+
+					var object = new THREE.CSS3DObject( element );
+					object.position.fromArray( side.position );
+					object.rotation.fromArray( side.rotation );
+					cube.add( object );
+
+				}
+
+				return cube;
+
+			}
+
+			// Gracefully handle screen resizes
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+
+				// Re-calculate object FOV to maintain scene's relative size after a screen rotation / resize
+				var relativeFOVFrustrumHeight = startFOVFrustrumHeight * ( window.innerHeight / startClientHeight );
+				var relativeVerticalFOV = THREE.Math.radToDeg( 2 * Math.atan( relativeFOVFrustrumHeight / 2000 ) );
+				camera.fov = relativeVerticalFOV;
+
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			// Go...
+			setup();
+			draw();
+
+		</script>
+	</body>
+</html>
