@@ -268,11 +268,11 @@ The computed rotation around the z-axis (in Degrees).
 
 ##### .beta #####
 
-The computed rotation around the y-axis (in Degrees).
+The computed rotation around the x-axis (in Degrees).
 
 ##### .gamma #####
 
-The computed rotation around the z-axis (in Degrees).
+The computed rotation around the y-axis (in Degrees).
 
 #### Methods ####
 
