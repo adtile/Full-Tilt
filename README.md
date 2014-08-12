@@ -23,34 +23,24 @@ Add [fulltilt.js](https://github.com/richtr/Full-Tilt-JS/blob/master/fulltilt.js
 
 Start listening for device orientation sensor changes by calling `FULLTILT.DeviceOrientation.start()` at the appropriate point in your web application:
 
-    <script>
-      // Start listening for device orientation event changes
-      FULLTILT.DeviceOrientation.start();
-    </script>
+    // Start listening for raw device orientation event changes
+    FULLTILT.DeviceOrientation.start();
 
 Whenever you need to obtain the current device orientation, call the appropriate method depending on the rotation representation you would like to use:
 
-    <script>
-      // Obtain the screen-adjusted normalized rotation as a Quaternion
-      var quaternion = FULLTILT.DeviceOrientation.getDeviceQuaternion();
-    </script>
+    // Obtain the screen-adjusted normalized rotation as a Quaternion
+    var quaternion = FULLTILT.DeviceOrientation.getDeviceQuaternion();
 
-    <script>
-      // Obtain the screen-adjusted normalized rotation as a Rotation Matrix
-      var rotmat = FULLTILT.DeviceOrientation.getDeviceRotation();
-    </script>
+    // Obtain the screen-adjusted normalized rotation as a Rotation Matrix
+    var rotmat = FULLTILT.DeviceOrientation.getDeviceRotation();
 
-    <script>
-      // Obtain the screen-adjusted normalized rotation as Tait-Bryan Angles
-      var euler = FULLTILT.DeviceOrientation.getDeviceEuler();
-    </script>
+    // Obtain the screen-adjusted normalized rotation as Tait-Bryan Angles
+    var euler = FULLTILT.DeviceOrientation.getDeviceEuler();
 
 At any time you can stop listening for device orientation sensor changes in your web application by calling `FULLTILT.DeviceOrientation.stop()`:
 
-    <script>
-      // Stop listening for device orientation event changes
-      FULLTILT.DeviceOrientation.stop();
-    </script>
+    // Stop listening for raw device orientation event changes
+    FULLTILT.DeviceOrientation.stop();
 
 A full example of usage can be found in the [provided example](https://github.com/richtr/Full-Tilt-JS/blob/master/examples/vr_test.html) ([view the example live here](http://richtr.github.io/Full-Tilt-JS/examples/vr_test.html)).
 
@@ -145,7 +135,7 @@ A new [`FULLTILT.Quaternion`](#fulltiltquaternion) object.
 Example:
 
     // Create a new FULLTILT.Quaternion object
-    var quat = new FULLTILT.Quaternion( Math.PI / 2, 0, 0 );
+    var quat = new FULLTILT.Quaternion( 0, 0, 0, 1 );
 
 #### Properties ####
 
@@ -202,7 +192,7 @@ A new [`FULLTILT.RotationMatrix`](#fulltiltrotationmatrix) object.
 Example:
 
     // Create a new FULLTILT.RotationMatrix object
-    var rotmat = new FULLTILT.RotationMatrix( Math.PI / 2, 0, 0 );
+    var rotmat = new FULLTILT.RotationMatrix( 1, 0, 0, 0, 1, 0, 0, 0, 1 );
 
 #### Properties ####
 
@@ -258,7 +248,7 @@ A new [`FULLTILT.Euler`](#fulltilteuler) object.
 Example:
 
     // Create a new FULLTILT.Euler object
-    var euler = new FULLTILT.Euler( Math.PI / 2, - Math.PI / 2, 0 );
+    var euler = new FULLTILT.Euler( 0, 0, 0 );
 
 #### Properties ####
 
