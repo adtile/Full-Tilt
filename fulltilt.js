@@ -398,21 +398,21 @@
 
 	////// FULLTILT.Euler //////
 
-	FULLTILT.Euler = function ( x, y, z ) {
+	FULLTILT.Euler = function ( alpha, beta, gamma ) {
 
-		this.set = function ( x, y, z ) {
+		this.set = function ( alpha, beta, gamma ) {
 
-			this.x = x || 0;
-			this.y = y || 0;
-			this.z = z || 0;
+			this.alpha = alpha || 0;
+			this.beta  = beta  || 0;
+			this.gamma = gamma || 0;
 
 		};
 
 		this.copy = function ( inEuler ) {
 
-			this.x = inEuler.x;
-			this.y = inEuler.y;
-			this.z = inEuler.z;
+			this.alpha = inEuler.alpha;
+			this.beta  = inEuler.beta;
+			this.gamma = inEuler.gamma;
 
 		};
 
@@ -441,7 +441,7 @@
 		};
 
 		// Initialize object values
-		this.set( x, y, z );
+		this.set( alpha, beta, gamma );
 
 	};
 
@@ -455,7 +455,7 @@
 
 			return function ( targetEuler, axis, angle ) {
 
-				_matrix = calculateRotationMatrix( targetEuler.x, targetEuler.y, targetEuler.z );
+				_matrix = calculateRotationMatrix( targetEuler.beta, targetEuler.gamma, targetEuler.alpha );
 
 				_matrix = FULLTILT.RotationMatrix.prototype.rotateByAxisAngle( _matrix, axis, angle );
 
@@ -472,7 +472,7 @@
 		setFromRotationMatrix: function () {
 
 			var outEuler = new FULLTILT.Euler();
-			var R, _x, _y, _z;
+			var R, _alpha, _beta, _gamma;
 
 			return function ( matrix ) {
 
@@ -480,54 +480,54 @@
 
 				if (R[8] > 0) { // cos(beta) > 0
 
-					_z = Math.atan2(-R[1], R[4]);
-					_x = Math.asin(R[7]); // beta (-pi/2, pi/2)
-					_y = Math.atan2(-R[6], R[8]); // gamma (-pi/2, pi/2)
+					_alpha = Math.atan2(-R[1], R[4]);
+					_beta  = Math.asin(R[7]); // beta (-pi/2, pi/2)
+					_gamma = Math.atan2(-R[6], R[8]); // gamma (-pi/2, pi/2)
 
 				} else if (R[8] < 0) {  // cos(beta) < 0
 
-					_z = Math.atan2(R[1], -R[4]);
-					_x = -Math.asin(R[7]);
-					_x += (_x >= 0) ? -Math.PI : Math.PI; // beta [-pi,-pi/2) U (pi/2,pi)
-					_y = Math.atan2(R[6], -R[8]); // gamma (-pi/2, pi/2)
+					_alpha = Math.atan2(R[1], -R[4]);
+					_beta  = -Math.asin(R[7]);
+					_beta  += (_beta >= 0) ? -Math.PI : Math.PI; // beta [-pi,-pi/2) U (pi/2,pi)
+					_gamma = Math.atan2(R[6], -R[8]); // gamma (-pi/2, pi/2)
 
 				} else { // R[8] == 0
 
 					if (R[6] > 0) {  // cos(gamma) == 0, cos(beta) > 0
 
-						_z = Math.atan2(-R[1], R[4]);
-						_x = Math.asin(R[7]); // beta [-pi/2, pi/2]
-						_y = -Math.PI / 2; // gamma = -pi/2
+						_alpha = Math.atan2(-R[1], R[4]);
+						_beta  = Math.asin(R[7]); // beta [-pi/2, pi/2]
+						_gamma = -Math.PI / 2; // gamma = -pi/2
 
 					} else if (R[6] < 0) { // cos(gamma) == 0, cos(beta) < 0
 
-						_z = Math.atan2(R[1], -R[4]);
-						_x = -Math.asin(R[7]);
-						_x += (_x >= 0) ? -Math.PI : Math.PI; // beta [-pi,-pi/2) U (pi/2,pi)
-						_y = -Math.PI / 2; // gamma = -pi/2
+						_alpha = Math.atan2(R[1], -R[4]);
+						_beta  = -Math.asin(R[7]);
+						_beta  += (_beta >= 0) ? -Math.PI : Math.PI; // beta [-pi,-pi/2) U (pi/2,pi)
+						_gamma = -Math.PI / 2; // gamma = -pi/2
 
 					} else { // R[6] == 0, cos(beta) == 0
 
 						// gimbal lock discontinuity
-						_z = Math.atan2(R[3], R[0]);
-						_x = (R[7] > 0) ? Math.PI / 2 : -Math.PI / 2; // beta = +-pi/2
-						_y = 0; // gamma = 0
+						_alpha = Math.atan2(R[3], R[0]);
+						_beta  = (R[7] > 0) ? Math.PI / 2 : -Math.PI / 2; // beta = +-pi/2
+						_gamma = 0; // gamma = 0
 
 					}
 
 				}
 
 				// alpha is in [-pi, pi], make sure it is in [0, 2*pi).
-				if (_z < 0) {
-					_z += 2 * Math.PI; // alpha [0, 2*pi)
+				if (_alpha < 0) {
+					_alpha += 2 * Math.PI; // alpha [0, 2*pi)
 				}
 
 				// Convert to degrees
-				_z *= radToDeg;
-				_x *= radToDeg;
-				_y *= radToDeg;
+				_alpha *= radToDeg;
+				_beta  *= radToDeg;
+				_gamma *= radToDeg;
 
-				outEuler.set( _x, _y, _z );
+				outEuler.set( _alpha, _beta, _gamma );
 
 				return outEuler;
 

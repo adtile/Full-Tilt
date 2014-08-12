@@ -92,7 +92,7 @@
 			}
 
 			function debugEuler(euler) {
-				data_output.innerHTML = "alpha: " + printDataValue(euler.z) + ", beta: " + printDataValue(euler.x) + ", gamma: " + printDataValue(euler.y);
+				data_output.innerHTML = "alpha: " + printDataValue(euler.alpha) + ", beta: " + printDataValue(euler.beta) + ", gamma: " + printDataValue(euler.gamma);
 			}
 
 		</script>
@@ -184,9 +184,9 @@
 						var euler = FULLTILT.DeviceOrientation.getDeviceEuler();
 
 						orientationQuat.setFromEuler( new THREE.Euler(
-							THREE.Math.degToRad( euler.x ),
-							THREE.Math.degToRad( euler.y ),
-							THREE.Math.degToRad( euler.z ),
+							THREE.Math.degToRad( euler.beta  ),
+							THREE.Math.degToRad( euler.gamma ),
+							THREE.Math.degToRad( euler.alpha ),
 							'ZXY'
 						) );
 

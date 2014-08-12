@@ -171,17 +171,17 @@ Copies the value of the supplied quaternion.
 
 Multiplies the current object quaternion by the supplied quaternion.
 
-##### .rotateX( radians ) this` #####
+##### .rotateX( angle ) this` #####
 
-Rotate the current object quaternion around its x-axis by the supplied radians angle.
+Rotate the current object quaternion around its x-axis by the supplied angle (in Radians).
 
-##### .rotateY( radians ) this` #####
+##### .rotateY( angle ) this` #####
 
-Rotate the current object quaternion around its y-axis by the supplied radians angle.
+Rotate the current object quaternion around its y-axis by the supplied angle (in Radians).
 
-##### .rotateZ( radians ) this` #####
+##### .rotateZ( angle ) this` #####
 
-Rotate the current object quaternion around its z-axis by the supplied radians angle.
+Rotate the current object quaternion around its z-axis by the supplied angle (in Radians).
 
 ### FULLTILT.RotationMatrix ###
 
@@ -224,32 +224,32 @@ Copies the component values of the supplied rotation matrix.
 
 Multiplies the current object rotation matrix by the supplied rotation matrix.
 
-##### .rotateX( radians ) this` #####
+##### .rotateX( angle ) this` #####
 
-Rotate the current object rotation matrix around its x-axis by the supplied radians angle.
+Rotate the current object rotation matrix around its x-axis by the supplied angle (in Radians).
 
-##### .rotateY( radians ) this` #####
+##### .rotateY( angle ) this` #####
 
-Rotate the current object rotation matrix around its y-axis by the supplied radians angle.
+Rotate the current object rotation matrix around its y-axis by the supplied angle (in Radians).
 
-##### .rotateZ( radians ) this` #####
+##### .rotateZ( angle ) this` #####
 
-Rotate the current object rotation matrix around its z-axis by the supplied radians angle.
+Rotate the current object rotation matrix around its z-axis by the supplied angle (in Radians).
 
 
 ### FULLTILT.Euler ###
 
 #### Constructor ####
 
-##### new FULLTILT.Euler( [x], [y], [z] ) #####
+##### new FULLTILT.Euler( [alpha], [beta], [gamma] ) #####
 
 Create a new `FULLTILT.Euler` object.
 
 Arguments:
 
-* `x` - the initial rotation around the x-axis in Radians (optional)
-* `y` - the initial rotation around the y-axis in Radians (optional)
-* `z` - the initial rotation around the z-axis in Radians (optional)
+* `alpha` - the initial z-axis rotation in Degrees (optional)
+* `beta`  - the initial x-axis rotation in Degrees (optional)
+* `gamma` - the initial y-axis rotation in Degrees (optional)
 
 Returns:
 
@@ -258,25 +258,25 @@ A new [`FULLTILT.Euler`](#fulltilteuler) object.
 Example:
 
     // Create a new FULLTILT.Euler object
-    var euler = new FULLTILT.Euler( Math.PI / 2, 0, 0 );
+    var euler = new FULLTILT.Euler( Math.PI / 2, - Math.PI / 2, 0 );
 
 #### Properties ####
 
-##### .x #####
+##### .alpha #####
 
-The computed rotation around the x-axis (in Degrees).
+The computed rotation around the z-axis (in Degrees).
 
-##### .y #####
+##### .beta #####
 
 The computed rotation around the y-axis (in Degrees).
 
-##### .z #####
+##### .gamma #####
 
 The computed rotation around the z-axis (in Degrees).
 
 #### Methods ####
 
-##### .set( x, y, z ) this #####
+##### .set( alpha, beta, gamma ) this #####
 
 Sets the component values of this Euler object.
 
@@ -284,17 +284,17 @@ Sets the component values of this Euler object.
 
 Copies the component values of the supplied Euler object.
 
-##### .rotateX( radians ) this` #####
+##### .rotateX( angle ) this` #####
 
 Rotate the current object Euler angles around its x-axis by the supplied angle (in Radians).
 
-##### .rotateY( radians ) this` #####
+##### .rotateY( angle ) this` #####
 
-Rotate the current object Euler angles around its y-axis by the supplied radians angle (in Radians).
+Rotate the current object Euler angles around its y-axis by the supplied angle (in Radians).
 
-##### .rotateZ( radians ) this` #####
+##### .rotateZ( angle ) this` #####
 
-Rotate the current object Euler angles around its z-axis by the supplied radians angle (in Radians).
+Rotate the current object Euler angles around its z-axis by the supplied angle (in Radians).
 
 ## Reference Material ##
 
