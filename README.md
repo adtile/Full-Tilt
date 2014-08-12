@@ -7,7 +7,7 @@ Full Tilt JS is a standalone JavaScript library that allows developers to use de
 
 This library takes device orientation data and applies a consistent calibration frame to the data output. It also automatically normalizes device orientation data based on the current screen orientation so your applications keep working as users rotate their screen during web application usage.
 
-Full Tilt JS ultimately provides developers with three different but complimentary device orientation sensor output representations – screen-adjusted Quaternions, Rotation Matrixes and Euler Angles – that can be used to create 2D or 3D experiences in web browsers that work consistently across all mobile web platforms and in all screen orientations (portrait and/or landscape).
+Full Tilt JS ultimately provides developers with three different but complimentary device orientation sensor output representations – screen-adjusted Quaternions, Rotation Matrixes and Euler Angles – that can be used to create 2D or 3D experiences in web browsers that work consistently across all mobile web platforms and in all screen orientations.
 
 * [Live Demo](http://richtr.github.io/Full-Tilt-JS/examples/vr_test.html)
 * [Basic Usage](#basic-usage)
