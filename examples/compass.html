@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+			<title>Simple compass demo</title>
+
+			<script src="../fulltilt.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+	<h1>Simple compass demo</h1>
+
+	<canvas id="arrow"></canvas>
+
+	<script>
+
+		var arrowWidth = window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight;
+		var halfArrowWidth = arrowWidth / 2;
+
+		var arrow = document.getElementById('arrow');
+		var ctx = arrow.getContext('2d');
+
+		// Set initial canvas width/height
+		arrow.width = arrowWidth;
+		arrow.height = arrowWidth;
+
+		// Start the FULLTILT DeviceOrientation listeners
+		FULLTILT.DeviceOrientation.start();
+
+		// Update true north bearing indicator whenever a new deviceorientation event is fired
+		window.addEventListener('deviceorientation', function() {
+
+			// Get latest screen-adjusted deviceorientation data
+			var screenAdjustedEvent = FULLTILT.DeviceOrientation.getDeviceEuler();
+
+			ctx.clearRect(0,0,arrowWidth,arrowWidth);
+
+			var alpha = Math.PI * (screenAdjustedEvent.alpha/180.0);
+
+			var x1 = halfArrowWidth + Math.round(halfArrowWidth * Math.sin(alpha));
+			var y1 = halfArrowWidth - Math.round(halfArrowWidth * Math.cos(alpha));
+			var x2 = halfArrowWidth + Math.round(10.0 * Math.sin(alpha - Math.PI/2));
+			var y2 = halfArrowWidth - Math.round(10.0 * Math.cos(alpha - Math.PI/2));
+			var x3 = halfArrowWidth + Math.round(10.0 * Math.sin(alpha + Math.PI/2));
+			var y3 = halfArrowWidth - Math.round(10.0 * Math.cos(alpha + Math.PI/2));
+
+			ctx.beginPath();
+			ctx.moveTo(x1,y1);
+			ctx.lineTo(x2,y2);
+			ctx.lineTo(x3,y3);
+			ctx.closePath();
+			ctx.fill();
+
+		}, false);
+
+		window.addEventListener('resize', function() {
+			arrowWidth = window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight
+
+			halfArrowWidth = arrowWidth / 2;
+
+			arrow.width = arrowWidth;
+			arrow.height = arrowWidth;
+
+		}, false);
+
+	</script>
+</body>
+</html>
