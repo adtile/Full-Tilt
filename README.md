@@ -50,13 +50,25 @@ A full example of usage can be found in the [provided example](https://github.co
 
 #### Methods ####
 
-##### FULLTILT.DeviceOrientation.start() #####
+##### FULLTILT.DeviceOrientation.start( [ callback ] ) #####
 
-Start the controller and register all required device orientation event listeners
+Start the controller and register all required device orientation event listeners.
 
-Example:
+Optionally, you can pass in a JavaScript function that will be called each time a new DeviceOrientation event is fired by the current browser.
+
+Example 1:
 
     FULLTILT.DeviceOrientation.start();
+
+Example 2:
+
+    FULLTILT.DeviceOrientation.start(function() {
+      // DeviceOrientation updated
+
+      var rotMat = FULLTILT.DeviceOrientation.getDeviceRotation();
+
+      // Do something with `rotMat`...
+    });
 
 ##### FULLTILT.DeviceOrientation.stop() #####
 

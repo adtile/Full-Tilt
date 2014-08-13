@@ -26,11 +26,9 @@
 		arrow.width = arrowWidth;
 		arrow.height = arrowWidth;
 
-		// Start the FULLTILT DeviceOrientation listeners
-		FULLTILT.DeviceOrientation.start();
-
-		// Update true north bearing indicator whenever a new deviceorientation event is fired
-		window.addEventListener('deviceorientation', function() {
+		// Start the FULLTILT DeviceOrientation listeners and pdate true north
+		// bearing indicator whenever a new deviceorientation event is fired.
+		FULLTILT.DeviceOrientation.start(function() {
 
 			// Get latest screen-adjusted deviceorientation data
 			var screenAdjustedEvent = FULLTILT.DeviceOrientation.getDeviceEuler();
@@ -53,7 +51,7 @@
 			ctx.closePath();
 			ctx.fill();
 
-		}, false);
+		});
 
 		window.addEventListener('resize', function() {
 			arrowWidth = window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight

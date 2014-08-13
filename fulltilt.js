@@ -25,7 +25,7 @@
 	var radToDeg = 180 / Math.PI;
 
 	// Internal state variables
-	var active = false;
+	var active = false, callbacks = [];
 	var hasScreenOrientationAPI = window.screen && window.screen.orientation && window.screen.orientation.angle !== undefined && window.screen.orientation.angle !== null ? true : false;
 	var screenOrientationAngle = ( hasScreenOrientationAPI ? window.screen.orientation.angle : ( window.orientation || 0 ) ) * degToRad;
 	var deviceOrientationData = {};
@@ -664,6 +664,13 @@
 
 		deviceOrientationData = event;
 
+		// Fire every callback function each time deviceorientation is updated
+		for ( var i in callbacks ) {
+
+			callbacks[ i ].call( this );
+
+		}
+
 	};
 
 	///// FULLTILT.DeviceOrientation //////
@@ -674,7 +681,13 @@
 
 		constructor: DeviceOrientation,
 
-		start: function () {
+		start: function ( callback ) {
+
+			if ( callback && Object.prototype.toString.call( callback ) == '[object Function]' ) {
+
+				callbacks.push( callback );
+
+			}
 
 			if ( !active ) {
 

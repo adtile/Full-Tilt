@@ -67,9 +67,6 @@ function printDataValue(input) {
 
 function init() {
 
-	// Start FULLTILT DeviceOrientation listeners
-	FULLTILT.DeviceOrientation.start();
-
 	var alpha = document.getElementById("alpha");
 	var beta = document.getElementById("beta");
 	var gamma = document.getElementById("gamma");
@@ -83,28 +80,31 @@ function init() {
 	var webkitCompassHeading = document.getElementById("webkitCompassHeading");
 	var webkitCompassAccuracy = document.getElementById("webkitCompassAccuracy");
 
-	window.addEventListener("deviceorientation", function(event) {
+	// Start FULLTILT DeviceOrientation listeners and register our callback
+	FULLTILT.DeviceOrientation.start(function() {
 
 		// Display calculated screen-adjusted normalized deviceorientation
 
-		var screenAdjusted = FULLTILT.DeviceOrientation.getDeviceEuler();
+		var screenAdjustedEvent = FULLTILT.DeviceOrientation.getDeviceEuler();
 
-		screenAlpha.textContent = printDataValue(screenAdjusted.alpha);
-		screenBeta.textContent = printDataValue(screenAdjusted.beta);
-		screenGamma.textContent = printDataValue(screenAdjusted.gamma);
+		screenAlpha.textContent = printDataValue(screenAdjustedEvent.alpha);
+		screenBeta.textContent = printDataValue(screenAdjustedEvent.beta);
+		screenGamma.textContent = printDataValue(screenAdjustedEvent.gamma);
 
 		// Display raw deviceorientation data
 
-		alpha.textContent = printDataValue(event.alpha);
-		beta.textContent = printDataValue(event.beta);
-		gamma.textContent = printDataValue(event.gamma);
+		var rawEvent = FULLTILT.DeviceOrientation.getRawDeviceOrientationData();
 
-		absolute.textContent = printDataValue(event.absolute);
+		alpha.textContent = printDataValue(rawEvent.alpha);
+		beta.textContent = printDataValue(rawEvent.beta);
+		gamma.textContent = printDataValue(rawEvent.gamma);
 
-		webkitCompassHeading.textContent = printDataValue(event.webkitCompassHeading);
-		webkitCompassAccuracy.textContent = printDataValue(event.webkitCompassAccuracy);
+		absolute.textContent = printDataValue(rawEvent.absolute);
 
-	}, true);
+		webkitCompassHeading.textContent = printDataValue(rawEvent.webkitCompassHeading);
+		webkitCompassAccuracy.textContent = printDataValue(rawEvent.webkitCompassAccuracy);
+
+	});
 
 }
 
