@@ -29,13 +29,13 @@ Start listening for device orientation sensor changes by calling `FULLTILT.Devic
 Whenever you need to obtain the current device orientation or motion, call the appropriate method depending on the data you need:
 
     // Obtain the screen-adjusted normalized rotation as a Quaternion
-    var quaternion = FULLTILT.DeviceOrientation.getDeviceQuaternion();
+    var quaternion = FULLTILT.DeviceOrientation.getScreenQuaternion();
 
     // Obtain the screen-adjusted normalized rotation as a Rotation Matrix
-    var rotmat = FULLTILT.DeviceOrientation.getDeviceRotation();
+    var rotmat = FULLTILT.DeviceOrientation.getScreenMatrix();
 
     // Obtain the screen-adjusted normalized rotation as Tait-Bryan Angles
-    var euler = FULLTILT.DeviceOrientation.getDeviceEuler();
+    var euler = FULLTILT.DeviceOrientation.getScreenEuler();
 
 At any time you can stop listening for device orientation sensor changes in your web application by calling `FULLTILT.DeviceOrientation.stop()` or `FULLTILT.DeviceMotion.stop()`:
 
@@ -65,7 +65,7 @@ Example 2:
     FULLTILT.DeviceOrientation.start(function() {
       // DeviceOrientation updated
 
-      var rotMat = FULLTILT.DeviceOrientation.getDeviceRotation();
+      var rotMat = FULLTILT.DeviceOrientation.getScreenMatrix();
 
       // Do something with `rotMat`...
     });
@@ -78,32 +78,32 @@ Example:
 
     FULLTILT.DeviceOrientation.stop();
 
-##### FULLTILT.DeviceOrientation.getDeviceQuaternion() #####
+##### FULLTILT.DeviceOrientation.getScreenQuaternion() #####
 
 Return the last available device orientation as a screen-adjusted Quaternion
 
 Example:
 
     // Return an object of type FULLTILT.Quaternion
-    var quat = FULLTILT.DeviceOrientation.getDeviceQuaternion();
+    var quat = FULLTILT.DeviceOrientation.getScreenQuaternion();
 
-##### FULLTILT.DeviceOrientation.getDeviceRotation() #####
+##### FULLTILT.DeviceOrientation.getScreenMatrix() #####
 
 Return the last available device orientation as a screen-adjusted Rotation Matrix
 
 Example:
 
     // Return an object of type FULLTILT.RotationMatrix
-    var rotmat = FULLTILT.DeviceOrientation.getDeviceRotation();
+    var rotmat = FULLTILT.DeviceOrientation.getScreenMatrix();
 
-##### FULLTILT.DeviceOrientation.getDeviceEuler() #####
+##### FULLTILT.DeviceOrientation.getScreenEuler() #####
 
 Return the last available device orientation as screen-adjusted Euler Angles
 
 Example:
 
     // Return an object of type FULLTILT.Euler
-    var angles = FULLTILT.DeviceOrientation.getDeviceEuler();
+    var angles = FULLTILT.DeviceOrientation.getScreenEuler();
 
 ##### FULLTILT.DeviceOrientation.isAbsolute() #####
 
@@ -116,14 +116,14 @@ Example:
     // Check if the data is aligned to a real-world compass bearing
     var isCompassOriented = FULLTILT.DeviceOrientation.isAbsolute();
 
-##### FULLTILT.DeviceOrientation.getRawDeviceOrientationData() #####
+##### FULLTILT.DeviceOrientation.getLastRawEventData() #####
 
 Return the last available original (unprocessed, non-screen-adjusted) device orientation event data provided by the web browser.
 
 Example:
 
     // Return the original raw deviceorientation event object
-    var deviceOrientationEvent = FULLTILT.DeviceOrientation.getRawDeviceOrientationData();
+    var deviceOrientationEvent = FULLTILT.DeviceOrientation.getLastRawEventData();
 
 ### FULLTILT.DeviceMotion ###
 
@@ -144,7 +144,7 @@ Example 2:
     FULLTILT.DeviceMotion.start(function() {
       // DeviceMotion updated
 
-      var acc = FULLTILT.DeviceMotion.getDeviceAcceleration();
+      var acc = FULLTILT.DeviceMotion.getScreenAcceleration();
 
       // Do something with `acc`...
     });
@@ -157,38 +157,38 @@ Example:
 
     FULLTILT.DeviceMotion.stop();
 
-##### FULLTILT.DeviceMotion.getDeviceAcceleration() #####
+##### FULLTILT.DeviceMotion.getScreenAcceleration() #####
 
 Return the last available screen-adjusted acclerometer values.
 
 Example:
 
-    var acc = FULLTILT.DeviceMotion.getDeviceAcceleration();
+    var acc = FULLTILT.DeviceMotion.getScreenAcceleration();
 
-##### FULLTILT.DeviceMotion.getDeviceAccelerationIncludingGravity() #####
+##### FULLTILT.DeviceMotion.getScreenAccelerationIncludingGravity() #####
 
 Return the last available screen-adjusted acclerometer values including gravity components.
 
 Example:
 
-    var accGrav = FULLTILT.DeviceMotion.getDeviceAccelerationIncludingGravity();
+    var accGrav = FULLTILT.DeviceMotion.getScreenAccelerationIncludingGravity();
 
-##### FULLTILT.DeviceMotion.getDeviceRotationRate() #####
+##### FULLTILT.DeviceMotion.getScreenRotationRate() #####
 
 Return the last available screen-adjusted rotation rate values.
 
 Example:
 
-    var rotRate = FULLTILT.DeviceMotion.getDeviceRotationRate();
+    var rotRate = FULLTILT.DeviceMotion.getScreenRotationRate();
 
-##### FULLTILT.DeviceMotion.getRawDeviceMotionData() #####
+##### FULLTILT.DeviceMotion.getLastRawEventData() #####
 
 Return the last available original (non-screen-adjusted) device motion event data provided by the web browser.
 
 Example:
 
     // Return the original raw devicemotion event object
-    var deviceMotionEvent = FULLTILT.DeviceMotion.getRawDeviceMotionData();
+    var deviceMotionEvent = FULLTILT.DeviceMotion.getLastRawEventData();
 
 ### FULLTILT.Quaternion ###
 

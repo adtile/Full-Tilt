@@ -747,7 +747,7 @@
 
 		},
 
-		getDeviceQuaternion: function () {
+		getScreenQuaternion: function () {
 
 			// Obtain latest device orientation quaternion
 			var quaternion = calculateQuaternion(
@@ -763,7 +763,7 @@
 
 		},
 
-		getDeviceRotation: function () {
+		getScreenMatrix: function () {
 
 			var matrix = calculateRotationMatrix(
 				deviceOrientationData.beta,
@@ -778,7 +778,7 @@
 
 		},
 
-		getDeviceEuler: function () {
+		getScreenEuler: function () {
 
 			var euler = calculateEuler(
 				deviceOrientationData.beta,
@@ -803,7 +803,7 @@
 
 		},
 
-		getRawDeviceOrientationData: function () {
+		getLastRawEventData: function () {
 
 			return deviceOrientationData;
 
@@ -863,7 +863,7 @@
 
 		},
 
-		getDeviceAcceleration: function () {
+		getScreenAcceleration: function () {
 
 			var accData = deviceMotionData.acceleration || {};
 			var screenAccData = {};
@@ -894,7 +894,7 @@
 
 		},
 
-		getDeviceAccelerationIncludingGravity: function () {
+		getScreenAccelerationIncludingGravity: function () {
 
 			var accGData = deviceMotionData.accelerationIncludingGravity || {};
 			var screenAccGData = {};
@@ -925,7 +925,7 @@
 
 		},
 
-		getDeviceRotationRate: function () {
+		getScreenRotationRate: function () {
 
 			var rotRateData = deviceMotionData.rotationRate || {};
 			var screenRotRateData = {};
@@ -956,7 +956,7 @@
 
 		},
 
-		getRawDeviceMotionData: function () {
+		getLastRawEventData: function () {
 
 			return deviceMotionData;
 
