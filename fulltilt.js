@@ -3,8 +3,8 @@
  * FULL TILT JS
  * http://github.com/richtr/Full-Tilt-JS
  *
- * A standalone DeviceOrientation Controller library that normalises
- * deviceorientation sensor output, applies relevant screen orientation
+ * A standalone DeviceOrientation + DeviceMotion library that normalises
+ * orientation sensor output, applies relevant screen orientation
  * transforms and returns Euler Angle, Quaternion and Rotation
  * Matrix representations back to web developers.
  *
@@ -24,11 +24,20 @@
 	var degToRad = Math.PI / 180;
 	var radToDeg = 180 / Math.PI;
 
-	// Internal state variables
-	var active = false, callbacks = [];
+	// Internal device orientation + motion variables
+	var orientationActive = false; motionActive = false, screenActive = false;
+	var orientationCallbacks = [], motionCallbacks = [];
+	var deviceOrientationData = {}, deviceMotionData = {};
+
+	// Internal screen orientation variables
 	var hasScreenOrientationAPI = window.screen && window.screen.orientation && window.screen.orientation.angle !== undefined && window.screen.orientation.angle !== null ? true : false;
 	var screenOrientationAngle = ( hasScreenOrientationAPI ? window.screen.orientation.angle : ( window.orientation || 0 ) ) * degToRad;
-	var deviceOrientationData = {};
+
+	var SCREEN_ROTATION_0        = 0,
+	    SCREEN_ROTATION_90       = Math.PI / 2,
+	    SCREEN_ROTATION_180      = Math.PI,
+	    SCREEN_ROTATION_270      = 2 * Math.PI / 3,
+	    SCREEN_ROTATION_MINUS_90 = - Math.PI / 2;
 
 	///// API Root Object //////
 
@@ -665,9 +674,22 @@
 		deviceOrientationData = event;
 
 		// Fire every callback function each time deviceorientation is updated
-		for ( var i in callbacks ) {
+		for ( var i in orientationCallbacks ) {
 
-			callbacks[ i ].call( this );
+			orientationCallbacks[ i ].call( this );
+
+		}
+
+	};
+
+	function handleDeviceMotionChange ( event ) {
+
+		deviceMotionData = event;
+
+		// Fire every callback function each time devicemotion is updated
+		for ( var i in motionCallbacks ) {
+
+			motionCallbacks[ i ].call( this );
 
 		}
 
@@ -685,15 +707,15 @@
 
 			if ( callback && Object.prototype.toString.call( callback ) == '[object Function]' ) {
 
-				callbacks.push( callback );
+				orientationCallbacks.push( callback );
 
 			}
 
-			if ( !active ) {
+			if( !screenActive ) {
 
-				if( hasScreenOrientationAPI ) {
+				if ( hasScreenOrientationAPI ) {
 
-					window.screen.orientation.addEventListener( 'change', handleScreenOrientationChange, false );
+				window.screen.orientation.addEventListener( 'change', handleScreenOrientationChange, false );
 
 				} else {
 
@@ -701,9 +723,13 @@
 
 				}
 
+			}
+
+			if ( !orientationActive ) {
+
 				window.addEventListener( 'deviceorientation', handleDeviceOrientationChange, false );
 
-				active = true;
+				orientationActive = true;
 
 			}
 
@@ -711,21 +737,11 @@
 
 		stop: function () {
 
-			if ( active ) {
-
-				if( hasScreenOrientationAPI ) {
-
-					window.screen.orientation.removeEventListener( 'change', handleScreenOrientationChange, false );
-
-				} else {
-
-					window.removeEventListener( 'orientationchange', handleScreenOrientationChange, false );
-
-				}
+			if ( orientationActive ) {
 
 				window.removeEventListener( 'deviceorientation', handleDeviceOrientationChange, false );
 
-				active = false;
+				orientationActive = false;
 
 			}
 
@@ -795,9 +811,166 @@
 
 	}
 
+	///// FULLTILT.DeviceMotion //////
+
+	var DeviceMotion = function () {};
+
+	DeviceMotion.prototype = {
+
+		constructor: DeviceMotion,
+
+		start: function ( callback ) {
+
+			if ( callback && Object.prototype.toString.call( callback ) == '[object Function]' ) {
+
+				motionCallbacks.push( callback );
+
+			}
+
+			if( !screenActive ) {
+
+				if ( hasScreenOrientationAPI ) {
+
+				window.screen.orientation.addEventListener( 'change', handleScreenOrientationChange, false );
+
+				} else {
+
+					window.addEventListener( 'orientationchange', handleScreenOrientationChange, false );
+
+				}
+
+			}
+
+			if ( !motionActive ) {
+
+				window.addEventListener( 'devicemotion', handleDeviceMotionChange, false );
+
+				motionActive = true;
+
+			}
+
+		},
+
+		stop: function () {
+
+			if ( motionActive ) {
+
+				window.removeEventListener( 'devicemotion', handleDeviceMotionChange, false );
+
+				motionActive = false;
+
+			}
+
+		},
+
+		getDeviceAcceleration: function () {
+
+			var accData = deviceMotionData.acceleration || {};
+			var screenAccData = {};
+
+			switch ( screenOrientationAngle ) {
+				case SCREEN_ROTATION_90:
+					screenAccData.x = - accData.y;
+					screenAccData.y =   accData.x;
+					break;
+				case SCREEN_ROTATION_180:
+					screenAccData.x = - accData.x;
+					screenAccData.y = - accData.y;
+					break;
+				case SCREEN_ROTATION_270:
+				case SCREEN_ROTATION_MINUS_90:
+					screenAccData.x =   accData.y;
+					screenAccData.y = - accData.x;
+					break;
+				default: // SCREEN_ROTATION_0
+					screenAccData.x =   accData.x;
+					screenAccData.y =   accData.y;
+					break;
+			}
+
+			screenAccData.z = accData.z;
+
+			return screenAccData;
+
+		},
+
+		getDeviceAccelerationIncludingGravity: function () {
+
+			var accGData = deviceMotionData.accelerationIncludingGravity || {};
+			var screenAccGData = {};
+
+			switch ( screenOrientationAngle ) {
+				case SCREEN_ROTATION_90:
+					screenAccGData.x = - accGData.y;
+					screenAccGData.y =   accGData.x;
+					break;
+				case SCREEN_ROTATION_180:
+					screenAccGData.x = - accGData.x;
+					screenAccGData.y = - accGData.y;
+					break;
+				case SCREEN_ROTATION_270:
+				case SCREEN_ROTATION_MINUS_90:
+					screenAccGData.x =   accGData.y;
+					screenAccGData.y = - accGData.x;
+					break;
+				default: // SCREEN_ROTATION_0
+					screenAccGData.x =   accGData.x;
+					screenAccGData.y =   accGData.y;
+					break;
+			}
+
+			screenAccGData.z = accGData.z;
+
+			return screenAccGData;
+
+		},
+
+		getDeviceRotationRate: function () {
+
+			var rotRateData = deviceMotionData.rotationRate || {};
+			var screenRotRateData = {};
+
+			switch ( screenOrientationAngle ) {
+				case SCREEN_ROTATION_90:
+					screenRotRateData.beta  = - rotRateData.gamma;
+					screenRotRateData.gamma =   rotRateData.beta;
+					break;
+				case SCREEN_ROTATION_180:
+					screenRotRateData.beta  = - rotRateData.beta;
+					screenRotRateData.gamma = - rotRateData.gamma;
+					break;
+				case SCREEN_ROTATION_270:
+				case SCREEN_ROTATION_MINUS_90:
+					screenRotRateData.beta  =   rotRateData.gamma;
+					screenRotRateData.gamma = - rotRateData.beta;
+					break;
+				default: // SCREEN_ROTATION_0
+					screenRotRateData.beta  =   rotRateData.beta;
+					screenRotRateData.gamma =   rotRateData.gamma;
+					break;
+			}
+
+			screenRotRateData.alpha = rotRateData.alpha;
+
+			return screenRotRateData;
+
+		},
+
+		getRawDeviceMotionData: function () {
+
+			return deviceMotionData;
+
+		}
+
+	}
+
 	////// Create root DeviceOrientation API instance //////
 
 	FULLTILT.DeviceOrientation = new DeviceOrientation();
+
+	////// Create root DeviceMotion API instance //////
+
+	FULLTILT.DeviceMotion = new DeviceMotion();
 
 	////// Attach FULLTILT to root DOM element //////
 

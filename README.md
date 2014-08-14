@@ -1,9 +1,9 @@
 Full Tilt JS
 ============
 
-#### The standalone device orientation sensor library ####
+#### The standalone device orientation + motion sensor library ####
 
-Full Tilt JS is a standalone JavaScript library that allows developers to use device orientation sensor data in web applications in a consistent frame.
+Full Tilt JS is a standalone JavaScript library that allows developers to use device orientation and motion sensor data in web applications in a consistent frame.
 
 This library takes device orientation data and applies a consistent calibration frame to the data output. It also automatically normalizes device orientation data based on the current screen orientation so your applications keep working as users rotate their screen during web application usage.
 
@@ -21,12 +21,12 @@ Add [fulltilt.js](https://github.com/richtr/Full-Tilt-JS/blob/master/fulltilt.js
 
     <script src="fulltilt.js"></script>
 
-Start listening for device orientation sensor changes by calling `FULLTILT.DeviceOrientation.start()` at the appropriate point in your web application:
+Start listening for device orientation sensor changes by calling `FULLTILT.DeviceOrientation.start()` or `FULLTILT.DeviceMotion.start()` at the appropriate point in your web application:
 
     // Start listening for raw device orientation event changes
     FULLTILT.DeviceOrientation.start();
 
-Whenever you need to obtain the current device orientation, call the appropriate method depending on the rotation representation you would like to use:
+Whenever you need to obtain the current device orientation or motion, call the appropriate method depending on the data you need:
 
     // Obtain the screen-adjusted normalized rotation as a Quaternion
     var quaternion = FULLTILT.DeviceOrientation.getDeviceQuaternion();
@@ -37,7 +37,7 @@ Whenever you need to obtain the current device orientation, call the appropriate
     // Obtain the screen-adjusted normalized rotation as Tait-Bryan Angles
     var euler = FULLTILT.DeviceOrientation.getDeviceEuler();
 
-At any time you can stop listening for device orientation sensor changes in your web application by calling `FULLTILT.DeviceOrientation.stop()`:
+At any time you can stop listening for device orientation sensor changes in your web application by calling `FULLTILT.DeviceOrientation.stop()` or `FULLTILT.DeviceMotion.stop()`:
 
     // Stop listening for raw device orientation event changes
     FULLTILT.DeviceOrientation.stop();
@@ -124,6 +124,71 @@ Example:
 
     // Return the original raw deviceorientation event object
     var deviceOrientationEvent = FULLTILT.DeviceOrientation.getRawDeviceOrientationData();
+
+### FULLTILT.DeviceMotion ###
+
+#### Methods ####
+
+##### FULLTILT.DeviceMotion.start( [ callback ] ) #####
+
+Start the controller and register all required device motion event listeners.
+
+Optionally, you can pass in a JavaScript function that will be called each time a new DeviceMotion event is fired by the current browser.
+
+Example 1:
+
+    FULLTILT.DeviceMotion.start();
+
+Example 2:
+
+    FULLTILT.DeviceMotion.start(function() {
+      // DeviceMotion updated
+
+      var acc = FULLTILT.DeviceMotion.getDeviceAcceleration();
+
+      // Do something with `acc`...
+    });
+
+##### FULLTILT.DeviceMotion.stop() #####
+
+Stop the controller and de-register all required device motion event listeners
+
+Example:
+
+    FULLTILT.DeviceMotion.stop();
+
+##### FULLTILT.DeviceMotion.getDeviceAcceleration() #####
+
+Return the last available screen-adjusted acclerometer values.
+
+Example:
+
+    var acc = FULLTILT.DeviceMotion.getDeviceAcceleration();
+
+##### FULLTILT.DeviceMotion.getDeviceAccelerationIncludingGravity() #####
+
+Return the last available screen-adjusted acclerometer values including gravity components.
+
+Example:
+
+    var accGrav = FULLTILT.DeviceMotion.getDeviceAccelerationIncludingGravity();
+
+##### FULLTILT.DeviceMotion.getDeviceRotationRate() #####
+
+Return the last available screen-adjusted rotation rate values.
+
+Example:
+
+    var rotRate = FULLTILT.DeviceMotion.getDeviceRotationRate();
+
+##### FULLTILT.DeviceMotion.getRawDeviceMotionData() #####
+
+Return the last available original (non-screen-adjusted) device motion event data provided by the web browser.
+
+Example:
+
+    // Return the original raw devicemotion event object
+    var deviceMotionEvent = FULLTILT.DeviceMotion.getRawDeviceMotionData();
 
 ### FULLTILT.Quaternion ###
 

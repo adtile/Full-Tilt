@@ -2,7 +2,6 @@
 <html>
 <head>
 			<meta charset="utf-8">
-			<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
 			<title>FULLTILT vs Raw DeviceOrientation Event Data Display</title>
 
@@ -83,7 +82,7 @@ function init() {
 	// Start FULLTILT DeviceOrientation listeners and register our callback
 	FULLTILT.DeviceOrientation.start(function() {
 
-		// Display calculated screen-adjusted normalized deviceorientation
+		// Display calculated screen-adjusted deviceorientation
 
 		var screenAdjustedEvent = FULLTILT.DeviceOrientation.getDeviceEuler();
 
@@ -103,6 +102,75 @@ function init() {
 
 		webkitCompassHeading.textContent = printDataValue(rawEvent.webkitCompassHeading);
 		webkitCompassAccuracy.textContent = printDataValue(rawEvent.webkitCompassAccuracy);
+
+	});
+
+	var accX = document.getElementById("accX");
+	var accY = document.getElementById("accY");
+	var accZ = document.getElementById("accZ");
+
+	var screenAccX = document.getElementById("screenAccX");
+	var screenAccY = document.getElementById("screenAccY");
+	var screenAccZ = document.getElementById("screenAccZ");
+
+	var accGX = document.getElementById("accGX");
+	var accGY = document.getElementById("accGY");
+	var accGZ = document.getElementById("accGZ");
+
+	var screenAccGX = document.getElementById("screenAccGX");
+	var screenAccGY = document.getElementById("screenAccGY");
+	var screenAccGZ = document.getElementById("screenAccGZ");
+
+	var rotRateAlpha = document.getElementById("rotRateAlpha");
+	var rotRateBeta  = document.getElementById("rotRateBeta");
+	var rotRateGamma = document.getElementById("rotRateGamma");
+
+	var screenRotRateAlpha = document.getElementById("screenRotRateAlpha");
+	var screenRotRateBeta  = document.getElementById("screenRotRateBeta");
+	var screenRotRateGamma = document.getElementById("screenRotRateGamma");
+
+	var absolute = document.getElementById("absolute");
+
+	// Start FULLTILT DeviceMotion listeners and register our callback
+	FULLTILT.DeviceMotion.start(function() {
+
+		// Display calculated screen-adjusted devicemotion
+
+		var screenAcc = FULLTILT.DeviceMotion.getDeviceAcceleration() || {};
+		var screenAccG = FULLTILT.DeviceMotion.getDeviceAccelerationIncludingGravity() || {};
+		var screenRotRate = FULLTILT.DeviceMotion.getDeviceRotationRate() || {};
+
+		screenAccX.textContent = printDataValue(screenAcc.x);
+		screenAccY.textContent = printDataValue(screenAcc.y);
+		screenAccZ.textContent = printDataValue(screenAcc.z);
+
+		screenAccGX.textContent = printDataValue(screenAccG.x);
+		screenAccGY.textContent = printDataValue(screenAccG.y);
+		screenAccGZ.textContent = printDataValue(screenAccG.z);
+
+		screenRotRateAlpha.textContent = printDataValue(screenRotRate.alpha);
+		screenRotRateBeta.textContent  = printDataValue(screenRotRate.beta);
+		screenRotRateGamma.textContent = printDataValue(screenRotRate.gamma);
+
+		// Display raw devicemotion data
+
+		var rawEvent = FULLTILT.DeviceMotion.getRawDeviceMotionData();
+
+		var acc = rawEvent.acceleration || {};
+		var accG = rawEvent.accelerationIncludingGravity || {};
+		var rotRate = rawEvent.rotationRate || {};
+
+		accX.textContent = printDataValue(acc.x);
+		accY.textContent = printDataValue(acc.y);
+		accZ.textContent = printDataValue(acc.z);
+
+		accGX.textContent = printDataValue(accG.x);
+		accGY.textContent = printDataValue(accG.y);
+		accGZ.textContent = printDataValue(accG.z);
+
+		rotRateAlpha.textContent = printDataValue(rotRate.alpha);
+		rotRateBeta.textContent = printDataValue(rotRate.beta);
+		rotRateGamma.textContent = printDataValue(rotRate.gamma);
 
 	});
 
@@ -186,6 +254,110 @@ window.onload = init;
 			<tr>
 				<td id="webkitCompassHeading">-</td>
 				<td id="webkitCompassAccuracy">-</td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>
+
+<h3>Screen-Adjusted DeviceMotion</h3>
+
+<div class="dataGroup">
+
+	<table>
+		<thead>
+			<tr>
+				<th></th>
+				<th>.x</th>
+				<th>.y</th>
+				<th>.z</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>acceleration</th>
+				<td id="screenAccX">-</td>
+				<td id="screenAccY">-</td>
+				<td id="screenAccZ">-</td>
+			</tr>
+			<tr>
+				<th>accelerationIncludingGravity</th>
+				<td id="screenAccGX">-</td>
+				<td id="screenAccGY">-</td>
+				<td id="screenAccGZ">-</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table>
+		<thead>
+			<tr>
+				<th></th>
+				<th>.alpha</th>
+				<th>.beta</th>
+				<th>.gamma</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>rotationRate</th>
+				<td id="screenRotRateAlpha">-</td>
+				<td id="screenRotRateBeta">-</td>
+				<td id="screenRotRateGamma">-</td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>
+
+<h3>Raw DeviceMotion</h3>
+
+<p>
+	<a href="http://w3c.github.io/deviceorientation/spec-source-orientation.html#devicemotion">Spec Interface Reference</a>
+</p>
+
+<div class="dataGroup">
+
+	<table>
+		<thead>
+			<tr>
+				<th></th>
+				<th>.x</th>
+				<th>.y</th>
+				<th>.z</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>acceleration</th>
+				<td id="accX">-</td>
+				<td id="accY">-</td>
+				<td id="accZ">-</td>
+			</tr>
+			<tr>
+				<th>accelerationIncludingGravity</th>
+				<td id="accGX">-</td>
+				<td id="accGY">-</td>
+				<td id="accGZ">-</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table>
+		<thead>
+			<tr>
+				<th></th>
+				<th>.alpha</th>
+				<th>.beta</th>
+				<th>.gamma</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>rotationRate</th>
+				<td id="rotRateAlpha">-</td>
+				<td id="rotRateBeta">-</td>
+				<td id="rotRateGamma">-</td>
 			</tr>
 		</tbody>
 	</table>
