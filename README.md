@@ -9,11 +9,18 @@ This library takes device orientation data and applies a consistent calibration 
 
 Full Tilt JS ultimately provides developers with three different but complimentary device orientation sensor output representations – screen-adjusted Quaternions, Rotation Matrixes and Euler Angles – that can be used to create 2D or 3D experiences in web browsers that work consistently across all mobile web platforms and in all screen orientations.
 
-* [Live Demo](http://richtr.github.io/Full-Tilt-JS/examples/vr_test.html)
+* [Demos](#demos)
 * [Basic Usage](#basic-usage)
 * [API](#api)
 * [Reference Material](#reference-material)
 * [License](#license)
+
+## Demos ##
+
+* [Virtual Reality example with three.js](http://richtr.github.io/Full-Tilt-JS/examples/vr_test.html)
+* [2D Box Control](http://richtr.github.io/Full-Tilt-JS/examples/box2d.html)
+* [Basic 2D Compass](http://richtr.github.io/Full-Tilt-JS/examples/compass.html)
+* [Full Tilt JS Data Inspector](http://richtr.github.io/Full-Tilt-JS/examples/data_display.html)
 
 ## Basic Usage ##
 
