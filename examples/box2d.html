@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+	<title>Floating 2D Box in a Consistent Frame</title>
+
+	<script src="../fulltilt.min.js" type="text/javascript"></script>
+	<script src="./resources/libs/CSSPrefixResolver.js" type="text/javascript"></script>
+
+	<style>
+
+		* {
+			padding: 0px;
+			margin: 0px;
+		}
+
+		#container {
+			position: fixed;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background-color: #CCC;
+		}
+
+		#floatingBox {
+			background-color: #FF0000;
+			will-change: transform;
+		}
+
+		#switch {
+			position: fixed;
+			display: inline-block;
+			top: 0px;
+			left: 0px;
+			color: #ddd;
+			background-color: #000;
+			padding: 5px;
+			font-family: Monospace;
+			font-size: 13px;
+			font-weight: bold;
+			text-align: center;
+			z-index: 1;
+		}
+
+		#switch #controllertype {
+			display: inline-block;
+			padding: 2px 5px;
+			margin: 2px 5px;
+			background-color: #ccc;
+			color: #000;
+			border: 1px solid #999;
+		}
+	</style>
+
+</head>
+<body>
+
+	<div id="container">
+			<div id="floatingBox"></div>
+	</div>
+
+	<div id="switch">
+		&raquo; <a id="controllertype" href="#" name="controllertype">FULLTILT DeviceOrientation</a> &laquo;
+	</div>
+
+<script>
+
+var TILT_LIMIT = 30;
+
+var screenWidth = window.innerWidth;
+var screenHeight = window.innerHeight;
+
+var halfScreenWidth = screenWidth / 2;
+var halfScreenHeight = screenHeight / 2;
+
+var cubeWidth;
+
+if (screenWidth < screenHeight) {
+	cubeWidth = screenWidth / 4;
+} else {
+	cubeWidth = screenHeight / 4;
+}
+
+var halfCubeWidth = cubeWidth / 2;
+
+var box = document.querySelector('#floatingBox');
+
+box.style.width = cubeWidth + 'px';
+box.style.height = cubeWidth + 'px';
+
+box.minBoundX = box.parentNode.offsetLeft;
+box.minBoundY = box.parentNode.offsetTop;
+
+box.maxBoundX = box.minBoundX + box.parentNode.offsetWidth - box.offsetWidth;
+box.maxBoundY = box.minBoundY + box.parentNode.offsetHeight - box.offsetHeight;
+
+var initialBeta;
+
+var controlTypes = ['FULLTILT DeviceOrientation', 'Raw DeviceOrientation'];
+var currentControlType = 0;
+
+// Allow switching between 'FULLTILT' and 'Raw DeviceOrientation' data sources
+var controllerSelectorEl = document.querySelector('#controllertype');
+
+controllerSelectorEl.addEventListener('click', function() {
+
+	event.preventDefault();
+
+	if (++currentControlType === 2) currentControlType = 0;
+
+	controllerSelectorEl.textContent = controlTypes[currentControlType];
+
+	// Clear default beta offset from zero
+
+	initialBeta = null;
+
+}, false);
+
+var transformCSSPropName = getCSSPropertyName('transform');
+
+window.addEventListener('load', function() {
+
+	FULLTILT.DeviceOrientation.start(function() {
+
+		var euler;
+
+		switch( currentControlType ) {
+			case 1: // Use raw DeviceOrientation event values
+				euler = FULLTILT.DeviceOrientation.getLastRawEventData();
+				break;
+			default: // Use Full Tilt JS values
+				euler = FULLTILT.DeviceOrientation.getScreenEuler();
+				break;
+		}
+
+		var tiltX = euler.gamma;
+
+		if (tiltX > 0) {
+			tiltX = Math.min(tiltX, TILT_LIMIT);
+		} else {
+			tiltX = Math.max(tiltX, TILT_LIMIT * -1);
+		}
+
+		var pxOffsetX = (tiltX * halfScreenWidth) / TILT_LIMIT;
+
+		if ( !initialBeta ) {
+			initialBeta = euler.beta;
+		}
+
+		var tiltY = euler.beta - initialBeta;
+
+		if (tiltY > 0) {
+			tiltY = Math.min(tiltY, TILT_LIMIT);
+		} else {
+			tiltY = Math.max(tiltY, TILT_LIMIT * -1);
+		}
+
+		var pxOffsetY = (tiltY * halfScreenHeight) / TILT_LIMIT;
+
+		var pxToMoveX = Math.max(box.minBoundX, Math.min(pxOffsetX + halfScreenWidth - halfCubeWidth, box.maxBoundX));
+		var pxToMoveY = Math.max(box.minBoundY, Math.min(pxOffsetY + halfScreenHeight - halfCubeWidth, box.maxBoundY));
+
+		box.style[transformCSSPropName] = 'translate3d(' + pxToMoveX + 'px, ' + pxToMoveY + 'px, 0)';
+
+	});
+
+}, false);
+
+window.addEventListener('resize', function() {
+
+	// Recalculate screen dimensions
+
+	screenWidth = window.innerWidth;
+	screenHeight = window.innerHeight;
+
+	halfScreenWidth = screenWidth / 2;
+	halfScreenHeight = screenHeight / 2;
+
+	// Recalculate min/max X/Y bounds
+
+	box.minBoundX = box.parentNode.offsetLeft;
+  box.minBoundY = box.parentNode.offsetTop;
+
+	box.maxBoundX = box.minBoundX + box.parentNode.offsetWidth - box.offsetWidth;
+	box.maxBoundY = box.minBoundY + box.parentNode.offsetHeight - box.offsetHeight;
+
+	// Clear default beta offset from zero
+
+	initialBeta = null;
+
+}, false);
+
+</script>
+
+</body>
+</html>
