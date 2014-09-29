@@ -132,7 +132,7 @@ window.addEventListener('load', function() {
 				euler = FULLTILT.DeviceOrientation.getLastRawEventData();
 				break;
 			default: // Use Full Tilt JS values
-				euler = FULLTILT.DeviceOrientation.getScreenEuler();
+				euler = FULLTILT.DeviceOrientation.getScreenAdjustedEuler();
 				break;
 		}
 

@@ -39,6 +39,14 @@
 	    SCREEN_ROTATION_270      = 2 * Math.PI / 3,
 	    SCREEN_ROTATION_MINUS_90 = - Math.PI / 2;
 
+	// Math.sign polyfill
+	function sign(x) {
+		x = +x // convert to a number
+		if (x === 0 || isNaN(x))
+			return x
+		return x > 0 ? 1 : -1
+	}
+
 	///// API Root Object //////
 
 	var FULLTILT = {};
@@ -66,6 +74,65 @@
 			this.w = quaternion.w;
 
 		};
+
+		this.setFromEuler = (function () {
+
+			var _x, _y, _z;
+			var _x_2, _y_2, _z_2;
+			var cX, cY, cZ, sX, sY, sZ;
+
+			return function ( x, y, z ) {
+
+				_z = ( z || 0 ) * degToRad;
+				_x = ( x || 0 ) * degToRad;
+				_y = ( y || 0 ) * degToRad;
+
+				_z_2 = _z / 2;
+				_x_2 = _x / 2;
+				_y_2 = _y / 2;
+
+				cX = Math.cos( _x_2 );
+				cY = Math.cos( _y_2 );
+				cZ = Math.cos( _z_2 );
+				sX = Math.sin( _x_2 );
+				sY = Math.sin( _y_2 );
+				sZ = Math.sin( _z_2 );
+
+				this.set(
+					sX * cY * cZ - cX * sY * sZ, // x
+					cX * sY * cZ + sX * cY * sZ, // y
+					cX * cY * sZ + sX * sY * cZ, // z
+					cX * cY * cZ - sX * sY * sZ  // w
+				);
+
+				this.normalize();
+
+				return this;
+
+			};
+
+		})();
+
+		this.setFromRotationMatrix = (function () {
+
+			var R;
+
+			return function( matrix ) {
+
+				R = matrix.elements;
+
+				this.set(
+					0.5 * Math.sqrt( 1 + R[0] - R[4] - R[8] ) * sign( R[7] - R[5] ), // x
+					0.5 * Math.sqrt( 1 - R[0] + R[4] - R[8] ) * sign( R[2] - R[6] ), // y
+					0.5 * Math.sqrt( 1 - R[0] - R[4] + R[8] ) * sign( R[3] - R[1] ), // z
+					0.5 * Math.sqrt( 1 + R[0] + R[4] + R[8] )                        // w
+				);
+
+				return this;
+
+			}
+
+		})();
 
 		this.multiply = function ( quaternion ) {
 
@@ -103,6 +170,12 @@
 
 		};
 
+		this.normalize = function () {
+
+			return FULLTILT.Quaternion.prototype.normalize( this );
+
+		};
+
 		// Initialize object values
 		this.set( x, y, z, w );
 
@@ -134,29 +207,29 @@
 
 		}(),
 
-		normalize: function( quaternion ) {
+		normalize: function( q ) {
 
-			var len = Math.sqrt( quaternion.x * quaternion.x + quaternion.y * quaternion.y + quaternion.z * quaternion.z + quaternion.w * quaternion.w );
+			var len = Math.sqrt( q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w );
 
 			if ( len === 0 ) {
 
-				quaternion.x = 0;
-				quaternion.y = 0;
-				quaternion.z = 0;
-				quaternion.w = 1;
+				q.x = 0;
+				q.y = 0;
+				q.z = 0;
+				q.w = 1;
 
 			} else {
 
 				len = 1 / len;
 
-				quaternion.x *= len;
-				quaternion.y *= len;
-				quaternion.z *= len;
-				quaternion.w *= len;
+				q.x *= len;
+				q.y *= len;
+				q.z *= len;
+				q.w *= len;
 
 			}
 
-			return quaternion;
+			return q;
 
 		},
 
@@ -173,10 +246,10 @@
 				sA = Math.sin( halfAngle );
 
 				transformQuaternion.set(
-					( axis[ 0 ] || 0 ) * sA, // X
-					( axis[ 1 ] || 0 ) * sA, // Y
-					( axis[ 2 ] || 0 ) * sA, // Z
-					Math.cos( halfAngle )    // W
+					( axis[ 0 ] || 0 ) * sA, // x
+					( axis[ 1 ] || 0 ) * sA, // y
+					( axis[ 2 ] || 0 ) * sA, // z
+					Math.cos( halfAngle )    // w
 				);
 
 				// Multiply quaternion by q
@@ -238,6 +311,81 @@
 
 		};
 
+		this.setFromEuler = (function() {
+
+			var _x, _y, _z;
+			var cX, cY, cZ, sX, sY, sZ;
+
+			return function ( x, y, z ) {
+
+				_z = ( z || 0 ) * degToRad;
+				_x = ( x || 0 ) * degToRad;
+				_y = ( y || 0 ) * degToRad;
+
+				cX = Math.cos( _x );
+				cY = Math.cos( _y );
+				cZ = Math.cos( _z );
+				sX = Math.sin( _x );
+				sY = Math.sin( _y );
+				sZ = Math.sin( _z );
+
+				//
+				// ZXY-ordered rotation matrix construction.
+				//
+
+				this.set(
+					cZ * cY - sZ * sX * sY, // 1,1
+					- cX * sZ,              // 1,2
+					cY * sZ * sX + cZ * sY, // 1,3
+
+					cY * sZ + cZ * sX * sY, // 2,1
+					cZ * cX,                // 2,2
+					sZ * sY - cZ * cY * sX, // 2,3
+
+					- cX * sY,              // 3,1
+					sX,                     // 3,2
+					cX * cY                 // 3,3
+				);
+
+				this.normalize();
+
+				return this;
+
+			}
+
+		})();
+
+		this.setFromQuaternion = (function() {
+
+			var sqw, sqx, sqy, sqz;
+
+			return function( q ) {
+
+				sqw = q.w * q.w;
+				sqx = q.x * q.x;
+				sqy = q.y * q.y;
+				sqz = q.z * q.z;
+
+				this.set(
+					sqw + sqx - sqy - sqz,       // 1,1
+					2 * (q.x * q.y - q.w * q.z), // 1,2
+					2 * (q.x * q.z + q.w * q.y), // 1,3
+
+					2 * (q.x * q.y + q.w * q.z), // 2,1
+					sqw - sqx + sqy - sqz,       // 2,2
+					2 * (q.y * q.z - q.w * q.x), // 2,3
+
+					2 * (q.x * q.z - q.w * q.y), // 3,1
+					2 * (q.y * q.z + q.w * q.x), // 3,2
+					sqw - sqx - sqy + sqz        // 3,3
+				);
+
+				return this;
+
+			};
+
+		})();
+
 		this.multiply = function ( m ) {
 
 			outMatrix = FULLTILT.RotationMatrix.prototype.multiplyMatrices( this, m );
@@ -271,6 +419,12 @@
 			this.copy( outMatrix );
 
 			return this;
+
+		};
+
+		this.normalize = function () {
+
+			return FULLTILT.RotationMatrix.prototype.normalize( this );
 
 		};
 
@@ -356,7 +510,7 @@
 				sA = Math.sin( angle );
 				cA = Math.cos( angle );
 
-				if ( axis[ 0 ] === 1 && axis[ 1 ] === 0 && axis[ 2 ] === 0 ) { // X
+				if ( axis[ 0 ] === 1 && axis[ 1 ] === 0 && axis[ 2 ] === 0 ) { // x
 
 					validAxis = true;
 
@@ -365,7 +519,7 @@
 					transformMatrix.elements[7] = sA;
 					transformMatrix.elements[8] = cA;
 
-		 		} else if ( axis[ 1 ] === 1 && axis[ 0 ] === 0 && axis[ 2 ] === 0 ) { // Y
+		 		} else if ( axis[ 1 ] === 1 && axis[ 0 ] === 0 && axis[ 2 ] === 0 ) { // y
 
 					validAxis = true;
 
@@ -374,7 +528,7 @@
 					transformMatrix.elements[6] = -sA;
 					transformMatrix.elements[8] = cA;
 
-		 		} else if ( axis[ 2 ] === 1 && axis[ 0 ] === 0 && axis[ 1 ] === 0 ) { // Z
+		 		} else if ( axis[ 2 ] === 1 && axis[ 0 ] === 0 && axis[ 1 ] === 0 ) { // z
 
 					validAxis = true;
 
@@ -425,62 +579,8 @@
 
 		};
 
-		this.rotateX = function ( angle ) {
+		this.setFromRotationMatrix = (function () {
 
-			FULLTILT.Euler.prototype.rotateByAxisAngle( this, [ 1, 0, 0 ], angle );
-
-			return this;
-
-		};
-
-		this.rotateY = function ( angle ) {
-
-			FULLTILT.Euler.prototype.rotateByAxisAngle( this, [ 0, 1, 0 ], angle );
-
-			return this;
-
-		};
-
-		this.rotateZ = function ( angle ) {
-
-			FULLTILT.Euler.prototype.rotateByAxisAngle( this, [ 0, 0, 1 ], angle );
-
-			return this;
-
-		};
-
-		// Initialize object values
-		this.set( alpha, beta, gamma );
-
-	};
-
-	FULLTILT.Euler.prototype = {
-
-		constructor: FULLTILT.Euler,
-
-		rotateByAxisAngle: function () {
-
-			var _matrix, outEuler;
-
-			return function ( targetEuler, axis, angle ) {
-
-				_matrix = calculateRotationMatrix( targetEuler.beta, targetEuler.gamma, targetEuler.alpha );
-
-				_matrix = FULLTILT.RotationMatrix.prototype.rotateByAxisAngle( _matrix, axis, angle );
-
-				outEuler = FULLTILT.Euler.prototype.setFromRotationMatrix( _matrix );
-
-				targetEuler.copy( outEuler );
-
-				return targetEuler;
-
-			};
-
-		}(),
-
-		setFromRotationMatrix: function () {
-
-			var outEuler = new FULLTILT.Euler();
 			var R, _alpha, _beta, _gamma;
 
 			return function ( matrix ) {
@@ -536,122 +636,119 @@
 				_beta  *= radToDeg;
 				_gamma *= radToDeg;
 
-				outEuler.set( _alpha, _beta, _gamma );
-
-				return outEuler;
+				// apply derived euler angles to current object
+				this.set( _alpha, _beta, _gamma );
 
 			}
+
+		})();
+
+		this.setFromQuaternion = (function () {
+
+			var _alpha, _beta, _gamma;
+
+			return function ( q ) {
+
+				var sqw = q.w * q.w;
+				var sqx = q.x * q.x;
+				var sqy = q.y * q.y;
+				var sqz = q.z * q.z;
+
+				var unitLength = sqw + sqx + sqy + sqz; // Normalised == 1, otherwise correction divisor.
+				var wxyz = q.w * q.x + q.y * q.z;
+				var epsilon = 1e-4; // rounding factor
+
+				if (wxyz > (0.5 - epsilon) * unitLength) {
+
+					_alpha = 2 * Math.atan2(q.y, q.w);
+					_beta = Math.PI;
+					_gamma = 0;
+
+				} else if (wxyz < (-0.5 + epsilon) * unitLength) {
+
+					_alpha = -2 * Math.atan2(q.y, q.w);
+					_beta = -Math.PI;
+					_gamma = 0;
+
+				} else {
+
+					var wzxy = q.w * q.z - q.x * q.y;
+					var wyxz = q.w * q.y - q.x * q.z;
+					_alpha = Math.atan2(2 * wzxy, 1 - 2 * (sqz + sqx));
+					_beta = Math.asin(2 * wxyz / unitLength);
+					_gamma = Math.atan2(2 * wyxz, 1 - 2 * (sqy + sqx));
+
+				}
+
+				// alpha is in [-pi, pi], make sure it is in [0, 2*pi).
+				if (_alpha < 0) {
+					_alpha += 2 * Math.PI; // alpha [0, 2*pi)
+				}
+
+				// Convert to degrees
+				_alpha *= radToDeg;
+				_beta  *= radToDeg;
+				_gamma *= radToDeg;
+
+				// apply derived euler angles to current object
+				this.set( _alpha, _beta, _gamma );
+
+			}
+		})();
+
+		this.rotateX = function ( angle ) {
+
+			FULLTILT.Euler.prototype.rotateByAxisAngle( this, [ 1, 0, 0 ], angle );
+
+			return this;
+
+		};
+
+		this.rotateY = function ( angle ) {
+
+			FULLTILT.Euler.prototype.rotateByAxisAngle( this, [ 0, 1, 0 ], angle );
+
+			return this;
+
+		};
+
+		this.rotateZ = function ( angle ) {
+
+			FULLTILT.Euler.prototype.rotateByAxisAngle( this, [ 0, 0, 1 ], angle );
+
+			return this;
+
+		};
+
+		// Initialize object values
+		this.set( alpha, beta, gamma );
+
+	};
+
+	FULLTILT.Euler.prototype = {
+
+		constructor: FULLTILT.Euler,
+
+		rotateByAxisAngle: function () {
+
+			var _matrix = new FULLTILT.RotationMatrix();
+			var outEuler;
+
+			return function ( targetEuler, axis, angle ) {
+
+				_matrix.setFromEuler( targetEuler.beta, targetEuler.gamma, targetEuler.alpha );
+
+				_matrix = FULLTILT.RotationMatrix.prototype.rotateByAxisAngle( _matrix, axis, angle );
+
+				targetEuler.setFromRotationMatrix( _matrix );
+
+				return targetEuler;
+
+			};
 
 		}()
 
 	};
-
-	////// Internal rotation representation computation functions //////
-
-	var calculateQuaternion = function () {
-
-		var quaternion = new FULLTILT.Quaternion();
-
-		var _x, _y, _z;
-		var _x_2, _y_2, _z_2;
-		var cX, cY, cZ, sX, sY, sZ;
-
-		return function ( x, y, z ) {
-
-			_z = ( z || 0 ) * degToRad;
-			_x = ( x || 0 ) * degToRad;
-			_y = ( y || 0 ) * degToRad;
-
-			_z_2 = _z / 2;
-			_x_2 = _x / 2;
-			_y_2 = _y / 2;
-
-			cX = Math.cos( _x_2 );
-			cY = Math.cos( _y_2 );
-			cZ = Math.cos( _z_2 );
-			sX = Math.sin( _x_2 );
-			sY = Math.sin( _y_2 );
-			sZ = Math.sin( _z_2 );
-
-			quaternion.set(
-				sX * cY * cZ - cX * sY * sZ, // X
-				cX * sY * cZ + sX * cY * sZ, // Y
-				cX * cY * sZ + sX * sY * cZ, // Z
-				cX * cY * cZ - sX * sY * sZ  // W
-			);
-
-			quaternion = FULLTILT.Quaternion.prototype.normalize( quaternion );
-
-			return quaternion;
-
-		};
-
-	}();
-
-	var calculateRotationMatrix = function () {
-
-		var matrix = new FULLTILT.RotationMatrix();
-
-		var _x, _y, _z;
-		var cX, cY, cZ, sX, sY, sZ;
-
-		return function ( x, y, z ) {
-
-			_z = ( z || 0 ) * degToRad;
-			_x = ( x || 0 ) * degToRad;
-			_y = ( y || 0 ) * degToRad;
-
-			cX = Math.cos( _x );
-			cY = Math.cos( _y );
-			cZ = Math.cos( _z );
-			sX = Math.sin( _x );
-			sY = Math.sin( _y );
-			sZ = Math.sin( _z );
-
-			//
-			// ZXY-ordered rotation matrix construction.
-			//
-
-			matrix.set(
-				cZ * cY - sZ * sX * sY, // 1,1
-				- cX * sZ,              // 1,2
-				cY * sZ * sX + cZ * sY, // 1,3
-
-				cY * sZ + cZ * sX * sY, // 2,1
-				cZ * cX,                // 2,2
-				sZ * sY - cZ * cY * sX, // 2,3
-
-				- cX * sY,              // 3,1
-				sX,                     // 3,2
-				cX * cY                 // 3,3
-			);
-
-			matrix = FULLTILT.RotationMatrix.prototype.normalize( matrix );
-
-			return matrix;
-
-		}
-
-	}();
-
-	var calculateEuler = function () {
-
-		var inEuler = new FULLTILT.Euler();
-		var outEuler, _matrix;
-
-		return function ( x, y, z ) {
-
-			_matrix = calculateRotationMatrix( x, y, z );
-
-			outEuler = FULLTILT.Euler.prototype.setFromRotationMatrix( _matrix );
-
-			inEuler.copy( outEuler );
-
-			return inEuler;
-
-		};
-
-	}();
 
 	////// Internal Event Handlers //////
 
@@ -747,51 +844,108 @@
 
 		},
 
-		getScreenQuaternion: function () {
+		getFixedFrameQuaternion: (function () {
 
-			// Obtain latest device orientation quaternion
-			var quaternion = calculateQuaternion(
-				deviceOrientationData.beta,
-				deviceOrientationData.gamma,
-				deviceOrientationData.alpha
-			);
+			var quaternion = new FULLTILT.Quaternion();
 
-			// Automatically apply screen orientation transform to device orientation quaternion
-			quaternion.rotateZ( - screenOrientationAngle );
+			return function() {
 
-			return quaternion;
+				quaternion.setFromEuler(
+					deviceOrientationData.beta,
+					deviceOrientationData.gamma,
+					deviceOrientationData.alpha
+				);
 
-		},
+				return quaternion;
 
-		getScreenMatrix: function () {
+			};
 
-			var matrix = calculateRotationMatrix(
-				deviceOrientationData.beta,
-				deviceOrientationData.gamma,
-				deviceOrientationData.alpha
-			);
+		})(),
 
-			// Automatically apply screen orientation transform
-			matrix.rotateZ( - screenOrientationAngle );
+		getScreenAdjustedQuaternion: (function () {
 
-			return matrix;
+			var quaternion;
 
-		},
+			return function() {
 
-		getScreenEuler: function () {
+				quaternion = DeviceOrientation.prototype.getFixedFrameQuaternion();
 
-			var euler = calculateEuler(
-				deviceOrientationData.beta,
-				deviceOrientationData.gamma,
-				deviceOrientationData.alpha
-			);
+				// Automatically apply screen orientation transform
+				quaternion.rotateZ( - screenOrientationAngle );
 
-			// Automatically apply screen orientation transform
-			euler.rotateZ( - screenOrientationAngle );
+				return quaternion;
 
-			return euler;
+			};
 
-		},
+		})(),
+
+		getFixedFrameMatrix: (function () {
+
+			var matrix = new FULLTILT.RotationMatrix();
+
+			return function () {
+
+				matrix.setFromEuler(
+					deviceOrientationData.beta,
+					deviceOrientationData.gamma,
+					deviceOrientationData.alpha
+				);
+
+				return matrix;
+
+			};
+
+		})(),
+
+		getScreenAdjustedMatrix: (function () {
+
+			var matrix;
+
+			return function () {
+
+				matrix = DeviceOrientation.prototype.getFixedFrameMatrix();
+
+				// Automatically apply screen orientation transform
+				matrix.rotateZ( - screenOrientationAngle );
+
+				return matrix;
+
+			};
+
+		})(),
+
+		getFixedFrameEuler: (function () {
+
+			var euler = new FULLTILT.Euler();
+			var matrix = new FULLTILT.RotationMatrix();
+
+			return function () {
+
+				matrix = DeviceOrientation.prototype.getFixedFrameMatrix();
+
+				euler.setFromRotationMatrix( matrix );
+
+				return euler;
+
+			};
+
+		})(),
+
+		getScreenAdjustedEuler: (function () {
+
+			var euler = new FULLTILT.Euler();
+
+			return function () {
+
+				var matrix = DeviceOrientation.prototype.getScreenAdjustedMatrix();
+
+				euler.setFromRotationMatrix( matrix );
+
+				return euler;
+
+			};
+
+		})(),
 
 		isAbsolute: function () {
 
@@ -831,7 +985,7 @@
 
 				if ( hasScreenOrientationAPI ) {
 
-				window.screen.orientation.addEventListener( 'change', handleScreenOrientationChange, false );
+					window.screen.orientation.addEventListener( 'change', handleScreenOrientationChange, false );
 
 				} else {
 
@@ -863,7 +1017,7 @@
 
 		},
 
-		getScreenAcceleration: function () {
+		getScreenAdjustedAcceleration: function () {
 
 			var accData = deviceMotionData.acceleration || {};
 			var screenAccData = {};
@@ -894,7 +1048,7 @@
 
 		},
 
-		getScreenAccelerationIncludingGravity: function () {
+		getScreenAdjustedAccelerationIncludingGravity: function () {
 
 			var accGData = deviceMotionData.accelerationIncludingGravity || {};
 			var screenAccGData = {};
@@ -925,7 +1079,7 @@
 
 		},
 
-		getScreenRotationRate: function () {
+		getScreenAdjustedRotationRate: function () {
 
 			var rotRateData = deviceMotionData.rotationRate || {};
 			var screenRotRateData = {};

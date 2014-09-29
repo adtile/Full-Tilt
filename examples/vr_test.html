@@ -156,7 +156,7 @@
 				switch( currentControlType ) {
 					case 0: // Use Quaternion
 
-						var quat = FULLTILT.DeviceOrientation.getScreenQuaternion();
+						var quat = FULLTILT.DeviceOrientation.getScreenAdjustedQuaternion();
 
 						orientationQuat.set( quat.x, quat.y, quat.z, quat.w );
 
@@ -166,7 +166,7 @@
 
 					case 1: // Use Rotation Matrix
 
-						var matrix = FULLTILT.DeviceOrientation.getScreenMatrix();
+						var matrix = FULLTILT.DeviceOrientation.getScreenAdjustedMatrix();
 
 						orientationQuat.setFromRotationMatrix( new THREE.Matrix4(
 							matrix.elements[0], matrix.elements[1], matrix.elements[2], 0,
@@ -181,7 +181,7 @@
 
 					case 2: // Use Euler
 
-						var euler = FULLTILT.DeviceOrientation.getScreenEuler();
+						var euler = FULLTILT.DeviceOrientation.getScreenAdjustedEuler();
 
 						orientationQuat.setFromEuler( new THREE.Euler(
 							THREE.Math.degToRad( euler.beta  ),

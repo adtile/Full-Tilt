@@ -1,13 +1,13 @@
 Full Tilt JS
 ============
 
-#### The standalone device orientation + motion sensor library ####
+#### The standalone device orientation + motion sensor usage and conversion library ####
 
-Full Tilt JS is a standalone JavaScript library that allows developers to use device orientation and motion sensor data in web applications in a consistent frame.
+Full Tilt JS is a standalone JavaScript library that normalizes device orientation and device motion sensor data in web applications within a consistent frame.
 
-This library takes device orientation data and applies a consistent calibration frame to the data output. It also automatically normalizes device orientation data based on the current screen orientation so your applications keep working as users rotate their screen during web application usage.
+Full Tilt JS provides developers with three complementary device orientation sensor output representations – screen-adjusted Quaternions, Rotation Matrixes and Euler Angles – that can be used to create 2D or 3D experiences in web browsers that work consistently across all mobile web platforms and in all screen orientations.
 
-Full Tilt JS ultimately provides developers with three different but complimentary device orientation sensor output representations – screen-adjusted Quaternions, Rotation Matrixes and Euler Angles – that can be used to create 2D or 3D experiences in web browsers that work consistently across all mobile web platforms and in all screen orientations.
+As an added bonus, Full Tilt JS also provides all the conversion functions necessary to convert device orientation from any type to any other type (conversion from/to any Euler Angles, Rotation Matrices and/or Quaternions).
 
 * [Demos](#demos)
 * [Basic Usage](#basic-usage)
@@ -36,13 +36,13 @@ Start listening for device orientation sensor changes by calling `FULLTILT.Devic
 Whenever you need to obtain the current device orientation or motion, call the appropriate method depending on the data you need:
 
     // Obtain the screen-adjusted normalized rotation as a Quaternion
-    var quaternion = FULLTILT.DeviceOrientation.getScreenQuaternion();
+    var quaternion = FULLTILT.DeviceOrientation.getScreenAdjustedQuaternion();
 
     // Obtain the screen-adjusted normalized rotation as a Rotation Matrix
-    var rotmat = FULLTILT.DeviceOrientation.getScreenMatrix();
+    var matrix = FULLTILT.DeviceOrientation.getScreenAdjustedMatrix();
 
     // Obtain the screen-adjusted normalized rotation as Tait-Bryan Angles
-    var euler = FULLTILT.DeviceOrientation.getScreenEuler();
+    var euler = FULLTILT.DeviceOrientation.getScreenAdjustedEuler();
 
 At any time you can stop listening for device orientation sensor changes in your web application by calling `FULLTILT.DeviceOrientation.stop()` or `FULLTILT.DeviceMotion.stop()`:
 
@@ -72,9 +72,9 @@ Example 2:
     FULLTILT.DeviceOrientation.start(function() {
       // DeviceOrientation updated
 
-      var rotMat = FULLTILT.DeviceOrientation.getScreenMatrix();
+      var matrix = FULLTILT.DeviceOrientation.getScreenAdjustedMatrix();
 
-      // Do something with `rotMat`...
+      // Do something with rotation matrix `matrix`...
     });
 
 ##### FULLTILT.DeviceOrientation.stop() #####
@@ -85,32 +85,59 @@ Example:
 
     FULLTILT.DeviceOrientation.stop();
 
-##### FULLTILT.DeviceOrientation.getScreenQuaternion() #####
+##### FULLTILT.DeviceOrientation.getFixedFrameQuaternion() #####
 
-Return the last available device orientation as a screen-adjusted Quaternion
-
-Example:
-
-    // Return an object of type FULLTILT.Quaternion
-    var quat = FULLTILT.DeviceOrientation.getScreenQuaternion();
-
-##### FULLTILT.DeviceOrientation.getScreenMatrix() #####
-
-Return the last available device orientation as a screen-adjusted Rotation Matrix
+Return the last available device orientation as a fixed-frame [Quaternion](#fulltiltquaternion) object.
 
 Example:
 
-    // Return an object of type FULLTILT.RotationMatrix
-    var rotmat = FULLTILT.DeviceOrientation.getScreenMatrix();
+    // Return an object of type FULLTILT.Quaternion (without screen rotation adjustments applied)
+    var quat = FULLTILT.DeviceOrientation.getFixedFrameQuaternion();
 
-##### FULLTILT.DeviceOrientation.getScreenEuler() #####
+##### FULLTILT.DeviceOrientation.getScreenAdjustedQuaternion() #####
 
-Return the last available device orientation as screen-adjusted Euler Angles
+Return the last available device orientation as a screen-adjusted [Quaternion](#fulltiltquaternion) object.
 
 Example:
 
-    // Return an object of type FULLTILT.Euler
-    var angles = FULLTILT.DeviceOrientation.getScreenEuler();
+    // Return an object of type FULLTILT.Quaternion (with screen rotation adjustments applied)
+    var quat = FULLTILT.DeviceOrientation.getScreenAdjustedQuaternion();
+
+##### FULLTILT.DeviceOrientation.getFixedFrameMatrix() #####
+
+Return the last available device orientation as a fixed-frame [RotationMatrix](#fulltiltrotationmatrix) object.
+
+Example:
+
+    // Return an object of type FULLTILT.RotationMatrix (without screen rotation adjustments applied)
+    var matrix = FULLTILT.DeviceOrientation.getFixedFrameMatrix();
+
+##### FULLTILT.DeviceOrientation.getScreenAdjustedMatrix() #####
+
+Return the last available device orientation as a screen-adjusted [RotationMatrix](#fulltiltrotationmatrix) object.
+
+Example:
+
+    // Return an object of type FULLTILT.RotationMatrix (with screen rotation adjustments applied)
+    var matrix = FULLTILT.DeviceOrientation.getScreenAdjustedMatrix();
+
+##### FULLTILT.DeviceOrientation.getFixedFrameEuler() #####
+
+Return the last available device orientation as a fixed-frame [Euler](#fulltilteuler) object.
+
+Example:
+
+    // Return an object of type FULLTILT.Euler (without screen rotation adjustments applied)
+    var angles = FULLTILT.DeviceOrientation.getFixedFrameEuler();
+
+##### FULLTILT.DeviceOrientation.getScreenAdjustedEuler() #####
+
+Return the last available device orientation as a screen-adjusted [Euler](#fulltilteuler) object.
+
+Example:
+
+    // Return an object of type FULLTILT.Euler (with screen rotation adjustments applied)
+    var angles = FULLTILT.DeviceOrientation.getScreenAdjustedEuler();
 
 ##### FULLTILT.DeviceOrientation.isAbsolute() #####
 
@@ -151,7 +178,7 @@ Example 2:
     FULLTILT.DeviceMotion.start(function() {
       // DeviceMotion updated
 
-      var acc = FULLTILT.DeviceMotion.getScreenAcceleration();
+      var acc = FULLTILT.DeviceMotion.getScreenAdjustedAcceleration();
 
       // Do something with `acc`...
     });
@@ -164,29 +191,29 @@ Example:
 
     FULLTILT.DeviceMotion.stop();
 
-##### FULLTILT.DeviceMotion.getScreenAcceleration() #####
+##### FULLTILT.DeviceMotion.getScreenAdjustedAcceleration() #####
 
 Return the last available screen-adjusted acclerometer values.
 
 Example:
 
-    var acc = FULLTILT.DeviceMotion.getScreenAcceleration();
+    var acc = FULLTILT.DeviceMotion.getScreenAdjustedAcceleration();
 
-##### FULLTILT.DeviceMotion.getScreenAccelerationIncludingGravity() #####
+##### FULLTILT.DeviceMotion.getScreenAdjustedAccelerationIncludingGravity() #####
 
 Return the last available screen-adjusted acclerometer values including gravity components.
 
 Example:
 
-    var accGrav = FULLTILT.DeviceMotion.getScreenAccelerationIncludingGravity();
+    var accGrav = FULLTILT.DeviceMotion.getScreenAdjustedAccelerationIncludingGravity();
 
-##### FULLTILT.DeviceMotion.getScreenRotationRate() #####
+##### FULLTILT.DeviceMotion.getScreenAdjustedRotationRate() #####
 
 Return the last available screen-adjusted rotation rate values.
 
 Example:
 
-    var rotRate = FULLTILT.DeviceMotion.getScreenRotationRate();
+    var rotRate = FULLTILT.DeviceMotion.getScreenAdjustedRotationRate();
 
 ##### FULLTILT.DeviceMotion.getLastRawEventData() #####
 
@@ -201,7 +228,7 @@ Example:
 
 #### Constructor ####
 
-##### new FULLTILT.Quaternion( [x], [y], [z], [w] ) #####
+##### new FULLTILT.Quaternion( [x, y, z, w] ) #####
 
 Create a new `FULLTILT.Quaternion` object.
 
@@ -233,27 +260,35 @@ Example:
 
 #### Methods ####
 
-##### .set( [x], [y], [z], [w] ) this #####
+##### .set( [x, y, z, w] ) this #####
 
-Sets the value of this quaternion.
+Sets the raw values of this quaternion object.
 
-##### .copy( [quat](#fulltiltquaternion) ) this` #####
+##### .copy( [quaternion](#fulltiltquaternion) ) this` #####
 
 Copies the value of the supplied quaternion.
 
-##### .multiply( [quat](#fulltiltquaternion) ) this` #####
+##### .setFromEuler( [euler](#fulltilteuler) ) this #####
+
+Sets the component values of this quaternion object from the provided [Euler](#fulltilteuler) object.
+
+##### .setFromRotationMatrix( [matrix](#fulltiltrotationmatrix) ) this #####
+
+Sets the component values of this quaternion object from the provided [RotationMatrix](#fulltiltrotationmatrix) object.
+
+##### .multiply( [quaternion](#fulltiltquaternion) ) this` #####
 
 Multiplies the current object quaternion by the supplied quaternion.
 
-##### .rotateX( angle ) this` #####
+##### .rotateX( radians ) this` #####
 
 Rotate the current object quaternion around its x-axis by the supplied angle (in Radians).
 
-##### .rotateY( angle ) this` #####
+##### .rotateY( radians ) this` #####
 
 Rotate the current object quaternion around its y-axis by the supplied angle (in Radians).
 
-##### .rotateZ( angle ) this` #####
+##### .rotateZ( radians ) this` #####
 
 Rotate the current object quaternion around its z-axis by the supplied angle (in Radians).
 
@@ -276,7 +311,7 @@ A new [`FULLTILT.RotationMatrix`](#fulltiltrotationmatrix) object.
 Example:
 
     // Create a new FULLTILT.RotationMatrix object
-    var rotmat = new FULLTILT.RotationMatrix( 1, 0, 0, 0, 1, 0, 0, 0, 1 );
+    var matrix = new FULLTILT.RotationMatrix( 1, 0, 0, 0, 1, 0, 0, 0, 1 );
 
 #### Properties ####
 
@@ -288,25 +323,33 @@ A ByteArray containing the 9 values of the rotation matrix
 
 ##### .set( m11, m12, m13, m21, m22, m23, m31, m32, m33 ) this #####
 
-Sets the component values of this rotation matrix object.
+Sets the raw values of this rotation matrix object.
 
-##### .copy( [rotmat](#fulltiltrotationmatrix) ) this` #####
+##### .copy( [matrix](#fulltiltrotationmatrix) ) this` #####
 
 Copies the component values of the supplied rotation matrix.
 
-##### .multiply( [rotmat](#fulltiltrotationmatrix) ) this` #####
+##### .setFromEuler( [euler](#fulltilteuler) ) this #####
+
+Sets the component values of this rotation matrix object from the provided [Euler](#fulltilteuler) object.
+
+##### .setFromQuaternion( [quaternion](#fulltiltquaternion) ) this #####
+
+Sets the component values of this rotation matrix object from the provided [Quaternion](#fulltiltquaternion) object.
+
+##### .multiply( [matrix](#fulltiltrotationmatrix) ) this` #####
 
 Multiplies the current object rotation matrix by the supplied rotation matrix.
 
-##### .rotateX( angle ) this` #####
+##### .rotateX( radians ) this` #####
 
 Rotate the current object rotation matrix around its x-axis by the supplied angle (in Radians).
 
-##### .rotateY( angle ) this` #####
+##### .rotateY( radians ) this` #####
 
 Rotate the current object rotation matrix around its y-axis by the supplied angle (in Radians).
 
-##### .rotateZ( angle ) this` #####
+##### .rotateZ( radians ) this` #####
 
 Rotate the current object rotation matrix around its z-axis by the supplied angle (in Radians).
 
@@ -315,7 +358,7 @@ Rotate the current object rotation matrix around its z-axis by the supplied angl
 
 #### Constructor ####
 
-##### new FULLTILT.Euler( [alpha], [beta], [gamma] ) #####
+##### new FULLTILT.Euler( [alpha, beta, gamma] ) #####
 
 Create a new `FULLTILT.Euler` object.
 
@@ -350,7 +393,7 @@ The computed rotation around the y-axis (in Degrees).
 
 #### Methods ####
 
-##### .set( alpha, beta, gamma ) this #####
+##### .set( [alpha, beta, gamma] ) this #####
 
 Sets the component values of this Euler object.
 
@@ -358,15 +401,23 @@ Sets the component values of this Euler object.
 
 Copies the component values of the supplied Euler object.
 
-##### .rotateX( angle ) this` #####
+##### .setFromQuaternion( [quaternion](#fulltiltquaternion) ) this #####
+
+Sets the component values of this Euler object from the provided [Quaternion](#fulltiltquaternion) object.
+
+##### .setFromRotationMatrix( [matrix](#fulltiltrotationmatrix) ) this #####
+
+Sets the component values of this Euler object from the provided [RotationMatrix](#fulltiltrotationmatrix) object.
+
+##### .rotateX( radians ) this` #####
 
 Rotate the current object Euler angles around its x-axis by the supplied angle (in Radians).
 
-##### .rotateY( angle ) this` #####
+##### .rotateY( radians ) this` #####
 
 Rotate the current object Euler angles around its y-axis by the supplied angle (in Radians).
 
-##### .rotateZ( angle ) this` #####
+##### .rotateZ( radians ) this` #####
 
 Rotate the current object Euler angles around its z-axis by the supplied angle (in Radians).
 

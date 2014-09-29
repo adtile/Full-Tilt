@@ -84,7 +84,7 @@ function init() {
 
 		// Display calculated screen-adjusted deviceorientation
 
-		var screenAdjustedEvent = FULLTILT.DeviceOrientation.getScreenEuler();
+		var screenAdjustedEvent = FULLTILT.DeviceOrientation.getScreenAdjustedEuler();
 
 		screenAlpha.textContent = printDataValue(screenAdjustedEvent.alpha);
 		screenBeta.textContent = printDataValue(screenAdjustedEvent.beta);
@@ -136,9 +136,9 @@ function init() {
 
 		// Display calculated screen-adjusted devicemotion
 
-		var screenAcc = FULLTILT.DeviceMotion.getScreenAcceleration() || {};
-		var screenAccG = FULLTILT.DeviceMotion.getScreenAccelerationIncludingGravity() || {};
-		var screenRotRate = FULLTILT.DeviceMotion.getScreenRotationRate() || {};
+		var screenAcc = FULLTILT.DeviceMotion.getScreenAdjustedAcceleration() || {};
+		var screenAccG = FULLTILT.DeviceMotion.getScreenAdjustedAccelerationIncludingGravity() || {};
+		var screenRotRate = FULLTILT.DeviceMotion.getScreenAdjustedRotationRate() || {};
 
 		screenAccX.textContent = printDataValue(screenAcc.x);
 		screenAccY.textContent = printDataValue(screenAcc.y);
