@@ -5,8 +5,9 @@
  *
  * A standalone DeviceOrientation + DeviceMotion library that normalises
  * orientation sensor output, applies relevant screen orientation
- * transforms and returns Euler Angle, Quaternion and Rotation
- * Matrix representations back to web developers.
+ * transforms, returns Euler Angle, Quaternion and Rotation
+ * Matrix representations back to web developers and provides conversion
+ * between all supported orientation representation types.
  *
  * Copyright: 2014 Rich Tibbett
  * License:   MIT
