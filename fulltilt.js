@@ -4,7 +4,7 @@
  * http://github.com/richtr/Full-Tilt-JS
  *
  * A standalone DeviceOrientation + DeviceMotion library that normalises
- * orientation sensor output, applies relevant screen orientation
+ * orientation sensor input, applies relevant screen orientation
  * transforms, returns Euler Angle, Quaternion and Rotation
  * Matrix representations back to web developers and provides conversion
  * between all supported orientation representation types.
