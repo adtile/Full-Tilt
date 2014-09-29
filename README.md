@@ -11,7 +11,7 @@ This library also provides all the functions necessary to convert between differ
 
 * [Demos](#demos)
 * [Basic Usage](#basic-usage)
-* [API Documentation](https://github.com/richtr/Full-Tilt-JS/wiki/API-Documentation)
+* [API Documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation)
 * [Reference Material](#reference-material)
 * [License](#license)
 
@@ -51,11 +51,11 @@ At any time you can stop listening for device orientation sensor changes in your
 
 A full example of usage can be found in the [provided example](https://github.com/richtr/Full-Tilt-JS/blob/master/examples/vr_test.html) ([view the example live here](http://richtr.github.io/Full-Tilt-JS/examples/vr_test.html)).
 
-[Click here for full API documentation](https://github.com/richtr/Full-Tilt-JS/wiki/API-Documentation).
+[Click here for full API documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation).
 
 ## Reference Material ##
 
-* [Full Tilt JS API Documentation](https://github.com/richtr/Full-Tilt-JS/wiki/API-Documentation)
+* [Full Tilt JS API Documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation)
 * Article: [Practical application and usage of the W3C Device Orientation API](http://dev.opera.com/articles/view/w3c-device-orientation-usage/)
 * [W3C Spec](http://w3c.github.io/deviceorientation/spec-source-orientation.html)
 
