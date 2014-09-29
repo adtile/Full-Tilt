@@ -1,7 +1,7 @@
 Full Tilt JS
 ============
 
-#### The standalone device orientation + motion sensor normalization and conversion library ####
+#### Standalone device orientation + device motion normalization and conversion library ####
 
 Full Tilt JS is a standalone JavaScript library that normalizes device orientation and device motion sensor data in web applications within a consistent frame.
 
