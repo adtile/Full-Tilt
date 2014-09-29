@@ -81,11 +81,13 @@
 			var _x_2, _y_2, _z_2;
 			var cX, cY, cZ, sX, sY, sZ;
 
-			return function ( x, y, z ) {
+			return function ( euler ) {
 
-				_z = ( z || 0 ) * degToRad;
-				_x = ( x || 0 ) * degToRad;
-				_y = ( y || 0 ) * degToRad;
+				euler = euler || {};
+
+				_z = ( euler.alpha || 0 ) * degToRad;
+				_x = ( euler.beta || 0 ) * degToRad;
+				_y = ( euler.gamma || 0 ) * degToRad;
 
 				_z_2 = _z / 2;
 				_x_2 = _x / 2;
@@ -316,11 +318,13 @@
 			var _x, _y, _z;
 			var cX, cY, cZ, sX, sY, sZ;
 
-			return function ( x, y, z ) {
+			return function ( euler ) {
 
-				_z = ( z || 0 ) * degToRad;
-				_x = ( x || 0 ) * degToRad;
-				_y = ( y || 0 ) * degToRad;
+				euler = euler || {};
+
+				_z = ( euler.alpha || 0 ) * degToRad;
+				_x = ( euler.beta || 0 ) * degToRad;
+				_y = ( euler.gamma || 0 ) * degToRad;
 
 				cX = Math.cos( _x );
 				cY = Math.cos( _y );
@@ -736,7 +740,7 @@
 
 			return function ( targetEuler, axis, angle ) {
 
-				_matrix.setFromEuler( targetEuler.beta, targetEuler.gamma, targetEuler.alpha );
+				_matrix.setFromEuler( targetEuler );
 
 				_matrix = FULLTILT.RotationMatrix.prototype.rotateByAxisAngle( _matrix, axis, angle );
 
@@ -850,11 +854,7 @@
 
 			return function() {
 
-				quaternion.setFromEuler(
-					deviceOrientationData.beta,
-					deviceOrientationData.gamma,
-					deviceOrientationData.alpha
-				);
+				quaternion.setFromEuler( deviceOrientationData );
 
 				return quaternion;
 
@@ -885,11 +885,7 @@
 
 			return function () {
 
-				matrix.setFromEuler(
-					deviceOrientationData.beta,
-					deviceOrientationData.gamma,
-					deviceOrientationData.alpha
-				);
+				matrix.setFromEuler( deviceOrientationData );
 
 				return matrix;
 

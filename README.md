@@ -11,7 +11,7 @@ This library also provides all the functions necessary to convert between differ
 
 * [Demos](#demos)
 * [Basic Usage](#basic-usage)
-* [API](#api)
+* [API Documentation](#api-documentation)
 * [Reference Material](#reference-material)
 * [License](#license)
 
@@ -51,7 +51,7 @@ At any time you can stop listening for device orientation sensor changes in your
 
 A full example of usage can be found in the [provided example](https://github.com/richtr/Full-Tilt-JS/blob/master/examples/vr_test.html) ([view the example live here](http://richtr.github.io/Full-Tilt-JS/examples/vr_test.html)).
 
-## API ##
+## API Documentation ##
 
 ### FULLTILT.DeviceOrientation ###
 
@@ -248,6 +248,10 @@ Example:
     // Create a new FULLTILT.Quaternion object
     var quat = new FULLTILT.Quaternion( 0, 0, 0, 1 );
 
+is equivalent to:
+
+    var quat = new FULLTILT.Quaternion();
+
 #### Properties ####
 
 ##### .x #####
@@ -262,35 +266,86 @@ Example:
 
 ##### .set( [x, y, z, w] ) this #####
 
-Sets the raw values of this quaternion object.
+Sets the raw values of the current [Quaternion](#fulltiltquaternion) object.
+
+Example:
+
+    var quat = new FULLTILT.Quaternion();
+    quat.set(Math.sin(90), 0, 0, Math.cos(90));
 
 ##### .copy( [quaternion](#fulltiltquaternion) ) this` #####
 
-Copies the value of the supplied quaternion.
+Copies the value of the supplied [Quaternion](#fulltiltquaternion) object to the current object.
+
+Example:
+
+    var quat1 = new FULLTILT.Quaternion();
+    var quat2 = new FULLTILT.Quaternion(0, Math.sin(45), 0, Math.cos(45));
+
+    quat1.copy(quat2);
 
 ##### .setFromEuler( [euler](#fulltilteuler) ) this #####
 
 Sets the component values of this quaternion object from the provided [Euler](#fulltilteuler) object.
 
+Example:
+
+    var quat = new FULLTILT.Quaternion();
+    var euler = new FULLTILT.Euler(90, 0, -45);
+
+    quat.setFromEuler(euler);
+
 ##### .setFromRotationMatrix( [matrix](#fulltiltrotationmatrix) ) this #####
 
 Sets the component values of this quaternion object from the provided [RotationMatrix](#fulltiltrotationmatrix) object.
+
+Example:
+
+    var quat = new FULLTILT.Quaternion();
+    var matrix = new FULLTILT.RotationMatrix(1,0,0,0,1,0,0,0,1);
+
+    quat.setFromRotationMatrix(matrix);
 
 ##### .multiply( [quaternion](#fulltiltquaternion) ) this` #####
 
 Multiplies the current object quaternion by the supplied quaternion.
 
+Example:
+
+    var quat1 = new FULLTILT.Quaternion(Math.sin(270), 0, 0, Math.cos(270));
+    var quat2 = new FULLTILT.Quaternion(0, Math.sin(45), 0, Math.cos(45));
+
+    quat1.multiply(quat2); // quat1 * quat2
+
 ##### .rotateX( radians ) this` #####
 
 Rotate the current object quaternion around its x-axis by the supplied angle (in Radians).
+
+Example:
+
+    var quat = new FULLTILT.Quaternion(Math.sin(270), 0, 0, Math.cos(270));
+
+    quat.rotateX(Math.PI / 2); // rotate this quaternion by 90 degrees along its X-axis
 
 ##### .rotateY( radians ) this` #####
 
 Rotate the current object quaternion around its y-axis by the supplied angle (in Radians).
 
+Example:
+
+    var quat = new FULLTILT.Quaternion(0, Math.sin(45), 0, Math.cos(45));
+
+    quat.rotateY(Math.PI / 4); // rotate this quaternion by 45 degrees along its Y-axis
+
 ##### .rotateZ( radians ) this` #####
 
 Rotate the current object quaternion around its z-axis by the supplied angle (in Radians).
+
+Example:
+
+    var quat = new FULLTILT.Quaternion(0, 0, Math.sin(10), Math.cos(10));
+
+    quat.rotateY( 20 * (Math.PI / 180) ); // rotate this quaternion by 20 degrees along its Z-axis
 
 ### FULLTILT.RotationMatrix ###
 
@@ -313,6 +368,10 @@ Example:
     // Create a new FULLTILT.RotationMatrix object
     var matrix = new FULLTILT.RotationMatrix( 1, 0, 0, 0, 1, 0, 0, 0, 1 );
 
+is equivalent to:
+
+    var matrix = new FULLTILT.RotationMatrix();
+
 #### Properties ####
 
 ##### .elements #####
@@ -325,34 +384,87 @@ A ByteArray containing the 9 values of the rotation matrix
 
 Sets the raw values of this rotation matrix object.
 
+Example:
+
+    var matrix = new FULLTILT.RotationMatrix();
+
+    matrix.set(1,0,0,0,1,0,0,0,1);
+
 ##### .copy( [matrix](#fulltiltrotationmatrix) ) this` #####
 
 Copies the component values of the supplied rotation matrix.
+
+Example:
+
+    var matrix1 = new FULLTILT.RotationMatrix();
+    var matrix2 = new FULLTILT.RotationMatrix();
+    matrix2.setFromEuler(new FULLTILT.Euler(45.4, 0, 10.1));
+
+    matrix1.copy(matrix2);
 
 ##### .setFromEuler( [euler](#fulltilteuler) ) this #####
 
 Sets the component values of this rotation matrix object from the provided [Euler](#fulltilteuler) object.
 
+Example:
+
+    var matrix = new FULLTILT.RotationMatrix();
+    var euler = new FULLTILT.Euler(290.00123, 10.752, 32.2313)
+
+    matrix.setFromEuler(euler);
+
 ##### .setFromQuaternion( [quaternion](#fulltiltquaternion) ) this #####
 
 Sets the component values of this rotation matrix object from the provided [Quaternion](#fulltiltquaternion) object.
+
+Example:
+
+    var matrix = new FULLTILT.RotationMatrix();
+    var quaternion = new FULLTILT.Quaternion(0,0,0,1);
+
+    matrix.setFromQuaternion(quaternion);
 
 ##### .multiply( [matrix](#fulltiltrotationmatrix) ) this` #####
 
 Multiplies the current object rotation matrix by the supplied rotation matrix.
 
+Example:
+
+    var matrix1 = new FULLTILT.RotationMatrix();
+    var matrix2 = new FULLTILT.RotationMatrix();
+    matrix2.rotateX(90 * (Math.PI / 180));
+
+    matrix1.multiply(matrix2); // matrix1 * matrix2
+
 ##### .rotateX( radians ) this` #####
 
 Rotate the current object rotation matrix around its x-axis by the supplied angle (in Radians).
+
+Example:
+
+    var matrix = new FULLTILT.RotationMatrix();
+
+    matrix.rotateX(270 * (Math.PI / 180)); // rotate matrix by 270 degrees around its Z-axis
 
 ##### .rotateY( radians ) this` #####
 
 Rotate the current object rotation matrix around its y-axis by the supplied angle (in Radians).
 
+Example:
+
+    var matrix = new FULLTILT.RotationMatrix();
+
+    matrix.rotateY(Math.PI / 2); // rotate matrix by 90 degrees around its Y-axis
+
 ##### .rotateZ( radians ) this` #####
 
 Rotate the current object rotation matrix around its z-axis by the supplied angle (in Radians).
 
+Example:
+
+    var matrix = new FULLTILT.RotationMatrix();
+
+    matrix.rotateZ(Math.sqrt(0.5)); // rotate matrix by Math.PI/2 around its Z-axis
 
 ### FULLTILT.Euler ###
 
@@ -377,6 +489,10 @@ Example:
     // Create a new FULLTILT.Euler object
     var euler = new FULLTILT.Euler( 0, 0, 0 );
 
+is equivalent to:
+
+    var euler = new FULLTILT.Euler();
+
 #### Properties ####
 
 ##### .alpha #####
@@ -397,29 +513,76 @@ The computed rotation around the y-axis (in Degrees).
 
 Sets the component values of this Euler object.
 
+Example:
+
+    var euler = new FULLTILT.Euler();
+
+    euler.set(270, 45, 45);
+
 ##### .copy( [euler](#fulltilteuler) ) this` #####
 
 Copies the component values of the supplied Euler object.
+
+Example:
+
+    var euler1 = new FULLTILT.Euler();
+    var euler2 = new FULLTILT.Euler();
+    euler2.setFromQuaternion(new FULLTILT.Quaternion(0, Math.sin(45), 0, Math.cos(45)));
+
+    euler1.copy(euler2);
 
 ##### .setFromQuaternion( [quaternion](#fulltiltquaternion) ) this #####
 
 Sets the component values of this Euler object from the provided [Quaternion](#fulltiltquaternion) object.
 
+Example:
+
+    var euler = new FULLTILT.Euler();
+    var quat = new FULLTILT.Quaternion(0,0,0,1);
+
+    euler.setFromQuaternion(quat);
+
 ##### .setFromRotationMatrix( [matrix](#fulltiltrotationmatrix) ) this #####
 
 Sets the component values of this Euler object from the provided [RotationMatrix](#fulltiltrotationmatrix) object.
+
+Example:
+
+    var euler = new FULLTILT.Euler();
+    var matrix = new FULLTILT.RotationMatrix();
+    matrix.rotateX(90 * (Math.PI / 180));
+
+    euler.setFromRotationMatrix(matrix);
 
 ##### .rotateX( radians ) this` #####
 
 Rotate the current object Euler angles around its x-axis by the supplied angle (in Radians).
 
+Example:
+
+    var euler = new FULLTILT.Euler();
+
+    euler.rotateX(Math.sqrt(0.5)); // rotate by Math.PI/2 around the X axis.
+
 ##### .rotateY( radians ) this` #####
 
 Rotate the current object Euler angles around its y-axis by the supplied angle (in Radians).
 
+Example:
+
+    var euler = new FULLTILT.Euler();
+
+    euler.rotateY(Math.PI/4); // rotate by 45 degrees around the Y axis.
+
 ##### .rotateZ( radians ) this` #####
 
 Rotate the current object Euler angles around its z-axis by the supplied angle (in Radians).
+
+Example:
+
+    var euler = new FULLTILT.Euler();
+
+    euler.rotateZ(10 * (Math.PI / 180)); // rotate by 10 degrees around the Z axis.
 
 ## Reference Material ##
 
@@ -428,4 +591,4 @@ Rotate the current object Euler angles around its z-axis by the supplied angle (
 
 ## License ##
 
-MIT. Copyright (c) Rich Tibbett
+MIT. Copyright (c) Rich Tibbett.
