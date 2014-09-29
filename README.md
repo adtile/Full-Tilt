@@ -1,13 +1,13 @@
 Full Tilt JS
 ============
 
-#### The standalone device orientation + motion sensor usage and conversion library ####
+#### The standalone device orientation + motion sensor normalization and conversion library ####
 
 Full Tilt JS is a standalone JavaScript library that normalizes device orientation and device motion sensor data in web applications within a consistent frame.
 
 Full Tilt JS provides developers with three complementary device orientation sensor output representations – screen-adjusted Quaternions, Rotation Matrixes and Euler Angles – that can be used to create 2D or 3D experiences in web browsers that work consistently across all mobile web platforms and in all screen orientations.
 
-As an added bonus, Full Tilt JS also provides all the conversion functions necessary to convert device orientation from any type to any other type (conversion from/to any Euler Angles, Rotation Matrices and/or Quaternions).
+This library also provides all the functions necessary to convert between different device orientation types. Orientation angle conversion is possible via this API from/to any [Euler Angles](http://en.wikipedia.org/wiki/Euler_angles), [Rotation Matrices](http://en.wikipedia.org/wiki/Rotation_matrix) and/or [Quaternions](http://en.wikipedia.org/wiki/Quaternion).
 
 * [Demos](#demos)
 * [Basic Usage](#basic-usage)
@@ -17,7 +17,7 @@ As an added bonus, Full Tilt JS also provides all the conversion functions neces
 
 ## Demos ##
 
-* [Virtual Reality example with three.js](http://richtr.github.io/Full-Tilt-JS/examples/vr_test.html)
+* [Virtual Reality](http://richtr.github.io/Full-Tilt-JS/examples/vr_test.html)
 * [2D Box Control](http://richtr.github.io/Full-Tilt-JS/examples/box2d.html)
 * [Basic 2D Compass](http://richtr.github.io/Full-Tilt-JS/examples/compass.html)
 * [Full Tilt JS Data Inspector](http://richtr.github.io/Full-Tilt-JS/examples/data_display.html)
