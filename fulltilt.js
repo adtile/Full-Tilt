@@ -928,7 +928,7 @@
 		getFixedFrameEuler: (function () {
 
 			var euler = new FULLTILT.Euler();
-			var matrix = new FULLTILT.RotationMatrix();
+			var matrix;
 
 			return function () {
 
@@ -945,10 +945,11 @@
 		getScreenAdjustedEuler: (function () {
 
 			var euler = new FULLTILT.Euler();
+			var matrix;
 
 			return function () {
 
-				var matrix = DeviceOrientation.prototype.getScreenAdjustedMatrix();
+				matrix = DeviceOrientation.prototype.getScreenAdjustedMatrix();
 
 				euler.setFromRotationMatrix( matrix );
 
