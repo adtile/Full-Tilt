@@ -26,28 +26,36 @@ This library also provides all the functions necessary to convert between differ
 
 Add [fulltilt.js](https://github.com/richtr/Full-Tilt-JS/blob/master/fulltilt.js) (or the [minified version of fulltilt.js](https://github.com/richtr/Full-Tilt-JS/blob/master/fulltilt.min.js)) to your project:
 
-    <script src="fulltilt.js"></script>
+```html
+<script src="fulltilt.js"></script>
+```
 
 Start listening for device orientation sensor changes by calling `FULLTILT.DeviceOrientation.start()` or `FULLTILT.DeviceMotion.start()` at the appropriate point in your web application:
 
-    // Start listening for raw device orientation event changes
-    FULLTILT.DeviceOrientation.start();
+```javascript
+// Start listening for raw device orientation event changes
+FULLTILT.DeviceOrientation.start();
+```
 
 Whenever you need to obtain the current device orientation or motion, call the appropriate method depending on the data you need:
 
-    // Obtain the screen-adjusted normalized rotation as a Quaternion
-    var quaternion = FULLTILT.DeviceOrientation.getScreenAdjustedQuaternion();
+```javascript
+// Obtain the screen-adjusted normalized rotation as a Quaternion
+var quaternion = FULLTILT.DeviceOrientation.getScreenAdjustedQuaternion();
 
-    // Obtain the screen-adjusted normalized rotation as a Rotation Matrix
-    var matrix = FULLTILT.DeviceOrientation.getScreenAdjustedMatrix();
+// Obtain the screen-adjusted normalized rotation as a Rotation Matrix
+var matrix = FULLTILT.DeviceOrientation.getScreenAdjustedMatrix();
 
-    // Obtain the screen-adjusted normalized rotation as Tait-Bryan Angles
-    var euler = FULLTILT.DeviceOrientation.getScreenAdjustedEuler();
+// Obtain the screen-adjusted normalized rotation as Tait-Bryan Angles
+var euler = FULLTILT.DeviceOrientation.getScreenAdjustedEuler();
+```
 
 At any time you can stop listening for device orientation sensor changes in your web application by calling `FULLTILT.DeviceOrientation.stop()` or `FULLTILT.DeviceMotion.stop()`:
 
-    // Stop listening for raw device orientation event changes
-    FULLTILT.DeviceOrientation.stop();
+```javascript
+// Stop listening for raw device orientation event changes
+FULLTILT.DeviceOrientation.stop();
+```
 
 [Click here for full API documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation).
 
