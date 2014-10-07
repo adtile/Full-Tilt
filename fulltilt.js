@@ -681,20 +681,24 @@
 
 				} else {
 
-					var gammaX = sqw - sqx - sqy + sqz;
+					var aX = sqw - sqx + sqy - sqz;
+					var aY = 2 * (q.w * q.z - q.x * q.y);
 
-					if (gammaX > 0) {
+					var gX = sqw - sqx - sqy + sqz;
+					var gY = 2 * (q.w * q.y - q.x * q.z);
 
-						_alpha = Math.atan2(2 * (q.w * q.z - q.x * q.y), (sqw - sqx + sqy - sqz));
-						_beta = Math.asin(2 * wxyz / unitLength);
-						_gamma = Math.atan2(2 * (q.w * q.y - q.x * q.z), gammaX);
+					if (gX > 0) {
+
+						_alpha = Math.atan2(aY, aX);
+						_beta  = Math.asin(2 * wxyz / unitLength);
+						_gamma = Math.atan2(gY, gX);
 
 					} else {
 
-						_alpha = Math.atan2(-2 * (q.w * q.z - q.x * q.y), -(sqw - sqx + sqy - sqz));
-						_beta = -Math.asin(2 * wxyz / unitLength);
-						_beta += _beta < 0 ? M_PI : - M_PI; // beta [-pi,-pi/2) U (pi/2,pi)
-						_gamma = Math.atan2(-2 * (q.w * q.y - q.x * q.z), -gammaX);
+						_alpha = Math.atan2(-aY, -aX);
+						_beta  = -Math.asin(2 * wxyz / unitLength);
+						_beta  += _beta < 0 ? M_PI : - M_PI;
+						_gamma = Math.atan2(-gY, -gX);
 
 					}
 
