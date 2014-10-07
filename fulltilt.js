@@ -661,18 +661,18 @@
 
 				var unitLength = sqw + sqx + sqy + sqz; // Normalised == 1, otherwise correction divisor.
 				var wxyz = q.w * q.x + q.y * q.z;
-				var epsilon = 1e-4; // rounding factor
+				var epsilon = 1e-6; // rounding factor
 
 				if (wxyz > (0.5 - epsilon) * unitLength) {
 
 					_alpha = 2 * Math.atan2(q.y, q.w);
-					_beta = Math.PI;
+					_beta = Math.PI / 2;
 					_gamma = 0;
 
 				} else if (wxyz < (-0.5 + epsilon) * unitLength) {
 
 					_alpha = -2 * Math.atan2(q.y, q.w);
-					_beta = -Math.PI;
+					_beta = -Math.PI / 2;
 					_gamma = 0;
 
 				} else {
