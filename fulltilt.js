@@ -681,19 +681,20 @@
 
 				} else {
 
-					_gamma = Math.atan2(2 * (q.w * q.y - q.x * q.z), (sqw - sqx - sqy + sqz));
+					var gammaX = sqw - sqx - sqy + sqz;
 
-					if (_gamma < M_PI_2 && _gamma > - M_PI_2) {
+					if (gammaX > 0) {
 
 						_alpha = Math.atan2(2 * (q.w * q.z - q.x * q.y), (sqw - sqx + sqy - sqz));
 						_beta = Math.asin(2 * wxyz / unitLength);
+						_gamma = Math.atan2(2 * (q.w * q.y - q.x * q.z), gammaX);
 
 					} else {
 
 						_alpha = Math.atan2(-2 * (q.w * q.z - q.x * q.y), -(sqw - sqx + sqy - sqz));
 						_beta = -Math.asin(2 * wxyz / unitLength);
 						_beta += _beta < 0 ? M_PI : - M_PI; // beta [-pi,-pi/2) U (pi/2,pi)
-						_gamma = Math.atan2(-2 * (q.w * q.y - q.x * q.z), -(sqw - sqx - sqy + sqz));
+						_gamma = Math.atan2(-2 * (q.w * q.y - q.x * q.z), -gammaX);
 
 					}
 
