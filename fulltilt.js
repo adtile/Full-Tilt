@@ -21,9 +21,13 @@
 		return;
 	}
 
+	var M_PI   = Math.PI;
+	var M_PI_2 = M_PI / 2;
+	var M_2_PI = 2 * M_PI;
+
 	// Degree to Radian conversion
-	var degToRad = Math.PI / 180;
-	var radToDeg = 180 / Math.PI;
+	var degToRad = M_PI / 180;
+	var radToDeg = 180 / M_PI;
 
 	// Internal device orientation + motion variables
 	var orientationActive = false; motionActive = false, screenActive = false;
@@ -35,10 +39,10 @@
 	var screenOrientationAngle = ( hasScreenOrientationAPI ? window.screen.orientation.angle : ( window.orientation || 0 ) ) * degToRad;
 
 	var SCREEN_ROTATION_0        = 0,
-	    SCREEN_ROTATION_90       = Math.PI / 2,
-	    SCREEN_ROTATION_180      = Math.PI,
-	    SCREEN_ROTATION_270      = 2 * Math.PI / 3,
-	    SCREEN_ROTATION_MINUS_90 = - Math.PI / 2;
+	    SCREEN_ROTATION_90       = M_PI_2,
+	    SCREEN_ROTATION_180      = M_PI,
+	    SCREEN_ROTATION_270      = M_2_PI / 3,
+	    SCREEN_ROTATION_MINUS_90 = - M_PI_2;
 
 	// Math.sign polyfill
 	function sign(x) {
@@ -602,7 +606,7 @@
 
 					_alpha = Math.atan2(R[1], -R[4]);
 					_beta  = -Math.asin(R[7]);
-					_beta  += (_beta >= 0) ? -Math.PI : Math.PI; // beta [-pi,-pi/2) U (pi/2,pi)
+					_beta  += (_beta >= 0) ? - M_PI : M_PI; // beta [-pi,-pi/2) U (pi/2,pi)
 					_gamma = Math.atan2(R[6], -R[8]); // gamma (-pi/2, pi/2)
 
 				} else { // R[8] == 0
@@ -611,20 +615,20 @@
 
 						_alpha = Math.atan2(-R[1], R[4]);
 						_beta  = Math.asin(R[7]); // beta [-pi/2, pi/2]
-						_gamma = -Math.PI / 2; // gamma = -pi/2
+						_gamma = - M_PI_2; // gamma = -pi/2
 
 					} else if (R[6] < 0) { // cos(gamma) == 0, cos(beta) < 0
 
 						_alpha = Math.atan2(R[1], -R[4]);
 						_beta  = -Math.asin(R[7]);
-						_beta  += (_beta >= 0) ? -Math.PI : Math.PI; // beta [-pi,-pi/2) U (pi/2,pi)
-						_gamma = -Math.PI / 2; // gamma = -pi/2
+						_beta  += (_beta >= 0) ? - M_PI : M_PI; // beta [-pi,-pi/2) U (pi/2,pi)
+						_gamma = - M_PI_2; // gamma = -pi/2
 
 					} else { // R[6] == 0, cos(beta) == 0
 
 						// gimbal lock discontinuity
 						_alpha = Math.atan2(R[3], R[0]);
-						_beta  = (R[7] > 0) ? Math.PI / 2 : -Math.PI / 2; // beta = +-pi/2
+						_beta  = (R[7] > 0) ? M_PI_2 : - M_PI_2; // beta = +-pi/2
 						_gamma = 0; // gamma = 0
 
 					}
@@ -633,7 +637,7 @@
 
 				// alpha is in [-pi, pi], make sure it is in [0, 2*pi).
 				if (_alpha < 0) {
-					_alpha += 2 * Math.PI; // alpha [0, 2*pi)
+					_alpha += M_2_PI; // alpha [0, 2*pi)
 				}
 
 				// Convert to degrees
@@ -666,20 +670,20 @@
 				if (wxyz > (0.5 - epsilon) * unitLength) {
 
 					_alpha = 2 * Math.atan2(q.y, q.w);
-					_beta = Math.PI / 2;
+					_beta = M_PI_2;
 					_gamma = 0;
 
 				} else if (wxyz < (-0.5 + epsilon) * unitLength) {
 
 					_alpha = -2 * Math.atan2(q.y, q.w);
-					_beta = -Math.PI / 2;
+					_beta = -M_PI_2;
 					_gamma = 0;
 
 				} else {
 
 					_gamma = Math.atan2(2 * (q.w * q.y - q.x * q.z), (sqw - sqx - sqy + sqz));
 
-					if (_gamma < Math.PI/2 && _gamma > -Math.PI/2) {
+					if (_gamma < M_PI_2 && _gamma > - M_PI_2) {
 
 						_alpha = Math.atan2(2 * (q.w * q.z - q.x * q.y), (sqw - sqx + sqy - sqz));
 						_beta = Math.asin(2 * wxyz / unitLength);
@@ -688,7 +692,7 @@
 
 						_alpha = Math.atan2(-2 * (q.w * q.z - q.x * q.y), -(sqw - sqx + sqy - sqz));
 						_beta = -Math.asin(2 * wxyz / unitLength);
-						_beta += _beta < 0 ? Math.PI : - Math.PI; // beta [-pi,-pi/2) U (pi/2,pi)
+						_beta += _beta < 0 ? M_PI : - M_PI; // beta [-pi,-pi/2) U (pi/2,pi)
 						_gamma = Math.atan2(-2 * (q.w * q.y - q.x * q.z), -(sqw - sqx - sqy + sqz));
 
 					}
@@ -697,7 +701,7 @@
 
 				// alpha is in [-pi, pi], make sure it is in [0, 2*pi).
 				if (_alpha < 0) {
-					_alpha += 2 * Math.PI; // alpha [0, 2*pi)
+					_alpha += M_2_PI; // alpha [0, 2*pi)
 				}
 
 				// Convert to degrees
