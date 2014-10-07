@@ -10,9 +10,9 @@ Full Tilt JS provides developers with three complementary device orientation sen
 This library also provides all the functions necessary to convert between different device orientation types. Orientation angle conversion is possible via this API from/to any [Euler Angles](http://en.wikipedia.org/wiki/Euler_angles), [Rotation Matrices](http://en.wikipedia.org/wiki/Rotation_matrix) and/or [Quaternions](http://en.wikipedia.org/wiki/Quaternion).
 
 * [Demos](#demos)
-* [Basic Usage](#basic-usage)
+* [Usage](#usage)
 * [API Documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation)
-* [Reference Material](#reference-material)
+* [References](#references)
 * [License](#license)
 
 ## Demos ##
@@ -22,7 +22,7 @@ This library also provides all the functions necessary to convert between differ
 * [Basic 2D Compass](http://richtr.github.io/Full-Tilt-JS/examples/compass.html)
 * [Full Tilt JS Data Inspector](http://richtr.github.io/Full-Tilt-JS/examples/data_display.html)
 
-## Basic Usage ##
+## Usage ##
 
 Add [fulltilt.js](https://github.com/richtr/Full-Tilt-JS/blob/master/fulltilt.js) (or the [minified version of fulltilt.js](https://github.com/richtr/Full-Tilt-JS/blob/master/fulltilt.min.js)) to your project:
 
@@ -49,15 +49,13 @@ At any time you can stop listening for device orientation sensor changes in your
     // Stop listening for raw device orientation event changes
     FULLTILT.DeviceOrientation.stop();
 
-A full example of usage can be found in the [provided example](https://github.com/richtr/Full-Tilt-JS/blob/master/examples/vr_test.html) ([view the example live here](http://richtr.github.io/Full-Tilt-JS/examples/vr_test.html)).
-
 [Click here for full API documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation).
 
-## Reference Material ##
+## References ##
 
 * [Full Tilt JS API Documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation)
 * Article: [Practical application and usage of the W3C Device Orientation API](http://dev.opera.com/articles/view/w3c-device-orientation-usage/)
-* [W3C Spec](http://w3c.github.io/deviceorientation/spec-source-orientation.html)
+* [W3C DeviceOrientation Events Spec](http://w3c.github.io/deviceorientation/spec-source-orientation.html)
 
 ## License ##
 
