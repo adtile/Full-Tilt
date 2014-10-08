@@ -7,24 +7,12 @@
 	<title>FULLTILT compass demo</title>
 
 	<script src="../fulltilt.min.js" type="text/javascript"></script>
-
-	<style>
-	#warning {
-		display: none;
-		color: #FF0000;
-		border: 1px solid #FF0000;
-	}
-	</style>
 </head>
 <body>
 
 	<h1>FULLTILT compass demo</h1>
 
 	<canvas id="arrow"></canvas>
-
-	<div id="warning">
-		DeviceOrientation is not providing compass-oriented values. Heading offset is instead shown from the arbitrary default bearing provided by this API.
-	</div>
 
 	<script>
 
@@ -38,16 +26,10 @@
 		arrow.width = arrowWidth;
 		arrow.height = arrowWidth;
 
-		var nonCompassOrientedWarning = document.getElementById('warning');
-
 		// Start the FULLTILT DeviceOrientation listeners and update true north
 		// bearing indicator whenever a new deviceorientation event is fired.
 		var orientationControl = new FULLTILT.DeviceOrientation({'type': 'world'});
 		orientationControl.start(function() {
-
-			if ( !orientationControl.isAbsolute() ) {
-				nonCompassOrientedWarning.style.display = 'block';
-			}
 
 			// Get latest screen-adjusted deviceorientation data
 			var screenAdjustedEvent = orientationControl.getScreenAdjustedEuler();
