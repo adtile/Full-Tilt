@@ -64,7 +64,7 @@ Here is a quick example of how to use Full Tilt JS:
 </script>
 ```
 
-[Full API documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation) is available on the project wiki and [FULLTILT code examples](https://github.com/richtr/Full-Tilt-JS/tree/master/examples) are also provided.
+[API documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation) is available on the project wiki and [usage examples](https://github.com/richtr/Full-Tilt-JS/tree/master/examples) are also provided.
 
 ## References ##
 
