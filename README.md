@@ -30,41 +30,44 @@ Add [fulltilt.js](https://github.com/richtr/Full-Tilt-JS/blob/master/fulltilt.js
 <script src="fulltilt.js"></script>
 ```
 
-Start listening for device orientation sensor changes by calling `FULLTILT.DeviceOrientation.start()` or `FULLTILT.DeviceMotion.start()` at the appropriate point in your web application:
+Start listening for device orientation sensor changes by creating a new `FULLTILT.DeviceOrientation` or `FULLTILT.DeviceMotion` object, calling `.start()` on that new object and then calling a method.
 
-```javascript
-// Start listening for raw device orientation event changes
-FULLTILT.DeviceOrientation.start();
+You can stop listening for sensor changes in your web application by calling `.stop()` on an existing `FULLTILT.DeviceOrientation` or `FULLTILT.DeviceMotion` object at any time.
+
+Here is a quick example of how to use Full Tilt JS:
+
+```html
+<script>
+  // Create new FULLTILT library for *compass*-based deviceorientation
+  var controls = new FULLTILT.DeviceOrientation({ 'type': 'world' });
+
+  // Start collecting raw deviceorientation data
+  controls.start();
+
+  function getDeviceOrientation() {
+    // Obtain the *screen-adjusted* normalized device rotation
+    // as Quaternion, Rotation Matrix and Euler Angles objects
+    var quaternion = controls.getScreenAdjustedQuaternion();
+    var matrix = controls.getScreenAdjustedMatrix();
+    var euler = controls.getScreenAdjustedEuler();
+
+    // Print these equivalent values to the console
+    console.debug(quaternion);
+    console.debug(matrix);
+    console.debug(euler);
+
+    // Queue up for next animation frame
+    requestAnimationFrame(getDeviceOrientation);
+  }
+
+  getDeviceOrientation();
+</script>
 ```
 
-Whenever you need to obtain the current device orientation or motion, call the appropriate method depending on the data you need:
-
-```javascript
-// Obtain the screen-adjusted normalized rotation as a Quaternion
-var quaternion = FULLTILT.DeviceOrientation.getScreenAdjustedQuaternion();
-
-// Obtain the screen-adjusted normalized rotation as a Rotation Matrix
-var matrix = FULLTILT.DeviceOrientation.getScreenAdjustedMatrix();
-
-// Obtain the screen-adjusted normalized rotation as Tait-Bryan Angles
-var euler = FULLTILT.DeviceOrientation.getScreenAdjustedEuler();
-```
-
-At any time you can stop listening for device orientation sensor changes in your web application by calling `FULLTILT.DeviceOrientation.stop()` or `FULLTILT.DeviceMotion.stop()`:
-
-```javascript
-// Stop listening for raw device orientation event changes
-FULLTILT.DeviceOrientation.stop();
-```
-
-[Click here for full API documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation).
+[Full API documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation) is available on the project wiki and [FULLTILT code examples](https://github.com/richtr/Full-Tilt-JS/tree/master/examples) are also provided.
 
 ## References ##
 
 * [Full Tilt JS API Documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation)
 * Article: [Practical application and usage of the W3C Device Orientation API](http://dev.opera.com/articles/view/w3c-device-orientation-usage/)
 * [W3C DeviceOrientation Events Spec](http://w3c.github.io/deviceorientation/spec-source-orientation.html)
-
-## License ##
-
-MIT. Copyright (c) Rich Tibbett.

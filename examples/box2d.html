@@ -123,16 +123,18 @@ var transformCSSPropName = getCSSPropertyName('transform');
 
 window.addEventListener('load', function() {
 
-	FULLTILT.DeviceOrientation.start(function() {
+	var orientationControl = new FULLTILT.DeviceOrientation({'type': 'game'});
+
+	orientationControl.start(function() {
 
 		var euler;
 
 		switch( currentControlType ) {
 			case 1: // Use raw DeviceOrientation event values
-				euler = FULLTILT.DeviceOrientation.getLastRawEventData();
+				euler = orientationControl.getLastRawEventData();
 				break;
 			default: // Use Full Tilt JS values
-				euler = FULLTILT.DeviceOrientation.getScreenAdjustedEuler();
+				euler = orientationControl.getScreenAdjustedEuler();
 				break;
 		}
 

@@ -80,11 +80,12 @@ function init() {
 	var webkitCompassAccuracy = document.getElementById("webkitCompassAccuracy");
 
 	// Start FULLTILT DeviceOrientation listeners and register our callback
-	FULLTILT.DeviceOrientation.start(function() {
+	var orientationData = new FULLTILT.DeviceOrientation("world");
+	orientationData.start(function() {
 
 		// Display calculated screen-adjusted deviceorientation
 
-		var screenAdjustedEvent = FULLTILT.DeviceOrientation.getScreenAdjustedEuler();
+		var screenAdjustedEvent = orientationData.getFixedFrameEuler();
 
 		screenAlpha.textContent = printDataValue(screenAdjustedEvent.alpha);
 		screenBeta.textContent = printDataValue(screenAdjustedEvent.beta);
@@ -92,7 +93,7 @@ function init() {
 
 		// Display raw deviceorientation data
 
-		var rawEvent = FULLTILT.DeviceOrientation.getLastRawEventData();
+		var rawEvent = orientationData.getLastRawEventData();
 
 		alpha.textContent = printDataValue(rawEvent.alpha);
 		beta.textContent = printDataValue(rawEvent.beta);
@@ -132,13 +133,14 @@ function init() {
 	var absolute = document.getElementById("absolute");
 
 	// Start FULLTILT DeviceMotion listeners and register our callback
-	FULLTILT.DeviceMotion.start(function() {
+	var motionData = new FULLTILT.DeviceMotion();
+	motionData.start(function() {
 
 		// Display calculated screen-adjusted devicemotion
 
-		var screenAcc = FULLTILT.DeviceMotion.getScreenAdjustedAcceleration() || {};
-		var screenAccG = FULLTILT.DeviceMotion.getScreenAdjustedAccelerationIncludingGravity() || {};
-		var screenRotRate = FULLTILT.DeviceMotion.getScreenAdjustedRotationRate() || {};
+		var screenAcc = motionData.getScreenAdjustedAcceleration() || {};
+		var screenAccG = motionData.getScreenAdjustedAccelerationIncludingGravity() || {};
+		var screenRotRate = motionData.getScreenAdjustedRotationRate() || {};
 
 		screenAccX.textContent = printDataValue(screenAcc.x);
 		screenAccY.textContent = printDataValue(screenAcc.y);
@@ -154,7 +156,7 @@ function init() {
 
 		// Display raw devicemotion data
 
-		var rawEvent = FULLTILT.DeviceMotion.getLastRawEventData();
+		var rawEvent = motionData.getLastRawEventData();
 
 		var acc = rawEvent.acceleration || {};
 		var accG = rawEvent.accelerationIncludingGravity || {};

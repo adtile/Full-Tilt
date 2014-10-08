@@ -42,14 +42,15 @@
 
 		// Start the FULLTILT DeviceOrientation listeners and update true north
 		// bearing indicator whenever a new deviceorientation event is fired.
-		FULLTILT.DeviceOrientation.start(function() {
+		var orientationControl = new FULLTILT.DeviceOrientation({'type': 'world'});
+		orientationControl.start(function() {
 
-			if ( !FULLTILT.DeviceOrientation.isAbsolute() ) {
+			if ( !orientationControl.isAbsolute() ) {
 				nonCompassOrientedWarning.style.display = 'block';
 			}
 
 			// Get latest screen-adjusted deviceorientation data
-			var screenAdjustedEvent = FULLTILT.DeviceOrientation.getScreenAdjustedEuler();
+			var screenAdjustedEvent = orientationControl.getScreenAdjustedEuler();
 
 			ctx.clearRect(0,0,arrowWidth,arrowWidth);
 

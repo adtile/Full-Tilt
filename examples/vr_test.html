@@ -58,6 +58,7 @@
 		</div>
 
 		<script type="text/javascript">
+
 			// DEBUG CODE
 
 			var data_output = document.getElementById('data_output');
@@ -99,7 +100,7 @@
 
 		<script type="text/javascript">
 
-			var camera, scene, renderer;
+			var camera, scene, renderer, controls;
 
 			var controlTypes = ['Quaternions', 'Rotation Matrices', 'Euler'];
 			var currentControlType = 0;
@@ -137,8 +138,11 @@
 					controllerSelectorEl.textContent = controlTypes[ currentControlType ];
 				}, false);
 
-				// Start listening for deviceorientation events
-				FULLTILT.DeviceOrientation.start();
+				// Create new FULLTILT library for *compass*-based deviceorientation
+				controls = new FULLTILT.DeviceOrientation({ type: "world" });
+
+				// Start collecting raw deviceorientation data
+				controls.start();
 
 			}
 
@@ -156,7 +160,7 @@
 				switch( currentControlType ) {
 					case 0: // Use Quaternion
 
-						var quat = FULLTILT.DeviceOrientation.getScreenAdjustedQuaternion();
+						var quat = controls.getScreenAdjustedQuaternion();
 
 						orientationQuat.set( quat.x, quat.y, quat.z, quat.w );
 
@@ -166,7 +170,7 @@
 
 					case 1: // Use Rotation Matrix
 
-						var matrix = FULLTILT.DeviceOrientation.getScreenAdjustedMatrix();
+						var matrix = controls.getScreenAdjustedMatrix();
 
 						orientationQuat.setFromRotationMatrix( new THREE.Matrix4(
 							matrix.elements[0], matrix.elements[1], matrix.elements[2], 0,
@@ -181,7 +185,7 @@
 
 					case 2: // Use Euler
 
-						var euler = FULLTILT.DeviceOrientation.getScreenAdjustedEuler();
+						var euler = controls.getScreenAdjustedEuler();
 
 						orientationQuat.setFromEuler( new THREE.Euler(
 							THREE.Math.degToRad( euler.beta  ),
