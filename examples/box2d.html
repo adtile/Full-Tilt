@@ -138,6 +138,11 @@ window.addEventListener('load', function() {
 				break;
 		}
 
+		// Don't update CSS position if we are close to encountering gimbal lock
+		if (euler.beta > 85 && euler.beta < 95) {
+			return;
+		}
+
 		var tiltX = euler.gamma;
 
 		if (tiltX > 0) {
