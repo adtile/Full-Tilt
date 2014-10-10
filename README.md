@@ -23,10 +23,16 @@ This library also provides all the functions necessary to convert between differ
 
 ## Usage ##
 
-Add [fulltilt.js](https://github.com/richtr/Full-Tilt/blob/master/dist/fulltilt.js) (or the [minified version of fulltilt.js](https://github.com/richtr/Full-Tilt/blob/master/dist/fulltilt.min.js)) to your project:
+Add [fulltilt.js](https://github.com/richtr/Full-Tilt/blob/master/dist/fulltilt.js) (or the [minified version of fulltilt.js](https://github.com/richtr/Full-Tilt/blob/master/dist/fulltilt.min.js)) to your project.
+
+You can also install the latest version of this library with [Bower](http://bower.io/) as follows:
+
+```bash
+$> bower install fulltilt # type in your project root folder
+```
 
 ```html
-<script src="fulltilt.js"></script>
+<script src="path/to/bower_components/fulltilt/dist/fulltilt.min.js"></script>
 ```
 
 Start listening for device orientation sensor changes by creating a new `FULLTILT.DeviceOrientation` or `FULLTILT.DeviceMotion` object, calling `.start()` on that new object and then calling a method.
