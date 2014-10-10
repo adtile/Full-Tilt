@@ -1,10 +1,10 @@
 ///// FULLTILT.DeviceMotion //////
 
-var DeviceMotion = function () {};
+FULLTILT.DeviceMotion = function () {};
 
-DeviceMotion.prototype = {
+FULLTILT.DeviceMotion.prototype = {
 
-	constructor: DeviceMotion,
+	constructor: FULLTILT.DeviceMotion,
 
 	start: function ( callback ) {
 

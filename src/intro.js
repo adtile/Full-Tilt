@@ -1,10 +1,10 @@
 /**
  *
- * FULL TILT JS
+ * FULL TILT
  * http://github.com/richtr/Full-Tilt
  *
- * A standalone DeviceOrientation + DeviceMotion library that normalises
- * orientation sensor input, applies relevant screen orientation
+ * A standalone DeviceOrientation + DeviceMotion JavaScript library that
+ * normalises orientation sensor input, applies relevant screen orientation
  * transforms, returns Euler Angle, Quaternion and Rotation
  * Matrix representations back to web developers and provides conversion
  * between all supported orientation representation types.

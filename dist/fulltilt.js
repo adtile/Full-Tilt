@@ -3,8 +3,8 @@
  * FULL TILT
  * http://github.com/richtr/Full-Tilt
  *
- * A standalone DeviceOrientation + DeviceMotion library that normalises
- * orientation sensor input, applies relevant screen orientation
+ * A standalone DeviceOrientation + DeviceMotion JavaScript library that
+ * normalises orientation sensor input, applies relevant screen orientation
  * transforms, returns Euler Angle, Quaternion and Rotation
  * Matrix representations back to web developers and provides conversion
  * between all supported orientation representation types.
@@ -818,7 +818,7 @@ FULLTILT.Euler.prototype = {
 
 ///// FULLTILT.DeviceOrientation //////
 
-var DeviceOrientation = function (options) {
+FULLTILT.DeviceOrientation = function (options) {
 
 	options = options || {}; // by default use UA deviceorientation 'type' ("game" on iOS, "world" on Android)
 
@@ -885,9 +885,9 @@ var DeviceOrientation = function (options) {
 
 };
 
-DeviceOrientation.prototype = {
+FULLTILT.DeviceOrientation.prototype = {
 
-	constructor: DeviceOrientation,
+	constructor: FULLTILT.DeviceOrientation,
 
 	start: function ( callback ) {
 
@@ -1092,11 +1092,11 @@ DeviceOrientation.prototype = {
 
 ///// FULLTILT.DeviceMotion //////
 
-var DeviceMotion = function () {};
+FULLTILT.DeviceMotion = function () {};
 
-DeviceMotion.prototype = {
+FULLTILT.DeviceMotion.prototype = {
 
-	constructor: DeviceMotion,
+	constructor: FULLTILT.DeviceMotion,
 
 	start: function ( callback ) {
 
@@ -1243,13 +1243,6 @@ DeviceMotion.prototype = {
 
 };
 
-////// Create root DeviceOrientation API instance //////
-
-FULLTILT.DeviceOrientation = DeviceOrientation;
-
-////// Create root DeviceMotion API instance //////
-
-FULLTILT.DeviceMotion = DeviceMotion;
 
 ////// Attach FULLTILT to root DOM element //////
 

@@ -1,6 +1,6 @@
 ///// FULLTILT.DeviceOrientation //////
 
-var DeviceOrientation = function (options) {
+FULLTILT.DeviceOrientation = function (options) {
 
 	options = options || {}; // by default use UA deviceorientation 'type' ("game" on iOS, "world" on Android)
 
@@ -67,9 +67,9 @@ var DeviceOrientation = function (options) {
 
 };
 
-DeviceOrientation.prototype = {
+FULLTILT.DeviceOrientation.prototype = {
 
-	constructor: DeviceOrientation,
+	constructor: FULLTILT.DeviceOrientation,
 
 	start: function ( callback ) {
 
