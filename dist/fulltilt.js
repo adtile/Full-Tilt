@@ -1,7 +1,7 @@
 /**
  *
  * FULL TILT JS
- * http://github.com/richtr/Full-Tilt-JS
+ * http://github.com/richtr/Full-Tilt
  *
  * A standalone DeviceOrientation + DeviceMotion library that normalises
  * orientation sensor input, applies relevant screen orientation

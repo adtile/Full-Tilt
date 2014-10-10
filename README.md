@@ -1,9 +1,9 @@
-Full Tilt JS
-============
+\_o/ Full Tilt JS \o\_
+================
 
-#### Standalone device orientation + device motion normalization and conversion library ####
+#### Standalone device orientation + device motion normalization and conversion JavaScript library ####
 
-Full Tilt JS is a standalone JavaScript library that normalizes device orientation and device motion sensor data in web applications within a consistent frame.
+Full Tilt is a standalone JavaScript library that normalizes device orientation and device motion sensor data in web applications within a consistent frame.
 
 Full Tilt JS provides developers with three complementary device orientation sensor output representations – screen-adjusted Quaternions, Rotation Matrixes and Euler Angles – that can be used to create 2D or 3D experiences in web browsers that work consistently across all mobile web platforms and in all screen orientations.
 
@@ -11,19 +11,19 @@ This library also provides all the functions necessary to convert between differ
 
 * [Demos](#demos)
 * [Usage](#usage)
-* [API Documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation)
+* [API Documentation](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation)
 * [References](#references)
 
 ## Demos ##
 
-* [Virtual Reality](http://richtr.github.io/Full-Tilt-JS/examples/vr_test.html)
-* [2D Box Control](http://richtr.github.io/Full-Tilt-JS/examples/box2d.html)
-* [Basic 2D Compass](http://richtr.github.io/Full-Tilt-JS/examples/compass.html)
-* [Full Tilt JS Data Inspector](http://richtr.github.io/Full-Tilt-JS/examples/data_display.html)
+* [Virtual Reality](http://richtr.github.io/Full-Tilt/examples/vr_test.html)
+* [2D Box Control](http://richtr.github.io/Full-Tilt/examples/box2d.html)
+* [Basic 2D Compass](http://richtr.github.io/Full-Tilt/examples/compass.html)
+* [Full Tilt JS Data Inspector](http://richtr.github.io/Full-Tilt/examples/data_display.html)
 
 ## Usage ##
 
-Add [fulltilt.js](https://github.com/richtr/Full-Tilt-JS/blob/master/dist/fulltilt.js) (or the [minified version of fulltilt.js](https://github.com/richtr/Full-Tilt-JS/blob/master/dist/fulltilt.min.js)) to your project:
+Add [fulltilt.js](https://github.com/richtr/Full-Tilt/blob/master/dist/fulltilt.js) (or the [minified version of fulltilt.js](https://github.com/richtr/Full-Tilt/blob/master/dist/fulltilt.min.js)) to your project:
 
 ```html
 <script src="fulltilt.js"></script>
@@ -63,10 +63,10 @@ Here is a quick example of how to use Full Tilt JS:
 </script>
 ```
 
-[API documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation) is available on the project wiki and [usage examples](https://github.com/richtr/Full-Tilt-JS/tree/master/examples) are also provided.
+[API documentation](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation) is available on the project wiki and [usage examples](https://github.com/richtr/Full-Tilt/tree/master/examples) are also provided.
 
 ## References ##
 
-* [Full Tilt JS API Documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation)
+* [Full Tilt JS API Documentation](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation)
 * Article: [Practical application and usage of the W3C Device Orientation API](http://dev.opera.com/articles/view/w3c-device-orientation-usage/)
 * [W3C DeviceOrientation Events Spec](http://w3c.github.io/deviceorientation/spec-source-orientation.html)
