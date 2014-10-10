@@ -13,7 +13,6 @@ This library also provides all the functions necessary to convert between differ
 * [Usage](#usage)
 * [API Documentation](https://github.com/richtr/Full-Tilt-JS/wiki/Full-Tilt-JS-API-Documentation)
 * [References](#references)
-* [License](#license)
 
 ## Demos ##
 
@@ -24,7 +23,7 @@ This library also provides all the functions necessary to convert between differ
 
 ## Usage ##
 
-Add [fulltilt.js](https://github.com/richtr/Full-Tilt-JS/blob/master/fulltilt.js) (or the [minified version of fulltilt.js](https://github.com/richtr/Full-Tilt-JS/blob/master/fulltilt.min.js)) to your project:
+Add [fulltilt.js](https://github.com/richtr/Full-Tilt-JS/blob/master/dist/fulltilt.js) (or the [minified version of fulltilt.js](https://github.com/richtr/Full-Tilt-JS/blob/master/dist/fulltilt.min.js)) to your project:
 
 ```html
 <script src="fulltilt.js"></script>
