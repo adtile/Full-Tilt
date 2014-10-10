@@ -1,6 +1,6 @@
 /**
  *
- * FULL TILT JS
+ * FULL TILT
  * http://github.com/richtr/Full-Tilt
  *
  * A standalone DeviceOrientation + DeviceMotion library that normalises

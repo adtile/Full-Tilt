@@ -1,11 +1,11 @@
-\_o/ Full Tilt JS \o\_
+\_o/ Full Tilt \o\_
 ================
 
 #### Standalone device orientation + device motion normalization and conversion JavaScript library ####
 
 Full Tilt is a standalone JavaScript library that normalizes device orientation and device motion sensor data in web applications within a consistent frame.
 
-Full Tilt JS provides developers with three complementary device orientation sensor output representations – screen-adjusted Quaternions, Rotation Matrixes and Euler Angles – that can be used to create 2D or 3D experiences in web browsers that work consistently across all mobile web platforms and in all screen orientations.
+Full Tilt provides developers with three complementary device orientation sensor output representations – screen-adjusted Quaternions, Rotation Matrixes and Euler Angles – that can be used to create 2D or 3D experiences in web browsers that work consistently across all mobile web platforms and in all screen orientations.
 
 This library also provides all the functions necessary to convert between different device orientation types. Orientation angle conversion is possible via this API from/to any [Euler Angles](http://en.wikipedia.org/wiki/Euler_angles), [Rotation Matrices](http://en.wikipedia.org/wiki/Rotation_matrix) and/or [Quaternions](http://en.wikipedia.org/wiki/Quaternion).
 
@@ -19,7 +19,7 @@ This library also provides all the functions necessary to convert between differ
 * [Virtual Reality](http://richtr.github.io/Full-Tilt/examples/vr_test.html)
 * [2D Box Control](http://richtr.github.io/Full-Tilt/examples/box2d.html)
 * [Basic 2D Compass](http://richtr.github.io/Full-Tilt/examples/compass.html)
-* [Full Tilt JS Data Inspector](http://richtr.github.io/Full-Tilt/examples/data_display.html)
+* [Full Tilt Data Inspector](http://richtr.github.io/Full-Tilt/examples/data_display.html)
 
 ## Usage ##
 
@@ -33,7 +33,7 @@ Start listening for device orientation sensor changes by creating a new `FULLTIL
 
 You can stop listening for sensor changes in your web application by calling `.stop()` on an existing `FULLTILT.DeviceOrientation` or `FULLTILT.DeviceMotion` object at any time.
 
-Here is a quick example of how to use Full Tilt JS:
+Here is a quick example of how to use Full Tilt:
 
 ```html
 <script>
@@ -67,6 +67,6 @@ Here is a quick example of how to use Full Tilt JS:
 
 ## References ##
 
-* [Full Tilt JS API Documentation](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation)
+* [Full Tilt API Documentation](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation)
 * Article: [Practical application and usage of the W3C Device Orientation API](http://dev.opera.com/articles/view/w3c-device-orientation-usage/)
 * [W3C DeviceOrientation Events Spec](http://w3c.github.io/deviceorientation/spec-source-orientation.html)
