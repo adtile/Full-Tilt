@@ -123,54 +123,58 @@ var transformCSSPropName = getCSSPropertyName('transform');
 
 window.addEventListener('load', function() {
 
-	var orientationControl = new FULLTILT.DeviceOrientation({'type': 'game'});
+	var promise = FULLTILT.getDeviceOrientation({'type': 'game'});
 
-	orientationControl.start(function() {
+	promise.then(function(orientationControl) {
 
-		var euler;
+		orientationControl.listen(function() {
 
-		switch( currentControlType ) {
-			case 1: // Use raw DeviceOrientation event values
-				euler = orientationControl.getLastRawEventData();
-				break;
-			default: // Use Full Tilt values
-				euler = orientationControl.getScreenAdjustedEuler();
-				break;
-		}
+			var euler;
 
-		// Don't update CSS position if we are close to encountering gimbal lock
-		if (euler.beta > 85 && euler.beta < 95) {
-			return;
-		}
+			switch( currentControlType ) {
+				case 1: // Use raw DeviceOrientation event values
+					euler = orientationControl.getLastRawEventData();
+					break;
+				default: // Use Full Tilt values
+					euler = orientationControl.getScreenAdjustedEuler();
+					break;
+			}
 
-		var tiltX = euler.gamma;
+			// Don't update CSS position if we are close to encountering gimbal lock
+			if (euler.beta > 85 && euler.beta < 95) {
+				return;
+			}
 
-		if (tiltX > 0) {
-			tiltX = Math.min(tiltX, TILT_LIMIT);
-		} else {
-			tiltX = Math.max(tiltX, TILT_LIMIT * -1);
-		}
+			var tiltX = euler.gamma;
 
-		var pxOffsetX = (tiltX * halfScreenWidth) / TILT_LIMIT;
+			if (tiltX > 0) {
+				tiltX = Math.min(tiltX, TILT_LIMIT);
+			} else {
+				tiltX = Math.max(tiltX, TILT_LIMIT * -1);
+			}
 
-		if ( !initialBeta ) {
-			initialBeta = euler.beta;
-		}
+			var pxOffsetX = (tiltX * halfScreenWidth) / TILT_LIMIT;
 
-		var tiltY = euler.beta - initialBeta;
+			if ( !initialBeta ) {
+				initialBeta = euler.beta;
+			}
 
-		if (tiltY > 0) {
-			tiltY = Math.min(tiltY, TILT_LIMIT);
-		} else {
-			tiltY = Math.max(tiltY, TILT_LIMIT * -1);
-		}
+			var tiltY = euler.beta - initialBeta;
 
-		var pxOffsetY = (tiltY * halfScreenHeight) / TILT_LIMIT;
+			if (tiltY > 0) {
+				tiltY = Math.min(tiltY, TILT_LIMIT);
+			} else {
+				tiltY = Math.max(tiltY, TILT_LIMIT * -1);
+			}
 
-		var pxToMoveX = Math.max(box.minBoundX, Math.min(pxOffsetX + halfScreenWidth - halfCubeWidth, box.maxBoundX));
-		var pxToMoveY = Math.max(box.minBoundY, Math.min(pxOffsetY + halfScreenHeight - halfCubeWidth, box.maxBoundY));
+			var pxOffsetY = (tiltY * halfScreenHeight) / TILT_LIMIT;
 
-		box.style[transformCSSPropName] = 'translate3d(' + pxToMoveX + 'px, ' + pxToMoveY + 'px, 0)';
+			var pxToMoveX = Math.max(box.minBoundX, Math.min(pxOffsetX + halfScreenWidth - halfCubeWidth, box.maxBoundX));
+			var pxToMoveY = Math.max(box.minBoundY, Math.min(pxOffsetY + halfScreenHeight - halfCubeWidth, box.maxBoundY));
+
+			box.style[transformCSSPropName] = 'translate3d(' + pxToMoveX + 'px, ' + pxToMoveY + 'px, 0)';
+
+		});
 
 	});
 

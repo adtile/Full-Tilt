@@ -80,29 +80,33 @@ function init() {
 	var webkitCompassAccuracy = document.getElementById("webkitCompassAccuracy");
 
 	// Start FULLTILT DeviceOrientation listeners and register our callback
-	var orientationData = new FULLTILT.DeviceOrientation("world");
-	orientationData.start(function() {
+	var deviceOrientation = FULLTILT.getDeviceOrientation({'type': 'world'});
+	deviceOrientation.then(function(orientationData) {
 
-		// Display calculated screen-adjusted deviceorientation
+		orientationData.listen(function() {
 
-		var screenAdjustedEvent = orientationData.getFixedFrameEuler();
+			// Display calculated screen-adjusted deviceorientation
 
-		screenAlpha.textContent = printDataValue(screenAdjustedEvent.alpha);
-		screenBeta.textContent = printDataValue(screenAdjustedEvent.beta);
-		screenGamma.textContent = printDataValue(screenAdjustedEvent.gamma);
+			var screenAdjustedEvent = orientationData.getFixedFrameEuler();
 
-		// Display raw deviceorientation data
+			screenAlpha.textContent = printDataValue(screenAdjustedEvent.alpha);
+			screenBeta.textContent = printDataValue(screenAdjustedEvent.beta);
+			screenGamma.textContent = printDataValue(screenAdjustedEvent.gamma);
 
-		var rawEvent = orientationData.getLastRawEventData();
+			// Display raw deviceorientation data
 
-		alpha.textContent = printDataValue(rawEvent.alpha);
-		beta.textContent = printDataValue(rawEvent.beta);
-		gamma.textContent = printDataValue(rawEvent.gamma);
+			var rawEvent = orientationData.getLastRawEventData();
 
-		absolute.textContent = printDataValue(rawEvent.absolute);
+			alpha.textContent = printDataValue(rawEvent.alpha);
+			beta.textContent = printDataValue(rawEvent.beta);
+			gamma.textContent = printDataValue(rawEvent.gamma);
 
-		webkitCompassHeading.textContent = printDataValue(rawEvent.webkitCompassHeading);
-		webkitCompassAccuracy.textContent = printDataValue(rawEvent.webkitCompassAccuracy);
+			absolute.textContent = printDataValue(rawEvent.absolute);
+
+			webkitCompassHeading.textContent = printDataValue(rawEvent.webkitCompassHeading);
+			webkitCompassAccuracy.textContent = printDataValue(rawEvent.webkitCompassAccuracy);
+
+		});
 
 	});
 
@@ -133,46 +137,50 @@ function init() {
 	var absolute = document.getElementById("absolute");
 
 	// Start FULLTILT DeviceMotion listeners and register our callback
-	var motionData = new FULLTILT.DeviceMotion();
-	motionData.start(function() {
+	var deviceMotion = FULLTILT.getDeviceMotion();
+	deviceMotion.then(function(motionData) {
 
-		// Display calculated screen-adjusted devicemotion
+		motionData.listen(function() {
 
-		var screenAcc = motionData.getScreenAdjustedAcceleration() || {};
-		var screenAccG = motionData.getScreenAdjustedAccelerationIncludingGravity() || {};
-		var screenRotRate = motionData.getScreenAdjustedRotationRate() || {};
+			// Display calculated screen-adjusted devicemotion
 
-		screenAccX.textContent = printDataValue(screenAcc.x);
-		screenAccY.textContent = printDataValue(screenAcc.y);
-		screenAccZ.textContent = printDataValue(screenAcc.z);
+			var screenAcc = motionData.getScreenAdjustedAcceleration() || {};
+			var screenAccG = motionData.getScreenAdjustedAccelerationIncludingGravity() || {};
+			var screenRotRate = motionData.getScreenAdjustedRotationRate() || {};
 
-		screenAccGX.textContent = printDataValue(screenAccG.x);
-		screenAccGY.textContent = printDataValue(screenAccG.y);
-		screenAccGZ.textContent = printDataValue(screenAccG.z);
+			screenAccX.textContent = printDataValue(screenAcc.x);
+			screenAccY.textContent = printDataValue(screenAcc.y);
+			screenAccZ.textContent = printDataValue(screenAcc.z);
 
-		screenRotRateAlpha.textContent = printDataValue(screenRotRate.alpha);
-		screenRotRateBeta.textContent  = printDataValue(screenRotRate.beta);
-		screenRotRateGamma.textContent = printDataValue(screenRotRate.gamma);
+			screenAccGX.textContent = printDataValue(screenAccG.x);
+			screenAccGY.textContent = printDataValue(screenAccG.y);
+			screenAccGZ.textContent = printDataValue(screenAccG.z);
 
-		// Display raw devicemotion data
+			screenRotRateAlpha.textContent = printDataValue(screenRotRate.alpha);
+			screenRotRateBeta.textContent  = printDataValue(screenRotRate.beta);
+			screenRotRateGamma.textContent = printDataValue(screenRotRate.gamma);
 
-		var rawEvent = motionData.getLastRawEventData();
+			// Display raw devicemotion data
 
-		var acc = rawEvent.acceleration || {};
-		var accG = rawEvent.accelerationIncludingGravity || {};
-		var rotRate = rawEvent.rotationRate || {};
+			var rawEvent = motionData.getLastRawEventData();
 
-		accX.textContent = printDataValue(acc.x);
-		accY.textContent = printDataValue(acc.y);
-		accZ.textContent = printDataValue(acc.z);
+			var acc = rawEvent.acceleration || {};
+			var accG = rawEvent.accelerationIncludingGravity || {};
+			var rotRate = rawEvent.rotationRate || {};
 
-		accGX.textContent = printDataValue(accG.x);
-		accGY.textContent = printDataValue(accG.y);
-		accGZ.textContent = printDataValue(accG.z);
+			accX.textContent = printDataValue(acc.x);
+			accY.textContent = printDataValue(acc.y);
+			accZ.textContent = printDataValue(acc.z);
 
-		rotRateAlpha.textContent = printDataValue(rotRate.alpha);
-		rotRateBeta.textContent = printDataValue(rotRate.beta);
-		rotRateGamma.textContent = printDataValue(rotRate.gamma);
+			accGX.textContent = printDataValue(accG.x);
+			accGY.textContent = printDataValue(accG.y);
+			accGZ.textContent = printDataValue(accG.z);
+
+			rotRateAlpha.textContent = printDataValue(rotRate.alpha);
+			rotRateBeta.textContent = printDataValue(rotRate.beta);
+			rotRateGamma.textContent = printDataValue(rotRate.gamma);
+
+		});
 
 	});
 

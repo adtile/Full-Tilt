@@ -4,17 +4,21 @@ module.exports = function(grunt) {
 	pkg: grunt.file.readJSON('package.json'),
 	concat: {
 		options: {
-		separator: '\n'
+		separator: '\n\n'
 		},
 		dist: {
 			src: [
 				'src/intro.js',
+				'src/Utils.js',
+				'src/Events.js',
+				'src/Core.js',
 				'src/Quaternion.js',
 				'src/RotationMatrix.js',
 				'src/Euler.js',
 				'src/DeviceOrientation.js',
 				'src/DeviceMotion.js',
-				'src/outro.js'
+				'src/outro.js',
+				'src/third-party/promise-1.0.0.js'
 			],
 			dest: 'dist/<%= pkg.name %>.js'
 		}

@@ -2,7 +2,7 @@
 
 FULLTILT.DeviceOrientation = function (options) {
 
-	options = options || {}; // by default use UA deviceorientation 'type' ("game" on iOS, "world" on Android)
+	this.options = options || {}; // by default use UA deviceorientation 'type' ("game" on iOS, "world" on Android)
 
 	var tries = 0;
 	var maxTries = 200;
@@ -10,12 +10,10 @@ FULLTILT.DeviceOrientation = function (options) {
 	var successThreshold = 10;
 
 	this.alphaOffsetScreen = 0;
-
-	var euler = new FULLTILT.Euler();
-	var matrix = new FULLTILT.RotationMatrix();
+	this.alphaOffsetDevice = undefined;
 
 	// Create a game-based deviceorientation object (initial alpha === 0 degrees)
-	if (options.type === "game") {
+	if (this.options.type === "game") {
 
 		var setGameAlphaOffset = function(evt) {
 
@@ -39,7 +37,7 @@ FULLTILT.DeviceOrientation = function (options) {
 		window.addEventListener( 'deviceorientation', setGameAlphaOffset, false );
 
 	// Create a compass-based deviceorientation object (initial alpha === compass degrees)
-	} else if (options.type === "world") {
+	} else if (this.options.type === "world") {
 
 		var setCompassAlphaOffset = function(evt) {
 
@@ -112,6 +110,12 @@ FULLTILT.DeviceOrientation.prototype = {
 			orientationActive = false;
 
 		}
+
+	},
+
+	listen: function( callback ) {
+
+		this.start( callback );
 
 	},
 

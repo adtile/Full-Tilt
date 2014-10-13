@@ -1,6 +1,10 @@
 ///// FULLTILT.DeviceMotion //////
 
-FULLTILT.DeviceMotion = function () {};
+FULLTILT.DeviceMotion = function (options) {
+
+	this.options = options || {}; // placeholder object since no options are currently supported
+
+};
 
 FULLTILT.DeviceMotion.prototype = {
 
@@ -47,6 +51,12 @@ FULLTILT.DeviceMotion.prototype = {
 			motionActive = false;
 
 		}
+
+	},
+
+	listen: function( callback ) {
+
+		this.start( callback );
 
 	},
 

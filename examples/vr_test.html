@@ -139,10 +139,20 @@
 				}, false);
 
 				// Create new FULLTILT library for *compass*-based deviceorientation
-				controls = new FULLTILT.DeviceOrientation({ type: "world" });
+				var orientationPromise = FULLTILT.getDeviceOrientation({ type: "world" });
 
-				// Start collecting raw deviceorientation data
-				controls.start();
+				// Wait for Promise fulfillment
+				orientationPromise.then(function(deviceOrientationController) {
+
+					controls = deviceOrientationController;
+
+					draw(); // start
+
+				}).catch(function(reason) {
+
+					console.error(reason);
+
+				});
 
 			}
 
@@ -286,7 +296,6 @@
 
 			// Go...
 			setup();
-			draw();
 
 		</script>
 

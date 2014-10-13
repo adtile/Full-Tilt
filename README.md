@@ -35,7 +35,11 @@ $> bower install fulltilt # type in your project root folder
 <script src="path/to/bower_components/fulltilt/dist/fulltilt.min.js"></script>
 ```
 
-Start listening for device orientation sensor changes by creating a new `FULLTILT.DeviceOrientation` or `FULLTILT.DeviceMotion` object, calling `.start()` on that new object and then calling a method.
+You can request device orientation and motion sensor changes by requesting a Promise object with either `FULLTILT.getDeviceOrientation()` or `FULLTILT.getDeviceMotion()`.
+
+If the requested sensor is supported on the current device then this Promise object will resolve to `FULLTILT.DeviceOrientation` and `FULLTILT.DeviceMotion` as appropriate. This returned object can then be used to interact with the device's sensors via the FULLTILT APIs.
+
+If the requested sensor is not supported on the current device then this Promise object will reject with a simple error message string. In such circumstances it is recommended to provide manual fallback controls so users can still interact with your web page appropriately.
 
 You can stop listening for sensor changes in your web application by calling `.stop()` on an existing `FULLTILT.DeviceOrientation` or `FULLTILT.DeviceMotion` object at any time.
 
@@ -43,29 +47,47 @@ Here is a quick example of how to use Full Tilt:
 
 ```html
 <script>
-  // Create new FULLTILT library for *compass*-based deviceorientation
-  var controls = new FULLTILT.DeviceOrientation({ 'type': 'world' });
+  // Create a new FULLTILT Promise for e.g. *compass*-based deviceorientation data
+  var promise = new FULLTILT.getDeviceOrientation({ 'type': 'world' });
 
-  // Start collecting raw deviceorientation data
-  controls.start();
+	// FULLTILT.DeviceOrientation instance placeholder
+	var deviceOrientation;
 
-  function getDeviceOrientation() {
-    // Obtain the *screen-adjusted* normalized device rotation
-    // as Quaternion, Rotation Matrix and Euler Angles objects
-    var quaternion = controls.getScreenAdjustedQuaternion();
-    var matrix = controls.getScreenAdjustedMatrix();
-    var euler = controls.getScreenAdjustedEuler();
+  promise
+		.then(function(controller) {
+			// Store the returned FULLTILT.DeviceOrientation object
+			deviceOrientation = controller;
+	  })
+		.catch(function(message) {
+			console.error(message);
 
-    // Print these equivalent values to the console
-    console.debug(quaternion);
-    console.debug(matrix);
-    console.debug(euler);
+			// Optionally set up fallback controls...
+			// initManualControls();
+		});
 
-    // Queue up for next animation frame
-    requestAnimationFrame(getDeviceOrientation);
-  }
+  (function draw() {
 
-  getDeviceOrientation();
+		// If we have a valid FULLTILT.DeviceOrientation object then use it
+		if (deviceOrientation) {
+
+	    // Obtain the *screen-adjusted* normalized device rotation
+	    // as Quaternion, Rotation Matrix and Euler Angles objects
+			// from our FULLTILT.DeviceOrientation object
+	    var quaternion = deviceOrientation.getScreenAdjustedQuaternion();
+	    var matrix = deviceOrientation.getScreenAdjustedMatrix();
+	    var euler = deviceOrientation.getScreenAdjustedEuler();
+
+	    // Do something with our quaternion, matrix, euler objects...
+	    console.debug(quaternion);
+	    console.debug(matrix);
+	    console.debug(euler);
+
+		}
+
+    // Execute function on each browser animation frame
+    requestAnimationFrame(draw);
+
+  })();
 </script>
 ```
 
