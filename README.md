@@ -17,7 +17,7 @@ This library also provides all the functions necessary to convert between differ
 ## Demos ##
 
 * [Virtual Reality](https://richtr.github.io/Full-Tilt/examples/vr_test.html)
-* [Marine Compass](https://richtr.github.io/Marine-Compass/)
+* [3D Compass](https://richtr.github.io/Marine-Compass/)
 * [2D Box Control](https://richtr.github.io/Full-Tilt/examples/box2d.html)
 * [Basic 2D Compass](https://richtr.github.io/Full-Tilt/examples/compass.html)
 * [Full Tilt Data Inspector](https://richtr.github.io/Full-Tilt/examples/data_display.html)
