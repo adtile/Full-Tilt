@@ -17,8 +17,7 @@ module.exports = function(grunt) {
 				'src/Euler.js',
 				'src/DeviceOrientation.js',
 				'src/DeviceMotion.js',
-				'src/outro.js',
-				'src/third-party/promise-1.0.0.js'
+				'src/outro.js'
 			],
 			dest: 'dist/<%= pkg.name %>.js'
 		}

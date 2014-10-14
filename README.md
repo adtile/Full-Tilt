@@ -10,8 +10,9 @@ Full Tilt provides developers with three complementary device orientation sensor
 This library also provides all the functions necessary to convert between different device orientation types. Orientation angle conversion is possible via this API from/to Device Orientation and Motion API-derived [Euler Angles](http://en.wikipedia.org/wiki/Euler_angles), [Rotation Matrices](http://en.wikipedia.org/wiki/Rotation_matrix) and/or [Quaternions](http://en.wikipedia.org/wiki/Quaternion) (i.e. from raw sensor inputs that supply intrinsic Tait-Bryan angles of type Z-X'-Y').
 
 * [Demos](#demos)
+* [Installation](#installation)
 * [Usage](#usage)
-* [API Documentation](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation)
+* [Documentation](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation)
 * [References](#references)
 
 ## Demos ##
@@ -22,19 +23,23 @@ This library also provides all the functions necessary to convert between differ
 * [Basic 2D Compass](https://richtr.github.io/Full-Tilt/examples/compass.html)
 * [Full Tilt Data Inspector](https://richtr.github.io/Full-Tilt/examples/data_display.html)
 
-## Usage ##
+## Installation ##
 
-Add [fulltilt.js](https://github.com/richtr/Full-Tilt/blob/master/dist/fulltilt.js) (or the [minified version of fulltilt.js](https://github.com/richtr/Full-Tilt/blob/master/dist/fulltilt.min.js)) to your project.
-
-You can also install the latest version of this library with [Bower](http://bower.io/) as follows:
+This library is available on [Bower](http://bower.io/) as **fulltilt**:
 
 ```bash
-$> bower install fulltilt # type in your project root folder
+$> bower install fulltilt
 ```
 
-```html
-<script src="path/to/bower_components/fulltilt/dist/fulltilt.min.js"></script>
+You will also need a Promise polyfill for older browsers.
+
+```bash
+$> bower install es6-promise
 ```
+
+Alternatively, you can manually add [fulltilt.js](https://github.com/richtr/Full-Tilt/blob/master/dist/fulltilt.js) (or the [minified version of fulltilt.js](https://github.com/richtr/Full-Tilt/blob/master/dist/fulltilt.min.js)) to your project.
+
+## Usage ##
 
 You can request device orientation and motion sensor changes by requesting a Promise object with either `FULLTILT.getDeviceOrientation()` or `FULLTILT.getDeviceMotion()`.
 
