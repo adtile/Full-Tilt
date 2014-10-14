@@ -41,13 +41,11 @@ Alternatively, you can manually add [fulltilt.js](https://github.com/richtr/Full
 
 ## Usage ##
 
-You can request device orientation and motion sensor changes by requesting a Promise object with either `FULLTILT.getDeviceOrientation()` or `FULLTILT.getDeviceMotion()`.
+You can request device orientation and motion sensor changes by requesting a Promise object with either [`FULLTILT.getDeviceOrientation()`](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation#fulltiltgetdeviceorientation--options--) or [`FULLTILT.getDeviceMotion()`](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation#fulltiltgetdevicemotion--options--).
 
-If the requested sensor is supported on the current device then this Promise object will resolve to `FULLTILT.DeviceOrientation` and `FULLTILT.DeviceMotion` as appropriate. This returned object can then be used to interact with the device's sensors via the FULLTILT APIs.
+If the requested sensor is supported on the current device then this Promise object will resolve to [`FULLTILT.DeviceOrientation`](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation#fulltiltdeviceorientation) and [`FULLTILT.DeviceMotion`](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation#fulltiltdevicemotion) as appropriate. This returned object can then be used to interact with the device's sensors via the FULLTILT APIs.
 
 If the requested sensor is not supported on the current device then this Promise object will reject with a simple error message string. In such circumstances it is recommended to provide manual fallback controls so users can still interact with your web page appropriately.
-
-You can stop listening for sensor changes in your web application by calling `.stop()` on an existing `FULLTILT.DeviceOrientation` or `FULLTILT.DeviceMotion` object at any time.
 
 Here is a quick example of how to use Full Tilt:
 
@@ -97,7 +95,7 @@ Here is a quick example of how to use Full Tilt:
 </script>
 ```
 
-[API documentation](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation) is available on the project wiki and [usage examples](https://github.com/richtr/Full-Tilt/tree/master/examples) are also provided.
+Full [API documentation](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation) is available on the project wiki and [usage examples](https://github.com/richtr/Full-Tilt/tree/master/examples) are also provided.
 
 ## References ##
 
