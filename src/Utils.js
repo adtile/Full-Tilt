@@ -12,7 +12,7 @@ function SensorCheck(sensorData) {
 
 	var promise = new Promise(function(resolve, reject) {
 
-	  var runCheck = function (tries) {
+		var runCheck = function (tries) {
 
 			setTimeout(function() {
 
