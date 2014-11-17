@@ -58,7 +58,7 @@ function SensorCheck(sensorData) {
 
 	var promise = new Promise(function(resolve, reject) {
 
-	  var runCheck = function (tries) {
+		var runCheck = function (tries) {
 
 			setTimeout(function() {
 
@@ -146,9 +146,17 @@ FULLTILT.getDeviceOrientation = function(options) {
 
 		control.start();
 
-		var orientationSensorCheck = new SensorCheck(deviceOrientationData);
+		var orientationSensorCheck = new DeviceOrientationCheck(deviceOrientationData);
 
 		orientationSensorCheck.then(function() {
+
+			if(	deviceOrientationData.alpha && deviceOrientationData.alpha !== null &&
+				deviceOrientationData.beta && deviceOrientationData.beta !== null &&
+				deviceOrientationData.gamma && deviceOrientationData.gamma !== null
+				){
+				
+				control.isAvailable = true;
+			}
 
 			resolve(control);
 
@@ -173,7 +181,7 @@ FULLTILT.getDeviceMotion = function(options) {
 
 		control.start();
 
-		var motionSensorCheck = new SensorCheck(deviceMotionData);
+		var motionSensorCheck = new DeviceMotionCheck(deviceMotionData);
 
 		motionSensorCheck.then(function() {
 
@@ -980,6 +988,8 @@ FULLTILT.DeviceOrientation = function (options) {
 FULLTILT.DeviceOrientation.prototype = {
 
 	constructor: FULLTILT.DeviceOrientation,
+
+	isAvailable: false,
 
 	start: function ( callback ) {
 
