@@ -14,7 +14,7 @@ FULLTILT.getDeviceOrientation = function(options) {
 
 		control.start();
 
-		var orientationSensorCheck = new DeviceOrientationCheck(deviceOrientationData);
+		var orientationSensorCheck = new SensorCheck(deviceOrientationData);
 
 		orientationSensorCheck.then(function() {
 
@@ -49,7 +49,7 @@ FULLTILT.getDeviceMotion = function(options) {
 
 		control.start();
 
-		var motionSensorCheck = new DeviceMotionCheck(deviceMotionData);
+		var motionSensorCheck = new SensorCheck(deviceMotionData);
 
 		motionSensorCheck.then(function() {
 

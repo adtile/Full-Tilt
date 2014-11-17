@@ -167,23 +167,19 @@ FULLTILT.DeviceMotion.prototype = {
 		switch(_eventType){
 			case this.EVENT_TYPES.ACCELERATION:
 				return _accelerationAvailable;
-				break;
 
 			case this.EVENT_TYPES.ACCELERATION_INCLUDING_GRAVITY:
 				return _accelerationIncludingGravityAvailable;
-				break;			
 
 			case this.EVENT_TYPES.ROTATION_RATE:
 				return _rotationRateAvailable;
-				break;
 
 			default:
 				return {
 					acceleration:_accelerationAvailable,
 					accelerationIncludingGravity:_accelerationIncludingGravityAvailable,
 					rotationRate:_rotationRateAvailable
-				}
-				break;
+				};
 		}
 	},
 

@@ -146,7 +146,7 @@ FULLTILT.getDeviceOrientation = function(options) {
 
 		control.start();
 
-		var orientationSensorCheck = new DeviceOrientationCheck(deviceOrientationData);
+		var orientationSensorCheck = new SensorCheck(deviceOrientationData);
 
 		orientationSensorCheck.then(function() {
 
@@ -155,7 +155,7 @@ FULLTILT.getDeviceOrientation = function(options) {
 				deviceOrientationData.gamma && deviceOrientationData.gamma !== null
 				){
 				
-				control.isAvailable = true;
+				control._isAvailable = true;
 			}
 
 			resolve(control);
@@ -181,9 +181,21 @@ FULLTILT.getDeviceMotion = function(options) {
 
 		control.start();
 
-		var motionSensorCheck = new DeviceMotionCheck(deviceMotionData);
+		var motionSensorCheck = new SensorCheck(deviceMotionData);
 
 		motionSensorCheck.then(function() {
+
+			if(deviceMotionData.acceleration && deviceMotionData.acceleration.x && deviceMotionData.acceleration.y && deviceMotionData.acceleration.z){
+				control._accelerationAvailable = true;
+			}
+
+			if(deviceMotionData.accelerationIncludingGravity && deviceMotionData.accelerationIncludingGravity.x && deviceMotionData.accelerationIncludingGravity.y && deviceMotionData.accelerationIncludingGravity.z){
+				control._accelerationIncludingGravityAvailable = true;
+			}
+
+			if(deviceMotionData.rotationRate && deviceMotionData.rotationRate.alpha && deviceMotionData.rotationRate.beta && deviceMotionData.rotationRate.gamma){
+				control._rotationRateAvailable = true;
+			}
 
 			resolve(control);
 
@@ -989,8 +1001,6 @@ FULLTILT.DeviceOrientation.prototype = {
 
 	constructor: FULLTILT.DeviceOrientation,
 
-	isAvailable: false,
-
 	start: function ( callback ) {
 
 		if ( callback && Object.prototype.toString.call( callback ) == '[object Function]' ) {
@@ -1039,6 +1049,14 @@ FULLTILT.DeviceOrientation.prototype = {
 
 		this.start( callback );
 
+	},
+
+	_isAvailable: false,
+
+	isAvailable: function(){
+
+		return this._isAvailable;
+		
 	},
 
 	getFixedFrameQuaternion: (function () {
@@ -1357,6 +1375,36 @@ FULLTILT.DeviceMotion.prototype = {
 
 		return deviceMotionData;
 
+	},
+
+	_accelerationAvailable: false,
+	_accelerationIncludingGravityAvailable: false,
+	_rotationRateAvailable: false,
+
+	isAvailable: function(_eventType){
+		switch(_eventType){
+			case this.EVENT_TYPES.ACCELERATION:
+				return _accelerationAvailable;
+
+			case this.EVENT_TYPES.ACCELERATION_INCLUDING_GRAVITY:
+				return _accelerationIncludingGravityAvailable;
+
+			case this.EVENT_TYPES.ROTATION_RATE:
+				return _rotationRateAvailable;
+
+			default:
+				return {
+					acceleration:_accelerationAvailable,
+					accelerationIncludingGravity:_accelerationIncludingGravityAvailable,
+					rotationRate:_rotationRateAvailable
+				};
+		}
+	},
+
+	EVENT_TYPES: {
+		ACCELERATION: 'accelecation',
+		ACCELERATION_INCLUDING_GRAVITY: 'accelerationIncludingGravity',
+		ROTATION_RATE: 'rotationrate'
 	}
 
 };
