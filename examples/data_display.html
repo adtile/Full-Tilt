@@ -66,6 +66,8 @@ function printDataValue(input) {
 
 function init() {
 
+	var deviceorientation = document.getElementById("device-orientation");
+
 	var alpha = document.getElementById("alpha");
 	var beta = document.getElementById("beta");
 	var gamma = document.getElementById("gamma");
@@ -82,6 +84,10 @@ function init() {
 	// Start FULLTILT DeviceOrientation listeners and register our callback
 	var deviceOrientation = FULLTILT.getDeviceOrientation({'type': 'world'});
 	deviceOrientation.then(function(orientationData) {
+
+		if(orientationData.isAvailable()){
+			deviceorientation.textContent = printDataValue('+');	
+		}		
 
 		orientationData.listen(function() {
 
@@ -109,6 +115,10 @@ function init() {
 		});
 
 	});
+
+	var acceleration = document.getElementById("acceleration");
+	var accelerationincludinggravity = document.getElementById("acceleration-including-gravity");
+	var rotationrate = document.getElementById("rotation-rate");
 
 	var accX = document.getElementById("accX");
 	var accY = document.getElementById("accY");
@@ -139,6 +149,20 @@ function init() {
 	// Start FULLTILT DeviceMotion listeners and register our callback
 	var deviceMotion = FULLTILT.getDeviceMotion();
 	deviceMotion.then(function(motionData) {
+
+		var isAvailable = motionData.isAvailable();
+
+		if(isAvailable.acceleration === true){
+			acceleration.textContent = printDataValue('+');	
+		}
+
+		if(isAvailable.accelerationIncludingGravity === true){
+			accelerationincludinggravity.textContent = printDataValue('+');	
+		}
+
+		if(isAvailable.rotationRate === true){
+			rotationrate.textContent = printDataValue('+');	
+		}
 
 		motionData.listen(function() {
 
@@ -189,6 +213,31 @@ function init() {
 window.onload = init;
 
 </script>
+
+<h3>Availibility Check</h3>
+
+<div class="dataGroup">
+
+	<table>
+		<thead>
+			<tr>
+				<th>Device Orientation</th>
+				<th>Acceleration</th>
+				<th>Acceleration Including Gravity</th>
+				<th>Rotation Rate</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td id="device-orientation">-</td>
+				<td id="acceleration">-</td>
+				<td id="acceleration-including-gravity">-</td>
+				<td id="rotation-rate">-</td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>
 
 <h3>Screen-Adjusted DeviceOrientation</h3>
 

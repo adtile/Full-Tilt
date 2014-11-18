@@ -1382,30 +1382,29 @@ FULLTILT.DeviceMotion.prototype = {
 	_rotationRateAvailable: false,
 
 	isAvailable: function(_eventType){
+
 		switch(_eventType){
-			case this.EVENT_TYPES.ACCELERATION:
-				return _accelerationAvailable;
+			case this.ACCELERATION:
+				return this._accelerationAvailable;
 
-			case this.EVENT_TYPES.ACCELERATION_INCLUDING_GRAVITY:
-				return _accelerationIncludingGravityAvailable;
+			case this.ACCELERATION_INCLUDING_GRAVITY:
+				return this._accelerationIncludingGravityAvailable;
 
-			case this.EVENT_TYPES.ROTATION_RATE:
-				return _rotationRateAvailable;
+			case this.ROTATION_RATE:
+				return this._rotationRateAvailable;
 
 			default:
 				return {
-					acceleration:_accelerationAvailable,
-					accelerationIncludingGravity:_accelerationIncludingGravityAvailable,
-					rotationRate:_rotationRateAvailable
+					acceleration:this._accelerationAvailable,
+					accelerationIncludingGravity:this._accelerationIncludingGravityAvailable,
+					rotationRate:this._rotationRateAvailable
 				};
 		}
 	},
 
-	EVENT_TYPES: {
-		ACCELERATION: 'accelecation',
-		ACCELERATION_INCLUDING_GRAVITY: 'accelerationIncludingGravity',
-		ROTATION_RATE: 'rotationrate'
-	}
+	ACCELERATION: 'accelecation',
+	ACCELERATION_INCLUDING_GRAVITY: 'accelerationIncludingGravity',
+	ROTATION_RATE: 'rotationrate'
 
 };
 
