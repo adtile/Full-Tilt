@@ -73,7 +73,7 @@ FULLTILT.DeviceOrientation.prototype = {
 
 		if ( callback && Object.prototype.toString.call( callback ) == '[object Function]' ) {
 
-			orientationCallbacks.push( callback );
+			sensors.orientation.callbacks.push( callback );
 
 		}
 
@@ -91,11 +91,11 @@ FULLTILT.DeviceOrientation.prototype = {
 
 		}
 
-		if ( !orientationActive ) {
+		if ( !sensors.orientation.active ) {
 
 			window.addEventListener( 'deviceorientation', handleDeviceOrientationChange, false );
 
-			orientationActive = true;
+			sensors.orientation.active = true;
 
 		}
 
@@ -103,11 +103,11 @@ FULLTILT.DeviceOrientation.prototype = {
 
 	stop: function () {
 
-		if ( orientationActive ) {
+		if ( sensors.orientation.active ) {
 
 			window.removeEventListener( 'deviceorientation', handleDeviceOrientationChange, false );
 
-			orientationActive = false;
+			sensors.orientation.active = false;
 
 		}
 
@@ -119,14 +119,6 @@ FULLTILT.DeviceOrientation.prototype = {
 
 	},
 
-	_isAvailable: false,
-
-	isAvailable: function(){
-
-		return this._isAvailable;
-		
-	},
-
 	getFixedFrameQuaternion: (function () {
 
 		var euler = new FULLTILT.Euler();
@@ -135,7 +127,9 @@ FULLTILT.DeviceOrientation.prototype = {
 
 		return function() {
 
-			var adjustedAlpha = deviceOrientationData.alpha;
+			var orientationData = sensors.orientation.data || { alpha: 0, beta: 0, gamma: 0 };
+
+			var adjustedAlpha = orientationData.alpha;
 
 			if (this.alphaOffsetDevice) {
 				matrix.setFromEuler( this.alphaOffsetDevice );
@@ -151,8 +145,8 @@ FULLTILT.DeviceOrientation.prototype = {
 
 			euler.set(
 				adjustedAlpha,
-				deviceOrientationData.beta,
-				deviceOrientationData.gamma
+				orientationData.beta,
+				orientationData.gamma
 			);
 
 			quaternion.setFromEuler( euler );
@@ -187,7 +181,9 @@ FULLTILT.DeviceOrientation.prototype = {
 
 		return function () {
 
-			var adjustedAlpha = deviceOrientationData.alpha;
+			var orientationData = sensors.orientation.data || { alpha: 0, beta: 0, gamma: 0 };
+
+			var adjustedAlpha = orientationData.alpha;
 
 			if (this.alphaOffsetDevice) {
 				matrix.setFromEuler( this.alphaOffsetDevice );
@@ -203,8 +199,8 @@ FULLTILT.DeviceOrientation.prototype = {
 
 			euler.set(
 				adjustedAlpha,
-				deviceOrientationData.beta,
-				deviceOrientationData.gamma
+				orientationData.beta,
+				orientationData.gamma
 			);
 
 			matrix.setFromEuler( euler );
@@ -268,7 +264,7 @@ FULLTILT.DeviceOrientation.prototype = {
 
 	isAbsolute: function () {
 
-		if ( deviceOrientationData && deviceOrientationData.absolute === true ) {
+		if ( sensors.orientation.data && sensors.orientation.data.absolute === true ) {
 			return true;
 		}
 
@@ -278,7 +274,7 @@ FULLTILT.DeviceOrientation.prototype = {
 
 	getLastRawEventData: function () {
 
-		return deviceOrientationData;
+		return sensors.orientation.data || {};
 
 	}
 

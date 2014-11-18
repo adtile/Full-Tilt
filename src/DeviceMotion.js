@@ -14,7 +14,7 @@ FULLTILT.DeviceMotion.prototype = {
 
 		if ( callback && Object.prototype.toString.call( callback ) == '[object Function]' ) {
 
-			motionCallbacks.push( callback );
+			sensors.motion.callbacks.push( callback );
 
 		}
 
@@ -32,11 +32,11 @@ FULLTILT.DeviceMotion.prototype = {
 
 		}
 
-		if ( !motionActive ) {
+		if ( !sensors.motion.active ) {
 
 			window.addEventListener( 'devicemotion', handleDeviceMotionChange, false );
 
-			motionActive = true;
+			sensors.motion.active = true;
 
 		}
 
@@ -44,11 +44,11 @@ FULLTILT.DeviceMotion.prototype = {
 
 	stop: function () {
 
-		if ( motionActive ) {
+		if ( sensors.motion.active ) {
 
 			window.removeEventListener( 'devicemotion', handleDeviceMotionChange, false );
 
-			motionActive = false;
+			sensors.motion.active = false;
 
 		}
 
@@ -62,7 +62,7 @@ FULLTILT.DeviceMotion.prototype = {
 
 	getScreenAdjustedAcceleration: function () {
 
-		var accData = deviceMotionData.acceleration || {};
+		var accData = sensors.motion.data && sensors.motion.data.acceleration ? sensors.motion.data.acceleration : { x: 0, y: 0, z: 0 };
 		var screenAccData = {};
 
 		switch ( screenOrientationAngle ) {
@@ -93,7 +93,7 @@ FULLTILT.DeviceMotion.prototype = {
 
 	getScreenAdjustedAccelerationIncludingGravity: function () {
 
-		var accGData = deviceMotionData.accelerationIncludingGravity || {};
+		var accGData = sensors.motion.data && sensors.motion.data.accelerationIncludingGravity ? sensors.motion.data.accelerationIncludingGravity : { x: 0, y: 0, z: 0 };
 		var screenAccGData = {};
 
 		switch ( screenOrientationAngle ) {
@@ -124,7 +124,7 @@ FULLTILT.DeviceMotion.prototype = {
 
 	getScreenAdjustedRotationRate: function () {
 
-		var rotRateData = deviceMotionData.rotationRate || {};
+		var rotRateData = sensors.motion.data && sensors.motion.data.rotationRate ? sensors.motion.data.rotationRate : { alpha: 0, beta: 0, gamma: 0 };
 		var screenRotRateData = {};
 
 		switch ( screenOrientationAngle ) {
@@ -155,37 +155,8 @@ FULLTILT.DeviceMotion.prototype = {
 
 	getLastRawEventData: function () {
 
-		return deviceMotionData;
+		return sensors.motion.data || {};
 
-	},
-
-	_accelerationAvailable: false,
-	_accelerationIncludingGravityAvailable: false,
-	_rotationRateAvailable: false,
-
-	isAvailable: function(_eventType){
-
-		switch(_eventType){
-			case this.ACCELERATION:
-				return this._accelerationAvailable;
-
-			case this.ACCELERATION_INCLUDING_GRAVITY:
-				return this._accelerationIncludingGravityAvailable;
-
-			case this.ROTATION_RATE:
-				return this._rotationRateAvailable;
-
-			default:
-				return {
-					acceleration:this._accelerationAvailable,
-					accelerationIncludingGravity:this._accelerationIncludingGravityAvailable,
-					rotationRate:this._rotationRateAvailable
-				};
-		}
-	},
-
-	ACCELERATION: 'accelecation',
-	ACCELERATION_INCLUDING_GRAVITY: 'accelerationIncludingGravity',
-	ROTATION_RATE: 'rotationrate'
+	}
 
 };

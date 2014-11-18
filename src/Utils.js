@@ -8,7 +8,7 @@ function sign(x) {
 
 ///// Promise-based Sensor Data checker //////
 
-function SensorCheck(sensorData) {
+function SensorCheck(sensorRootObj) {
 
 	var promise = new Promise(function(resolve, reject) {
 
@@ -16,7 +16,7 @@ function SensorCheck(sensorData) {
 
 			setTimeout(function() {
 
-				if (sensorData) {
+				if (sensorRootObj && sensorRootObj.data) {
 
 					resolve();
 

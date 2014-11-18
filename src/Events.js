@@ -16,12 +16,12 @@ function handleScreenOrientationChange () {
 
 function handleDeviceOrientationChange ( event ) {
 
-	deviceOrientationData = event;
+	sensors.orientation.data = event;
 
 	// Fire every callback function each time deviceorientation is updated
-	for ( var i in orientationCallbacks ) {
+	for ( var i in sensors.orientation.callbacks ) {
 
-		orientationCallbacks[ i ].call( this );
+		sensors.orientation.callbacks[ i ].call( this );
 
 	}
 
@@ -29,12 +29,12 @@ function handleDeviceOrientationChange ( event ) {
 
 function handleDeviceMotionChange ( event ) {
 
-	deviceMotionData = event;
+	sensors.motion.data = event;
 
 	// Fire every callback function each time devicemotion is updated
-	for ( var i in motionCallbacks ) {
+	for ( var i in sensors.motion.callbacks ) {
 
-		motionCallbacks[ i ].call( this );
+		sensors.motion.callbacks[ i ].call( this );
 
 	}
 
