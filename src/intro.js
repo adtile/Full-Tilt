@@ -30,9 +30,19 @@ var degToRad = M_PI / 180;
 var radToDeg = 180 / M_PI;
 
 // Internal device orientation + motion variables
-var orientationActive = false, motionActive = false, screenActive = false;
-var orientationCallbacks = [], motionCallbacks = [];
-var deviceOrientationData = {}, deviceMotionData = {};
+var sensors = {
+	"orientation": {
+		active:    false,
+		callbacks: [],
+		data:      undefined
+	},
+	"motion": {
+		active:    false,
+		callbacks: [],
+		data:      undefined
+	}
+};
+var screenActive = false;
 
 // Internal screen orientation variables
 var hasScreenOrientationAPI = window.screen && window.screen.orientation && window.screen.orientation.angle !== undefined && window.screen.orientation.angle !== null ? true : false;
