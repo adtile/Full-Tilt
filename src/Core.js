@@ -18,6 +18,14 @@ FULLTILT.getDeviceOrientation = function(options) {
 
 		orientationSensorCheck.then(function() {
 
+			if(	deviceOrientationData.alpha && deviceOrientationData.alpha !== null &&
+				deviceOrientationData.beta && deviceOrientationData.beta !== null &&
+				deviceOrientationData.gamma && deviceOrientationData.gamma !== null
+				){
+				
+				control._isAvailable = true;
+			}
+
 			resolve(control);
 
 		}).catch(function() {
@@ -44,6 +52,18 @@ FULLTILT.getDeviceMotion = function(options) {
 		var motionSensorCheck = new SensorCheck(sensors.motion);
 
 		motionSensorCheck.then(function() {
+
+			if(deviceMotionData.acceleration && deviceMotionData.acceleration.x && deviceMotionData.acceleration.y && deviceMotionData.acceleration.z){
+				control._accelerationAvailable = true;
+			}
+
+			if(deviceMotionData.accelerationIncludingGravity && deviceMotionData.accelerationIncludingGravity.x && deviceMotionData.accelerationIncludingGravity.y && deviceMotionData.accelerationIncludingGravity.z){
+				control._accelerationIncludingGravityAvailable = true;
+			}
+
+			if(deviceMotionData.rotationRate && deviceMotionData.rotationRate.alpha && deviceMotionData.rotationRate.beta && deviceMotionData.rotationRate.gamma){
+				control._rotationRateAvailable = true;
+			}
 
 			resolve(control);
 

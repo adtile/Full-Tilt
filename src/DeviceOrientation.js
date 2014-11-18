@@ -119,6 +119,14 @@ FULLTILT.DeviceOrientation.prototype = {
 
 	},
 
+	_isAvailable: false,
+
+	isAvailable: function(){
+
+		return this._isAvailable;
+		
+	},
+
 	getFixedFrameQuaternion: (function () {
 
 		var euler = new FULLTILT.Euler();
