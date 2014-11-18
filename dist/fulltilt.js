@@ -30,9 +30,19 @@ var degToRad = M_PI / 180;
 var radToDeg = 180 / M_PI;
 
 // Internal device orientation + motion variables
-var orientationActive = false, motionActive = false, screenActive = false;
-var orientationCallbacks = [], motionCallbacks = [];
-var deviceOrientationData = {}, deviceMotionData = {};
+var sensors = {
+	"orientation": {
+		active:    false,
+		callbacks: [],
+		data:      undefined
+	},
+	"motion": {
+		active:    false,
+		callbacks: [],
+		data:      undefined
+	}
+};
+var screenActive = false;
 
 // Internal screen orientation variables
 var hasScreenOrientationAPI = window.screen && window.screen.orientation && window.screen.orientation.angle !== undefined && window.screen.orientation.angle !== null ? true : false;
@@ -54,7 +64,7 @@ function sign(x) {
 
 ///// Promise-based Sensor Data checker //////
 
-function SensorCheck(sensorData) {
+function SensorCheck(sensorRootObj) {
 
 	var promise = new Promise(function(resolve, reject) {
 
@@ -62,7 +72,7 @@ function SensorCheck(sensorData) {
 
 			setTimeout(function() {
 
-				if (sensorData) {
+				if (sensorRootObj && sensorRootObj.data) {
 
 					resolve();
 
@@ -106,12 +116,12 @@ function handleScreenOrientationChange () {
 
 function handleDeviceOrientationChange ( event ) {
 
-	deviceOrientationData = event;
+	sensors.orientation.data = event;
 
 	// Fire every callback function each time deviceorientation is updated
-	for ( var i in orientationCallbacks ) {
+	for ( var i in sensors.orientation.callbacks ) {
 
-		orientationCallbacks[ i ].call( this );
+		sensors.orientation.callbacks[ i ].call( this );
 
 	}
 
@@ -119,12 +129,12 @@ function handleDeviceOrientationChange ( event ) {
 
 function handleDeviceMotionChange ( event ) {
 
-	deviceMotionData = event;
+	sensors.motion.data = event;
 
 	// Fire every callback function each time devicemotion is updated
-	for ( var i in motionCallbacks ) {
+	for ( var i in sensors.motion.callbacks ) {
 
-		motionCallbacks[ i ].call( this );
+		sensors.motion.callbacks[ i ].call( this );
 
 	}
 
@@ -134,7 +144,7 @@ function handleDeviceMotionChange ( event ) {
 
 var FULLTILT = {};
 
-FULLTILT.version = "0.5.0";
+FULLTILT.version = "0.5.1";
 
 ///// FULLTILT API Root Methods /////
 
@@ -146,13 +156,15 @@ FULLTILT.getDeviceOrientation = function(options) {
 
 		control.start();
 
-		var orientationSensorCheck = new SensorCheck(deviceOrientationData);
+		var orientationSensorCheck = new SensorCheck(sensors.orientation);
 
 		orientationSensorCheck.then(function() {
 
-			if(	deviceOrientationData.alpha && deviceOrientationData.alpha !== null &&
-				deviceOrientationData.beta && deviceOrientationData.beta !== null &&
-				deviceOrientationData.gamma && deviceOrientationData.gamma !== null
+			console.log(sensors);
+
+			if(	sensors.orientation.data.alpha && sensors.orientation.data.alpha !== null &&
+				sensors.orientation.data.beta && sensors.orientation.data.beta !== null &&
+				sensors.orientation.data.gamma && sensors.orientation.data.gamma !== null
 				){
 				
 				control._isAvailable = true;
@@ -181,19 +193,19 @@ FULLTILT.getDeviceMotion = function(options) {
 
 		control.start();
 
-		var motionSensorCheck = new SensorCheck(deviceMotionData);
+		var motionSensorCheck = new SensorCheck(sensors.motion);
 
 		motionSensorCheck.then(function() {
 
-			if(deviceMotionData.acceleration && deviceMotionData.acceleration.x && deviceMotionData.acceleration.y && deviceMotionData.acceleration.z){
+			if(sensors.motion.data.acceleration && sensors.motion.data.acceleration.x && sensors.motion.data.acceleration.y && sensors.motion.data.acceleration.z){
 				control._accelerationAvailable = true;
 			}
 
-			if(deviceMotionData.accelerationIncludingGravity && deviceMotionData.accelerationIncludingGravity.x && deviceMotionData.accelerationIncludingGravity.y && deviceMotionData.accelerationIncludingGravity.z){
+			if(sensors.motion.data.accelerationIncludingGravity && sensors.motion.data.accelerationIncludingGravity.x && sensors.motion.data.accelerationIncludingGravity.y && sensors.motion.data.accelerationIncludingGravity.z){
 				control._accelerationIncludingGravityAvailable = true;
 			}
 
-			if(deviceMotionData.rotationRate && deviceMotionData.rotationRate.alpha && deviceMotionData.rotationRate.beta && deviceMotionData.rotationRate.gamma){
+			if(sensors.motion.data.rotationRate && sensors.motion.data.rotationRate.alpha && sensors.motion.data.rotationRate.beta && sensors.motion.data.rotationRate.gamma){
 				control._rotationRateAvailable = true;
 			}
 
@@ -1005,7 +1017,7 @@ FULLTILT.DeviceOrientation.prototype = {
 
 		if ( callback && Object.prototype.toString.call( callback ) == '[object Function]' ) {
 
-			orientationCallbacks.push( callback );
+			sensors.orientation.callbacks.push( callback );
 
 		}
 
@@ -1023,11 +1035,11 @@ FULLTILT.DeviceOrientation.prototype = {
 
 		}
 
-		if ( !orientationActive ) {
+		if ( !sensors.orientation.active ) {
 
 			window.addEventListener( 'deviceorientation', handleDeviceOrientationChange, false );
 
-			orientationActive = true;
+			sensors.orientation.active = true;
 
 		}
 
@@ -1035,11 +1047,11 @@ FULLTILT.DeviceOrientation.prototype = {
 
 	stop: function () {
 
-		if ( orientationActive ) {
+		if ( sensors.orientation.active ) {
 
 			window.removeEventListener( 'deviceorientation', handleDeviceOrientationChange, false );
 
-			orientationActive = false;
+			sensors.orientation.active = false;
 
 		}
 
@@ -1067,7 +1079,9 @@ FULLTILT.DeviceOrientation.prototype = {
 
 		return function() {
 
-			var adjustedAlpha = deviceOrientationData.alpha;
+			var orientationData = sensors.orientation.data || { alpha: 0, beta: 0, gamma: 0 };
+
+			var adjustedAlpha = orientationData.alpha;
 
 			if (this.alphaOffsetDevice) {
 				matrix.setFromEuler( this.alphaOffsetDevice );
@@ -1083,8 +1097,8 @@ FULLTILT.DeviceOrientation.prototype = {
 
 			euler.set(
 				adjustedAlpha,
-				deviceOrientationData.beta,
-				deviceOrientationData.gamma
+				orientationData.beta,
+				orientationData.gamma
 			);
 
 			quaternion.setFromEuler( euler );
@@ -1119,7 +1133,9 @@ FULLTILT.DeviceOrientation.prototype = {
 
 		return function () {
 
-			var adjustedAlpha = deviceOrientationData.alpha;
+			var orientationData = sensors.orientation.data || { alpha: 0, beta: 0, gamma: 0 };
+
+			var adjustedAlpha = orientationData.alpha;
 
 			if (this.alphaOffsetDevice) {
 				matrix.setFromEuler( this.alphaOffsetDevice );
@@ -1135,8 +1151,8 @@ FULLTILT.DeviceOrientation.prototype = {
 
 			euler.set(
 				adjustedAlpha,
-				deviceOrientationData.beta,
-				deviceOrientationData.gamma
+				orientationData.beta,
+				orientationData.gamma
 			);
 
 			matrix.setFromEuler( euler );
@@ -1200,7 +1216,7 @@ FULLTILT.DeviceOrientation.prototype = {
 
 	isAbsolute: function () {
 
-		if ( deviceOrientationData && deviceOrientationData.absolute === true ) {
+		if ( sensors.orientation.data && sensors.orientation.data.absolute === true ) {
 			return true;
 		}
 
@@ -1210,7 +1226,7 @@ FULLTILT.DeviceOrientation.prototype = {
 
 	getLastRawEventData: function () {
 
-		return deviceOrientationData;
+		return sensors.orientation.data || {};
 
 	}
 
@@ -1232,7 +1248,7 @@ FULLTILT.DeviceMotion.prototype = {
 
 		if ( callback && Object.prototype.toString.call( callback ) == '[object Function]' ) {
 
-			motionCallbacks.push( callback );
+			sensors.motion.callbacks.push( callback );
 
 		}
 
@@ -1250,11 +1266,11 @@ FULLTILT.DeviceMotion.prototype = {
 
 		}
 
-		if ( !motionActive ) {
+		if ( !sensors.motion.active ) {
 
 			window.addEventListener( 'devicemotion', handleDeviceMotionChange, false );
 
-			motionActive = true;
+			sensors.motion.active = true;
 
 		}
 
@@ -1262,11 +1278,11 @@ FULLTILT.DeviceMotion.prototype = {
 
 	stop: function () {
 
-		if ( motionActive ) {
+		if ( sensors.motion.active ) {
 
 			window.removeEventListener( 'devicemotion', handleDeviceMotionChange, false );
 
-			motionActive = false;
+			sensors.motion.active = false;
 
 		}
 
@@ -1280,7 +1296,7 @@ FULLTILT.DeviceMotion.prototype = {
 
 	getScreenAdjustedAcceleration: function () {
 
-		var accData = deviceMotionData.acceleration || {};
+		var accData = sensors.motion.data && sensors.motion.data.acceleration ? sensors.motion.data.acceleration : { x: 0, y: 0, z: 0 };
 		var screenAccData = {};
 
 		switch ( screenOrientationAngle ) {
@@ -1311,7 +1327,7 @@ FULLTILT.DeviceMotion.prototype = {
 
 	getScreenAdjustedAccelerationIncludingGravity: function () {
 
-		var accGData = deviceMotionData.accelerationIncludingGravity || {};
+		var accGData = sensors.motion.data && sensors.motion.data.accelerationIncludingGravity ? sensors.motion.data.accelerationIncludingGravity : { x: 0, y: 0, z: 0 };
 		var screenAccGData = {};
 
 		switch ( screenOrientationAngle ) {
@@ -1342,7 +1358,7 @@ FULLTILT.DeviceMotion.prototype = {
 
 	getScreenAdjustedRotationRate: function () {
 
-		var rotRateData = deviceMotionData.rotationRate || {};
+		var rotRateData = sensors.motion.data && sensors.motion.data.rotationRate ? sensors.motion.data.rotationRate : { alpha: 0, beta: 0, gamma: 0 };
 		var screenRotRateData = {};
 
 		switch ( screenOrientationAngle ) {
@@ -1373,7 +1389,7 @@ FULLTILT.DeviceMotion.prototype = {
 
 	getLastRawEventData: function () {
 
-		return deviceMotionData;
+		return sensors.motion.data || {};
 
 	},
 

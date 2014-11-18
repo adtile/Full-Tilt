@@ -18,9 +18,9 @@ FULLTILT.getDeviceOrientation = function(options) {
 
 		orientationSensorCheck.then(function() {
 
-			if(	deviceOrientationData.alpha && deviceOrientationData.alpha !== null &&
-				deviceOrientationData.beta && deviceOrientationData.beta !== null &&
-				deviceOrientationData.gamma && deviceOrientationData.gamma !== null
+			if(	sensors.orientation.data.alpha && sensors.orientation.data.alpha !== null &&
+				sensors.orientation.data.beta && sensors.orientation.data.beta !== null &&
+				sensors.orientation.data.gamma && sensors.orientation.data.gamma !== null
 				){
 				
 				control._isAvailable = true;
@@ -53,15 +53,15 @@ FULLTILT.getDeviceMotion = function(options) {
 
 		motionSensorCheck.then(function() {
 
-			if(deviceMotionData.acceleration && deviceMotionData.acceleration.x && deviceMotionData.acceleration.y && deviceMotionData.acceleration.z){
+			if(sensors.motion.data.acceleration && sensors.motion.data.acceleration.x && sensors.motion.data.acceleration.y && sensors.motion.data.acceleration.z){
 				control._accelerationAvailable = true;
 			}
 
-			if(deviceMotionData.accelerationIncludingGravity && deviceMotionData.accelerationIncludingGravity.x && deviceMotionData.accelerationIncludingGravity.y && deviceMotionData.accelerationIncludingGravity.z){
+			if(sensors.motion.data.accelerationIncludingGravity && sensors.motion.data.accelerationIncludingGravity.x && sensors.motion.data.accelerationIncludingGravity.y && sensors.motion.data.accelerationIncludingGravity.z){
 				control._accelerationIncludingGravityAvailable = true;
 			}
 
-			if(deviceMotionData.rotationRate && deviceMotionData.rotationRate.alpha && deviceMotionData.rotationRate.beta && deviceMotionData.rotationRate.gamma){
+			if(sensors.motion.data.rotationRate && sensors.motion.data.rotationRate.alpha && sensors.motion.data.rotationRate.beta && sensors.motion.data.rotationRate.gamma){
 				control._rotationRateAvailable = true;
 			}
 
