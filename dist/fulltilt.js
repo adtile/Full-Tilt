@@ -144,7 +144,7 @@ function handleDeviceMotionChange ( event ) {
 
 var FULLTILT = {};
 
-FULLTILT.version = "0.5.0";
+FULLTILT.version = "0.5.1";
 
 ///// FULLTILT API Root Methods /////
 
