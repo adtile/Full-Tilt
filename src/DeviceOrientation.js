@@ -295,10 +295,10 @@ FULLTILT.DeviceOrientation.prototype = {
 				return this._gammaAvailable;
 		}
 		
-	}
+	},
 
 	ALPHA: 'alpha',
 	BETA: 'beta',
-	GAMMA: 'gamma',
+	GAMMA: 'gamma'
 
 };
