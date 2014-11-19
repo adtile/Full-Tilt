@@ -276,6 +276,14 @@ FULLTILT.DeviceOrientation.prototype = {
 
 		return sensors.orientation.data || {};
 
+	},
+
+	_isAvailable: false,
+
+	isAvailable: function(){
+
+		return this._isAvailable;
+		
 	}
 
 };
