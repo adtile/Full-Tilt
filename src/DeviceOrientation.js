@@ -278,12 +278,27 @@ FULLTILT.DeviceOrientation.prototype = {
 
 	},
 
-	_isAvailable: false,
+	_alphaAvailable: false,
+	_betaAvailable: false,
+	_gammaAvailable: false, 
 
-	isAvailable: function(){
+	isAvailable: function(_valueType){
 
-		return this._isAvailable;
+		switch(_valueType){
+			case this.ALPHA:
+				return this._alphaAvailable;
+
+			case this.BETA:
+				return this._betaAvailable;
+
+			case this.GAMMA:
+				return this._gammaAvailable;
+		}
 		
 	}
+
+	ALPHA: 'alpha',
+	BETA: 'beta',
+	GAMMA: 'gamma',
 
 };
