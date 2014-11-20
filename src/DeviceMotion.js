@@ -173,7 +173,7 @@ FULLTILT.DeviceMotion.prototype = {
 
 	isAvailable: function(_valueType){
 
-		switch(_eventType){
+		switch(_valueType){
 			case this.ACCELERATION_X:
 				return this._accelerationXAvailable;
 
