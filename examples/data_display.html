@@ -79,9 +79,18 @@ function init() {
 	var webkitCompassHeading = document.getElementById("webkitCompassHeading");
 	var webkitCompassAccuracy = document.getElementById("webkitCompassAccuracy");
 
+	var alphaAvl = document.getElementById("alphaAvl");
+	var betaAvl = document.getElementById("betaAvl");
+	var gammaAvl = document.getElementById("gammaAvl");
+
 	// Start FULLTILT DeviceOrientation listeners and register our callback
 	var deviceOrientation = FULLTILT.getDeviceOrientation({'type': 'world'});
-	deviceOrientation.then(function(orientationData) {
+	deviceOrientation.then(function(orientationData) {	
+
+		// Checking availability
+		alphaAvl.textContent = (orientationData.isAvailable(orientationData.ALPHA)) ? '+' : '-' ;
+		betaAvl.textContent = (orientationData.isAvailable(orientationData.BETA)) ? '+' : '-' ;
+		gammaAvl.textContent = (orientationData.isAvailable(orientationData.GAMMA)) ? '+' : '-' ;
 
 		orientationData.listen(function() {
 
@@ -134,11 +143,36 @@ function init() {
 	var screenRotRateBeta  = document.getElementById("screenRotRateBeta");
 	var screenRotRateGamma = document.getElementById("screenRotRateGamma");
 
+	var accXAvl = document.getElementById("accXAvl");
+	var accYAvl = document.getElementById("accYAvl");
+	var accZAvl = document.getElementById("accZAvl");
+
+	var accGXAvl = document.getElementById("accGXAvl");
+	var accGYAvl = document.getElementById("accGYAvl");
+	var accGZAvl = document.getElementById("accGZAvl");
+
+	var rotRateAlphaAvl = document.getElementById("rotRateAlphaAvl");
+	var rotRateBetaAvl  = document.getElementById("rotRateBetaAvl");
+	var rotRateGammaAvl = document.getElementById("rotRateGammaAvl");
+
 	var absolute = document.getElementById("absolute");
 
 	// Start FULLTILT DeviceMotion listeners and register our callback
 	var deviceMotion = FULLTILT.getDeviceMotion();
 	deviceMotion.then(function(motionData) {
+
+		// Checking availability
+		accXAvl.textContent = (motionData.isAvailable(motionData.ACCELERATION_X)) ? '+' : '-' ;
+		accYAvl.textContent = (motionData.isAvailable(motionData.ACCELERATION_Y)) ? '+' : '-' ;
+		accZAvl.textContent = (motionData.isAvailable(motionData.ACCELERATION_Z)) ? '+' : '-' ;
+
+		accGXAvl.textContent = (motionData.isAvailable(motionData.ACCELERATION_INCLUDING_GRAVITY_X)) ? '+' : '-' ;
+		accGYAvl.textContent = (motionData.isAvailable(motionData.ACCELERATION_INCLUDING_GRAVITY_Y)) ? '+' : '-' ;
+		accGZAvl.textContent = (motionData.isAvailable(motionData.ACCELERATION_INCLUDING_GRAVITY_Z)) ? '+' : '-' ;
+
+		rotRateAlphaAvl.textContent = (motionData.isAvailable(motionData.ROTATION_RATE_ALPHA)) ? '+' : '-' ;
+		rotRateBetaAvl.textContent = (motionData.isAvailable(motionData.ROTATION_RATE_BETA)) ? '+' : '-' ;
+		rotRateGammaAvl.textContent = (motionData.isAvailable(motionData.ROTATION_RATE_GAMMA)) ? '+' : '-' ;
 
 		motionData.listen(function() {
 
@@ -368,6 +402,75 @@ window.onload = init;
 				<td id="rotRateAlpha">-</td>
 				<td id="rotRateBeta">-</td>
 				<td id="rotRateGamma">-</td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>
+
+<h3>Availability</h3>
+
+<div class="dataGroup">
+
+	<table>
+		<thead>
+			<tr>
+				<th></th>
+				<th>.alpha</th>
+				<th>.beta</th>
+				<th>.gamma</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>deviceOrientation</th>
+				<td id="alphaAvl">-</td>
+				<td id="betaAvl">-</td>
+				<td id="gammaAvl">-</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table>
+		<thead>
+			<tr>
+				<th></th>
+				<th>.x</th>
+				<th>.y</th>
+				<th>.z</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>acceleration</th>
+				<td id="accXAvl">-</td>
+				<td id="accYAvl">-</td>
+				<td id="accZAvl">-</td>
+			</tr>
+			<tr>
+				<th>accelerationIncludingGravity</th>
+				<td id="accGXAvl">-</td>
+				<td id="accGYAvl">-</td>
+				<td id="accGZAvl">-</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table>
+		<thead>
+			<tr>
+				<th></th>
+				<th>.alpha</th>
+				<th>.beta</th>
+				<th>.gamma</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>rotationRate</th>
+				<td id="rotRateAlphaAvl">-</td>
+				<td id="rotRateBetaAvl">-</td>
+				<td id="rotRateGammaAvl">-</td>
 			</tr>
 		</tbody>
 	</table>
