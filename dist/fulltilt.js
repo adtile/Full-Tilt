@@ -1455,8 +1455,8 @@ FULLTILT.DeviceMotion.prototype = {
 	ACCELERATION_INCLUDING_GRAVITY_Z: 'accelerationIncludingGravityZ',
 
 	ROTATION_RATE_ALPHA: 'rotationRateAlpha',
-	ROTATION_RATE_BETA: 'rotationRateAlpha',
-	ROTATION_RATE_GAMMA: 'rotationRateAlpha'
+	ROTATION_RATE_BETA: 'rotationRateBeta',
+	ROTATION_RATE_GAMMA: 'rotationRateGamma'
 
 };
 
