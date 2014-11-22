@@ -17,7 +17,8 @@ This library also provides all the functions necessary to convert between differ
 
 ## Demos ##
 
-* [Virtual Reality](https://richtr.github.io/Full-Tilt/examples/vr_test.html)
+* [Virtual Reality](https://richtr.github.io/Full-Tilt/examples/vr_test.html) - CSS 3D / non-interactive
+* [Virtual Reality](https://richtr.github.io/Full-Tilt/examples/vr_interactive.html) - WebGL / interactive
 * [3D Compass](https://richtr.github.io/Marine-Compass/)
 * [2D Box Control](https://richtr.github.io/Full-Tilt/examples/box2d.html)
 * [Basic 2D Compass](https://richtr.github.io/Full-Tilt/examples/compass.html)
