@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<title>
+			FULLTILT DeviceOrientation three.js interactive test page
+		</title>
+		<style type="text/css">
+			body {
+				background-color: #000000;
+				margin: 0;
+				overflow: hidden;
+				font-family: Arial, Helvetica, sans-serif;
+			}
+
+			#info {
+				position: fixed;
+				display: inline-block;
+				top: 0px;
+				left: 0px;
+				color: #ddd;
+				background-color: #000;
+				padding: 5px;
+				font-family: Monospace;
+				font-size: 18px;
+				font-weight: bold;
+				text-align: center;
+				z-index: 1;
+			}
+		</style>
+	</head>
+	<body>
+		<script src="./resources/libs/three.min.js" type="text/javascript"></script>
+		<script src="./resources/libs/hand.minified-1.2.1.js" type="text/javascript"></script>
+
+		<script src="../dist/fulltilt.min.js" type="text/javascript"></script>
+
+		<div id="info">
+			Touch to place objects in world
+		</div>
+
+		<script type="text/javascript">
+
+			var camera, scene, light, renderer, controls;
+
+			var startClientHeight, startFOVFrustrumHeight;
+
+			// Setup three.js world
+			function setup() {
+
+				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+
+				scene = new THREE.Scene();
+
+				light = new THREE.DirectionalLight(0xffffff);
+
+				scene.add(light);
+
+				var cube = generateCubeMap('Beach');
+
+				scene.add( cube );
+
+				renderer = new THREE.WebGLRenderer();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
+
+				// Add Pointer Event Listener (via hand.minified-1.2.1.js)
+				renderer.domElement.addEventListener("pointerup", addDynmaic3DObject, false);
+
+				startClientHeight = window.innerHeight;
+				startFOVFrustrumHeight = 2000 * Math.tan( THREE.Math.degToRad( ( camera.fov || 75 ) / 2 ) );
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+				// Create new FULLTILT library for *compass*-based deviceorientation
+				var orientationPromise = FULLTILT.getDeviceOrientation({ type: "world" });
+
+				// Wait for Promise fulfillment
+				orientationPromise.then(function(deviceOrientationController) {
+
+					controls = deviceOrientationController;
+
+					draw(); // start
+
+				}).catch(function(reason) {
+
+					console.error(reason);
+
+				});
+
+			}
+
+			// Computed device orientation rotation vector
+			var orientationQuat = new THREE.Quaternion();
+
+			// World frame transform (- PI/2 around the x-axis)
+			var worldQuat = new THREE.Quaternion( - Math.sqrt( 0.5 ), 0, 0, Math.sqrt( 0.5 ) );
+
+			// Render three.js world
+			function draw() {
+
+				var quat = controls.getScreenAdjustedQuaternion();
+
+				orientationQuat.set( quat.x, quat.y, quat.z, quat.w );
+
+				// IMPORTANT! set deviceorientation camera to three.js world frame
+				// (i.e. make camera look out the back of the screen by rotating the camera x-axis by -PI/2)
+				camera.quaternion.multiplyQuaternions( worldQuat, orientationQuat );
+
+				// Render scene
+				renderer.render( scene, camera );
+
+				// Re-draw at next browser paint
+				requestAnimationFrame( draw );
+
+			}
+
+			// Generate scene assets
+			function generateCubeMap( folderName ) {
+
+				var sides = [
+					'./resources/textures/cube/' + folderName + '/posx.jpg',
+					'./resources/textures/cube/' + folderName + '/negx.jpg',
+					'./resources/textures/cube/' + folderName + '/posy.jpg',
+					'./resources/textures/cube/' + folderName + '/negy.jpg',
+					'./resources/textures/cube/' + folderName + '/posz.jpg',
+					'./resources/textures/cube/' + folderName + '/negz.jpg'
+				];
+
+				var cubemap = THREE.ImageUtils.loadTextureCube(sides); // load textures
+				cubemap.format = THREE.RGBFormat;
+
+				var shader = THREE.ShaderLib['cube']; // init cube shader from built-in lib
+				shader.uniforms['tCube'].value = cubemap; // apply textures to shader
+
+				// create shader material
+				var skyBoxMaterial = new THREE.ShaderMaterial( {
+				  fragmentShader: shader.fragmentShader,
+				  vertexShader: shader.vertexShader,
+				  uniforms: shader.uniforms,
+				  depthWrite: false,
+				  side: THREE.BackSide
+				});
+
+				// create skybox mesh
+				var skybox = new THREE.Mesh(
+				  new THREE.BoxGeometry(1000, 1000, 1000),
+				  skyBoxMaterial
+				);
+
+				return skybox;
+
+			}
+
+			function addDynmaic3DObject(event) {
+
+				var pos = get3DVectorFrom2DScreen(event.clientX, event.clientY);
+				pos.multiplyScalar(1000);
+
+				var cube = new THREE.Mesh( new THREE.BoxGeometry(200, 200, 200), new THREE.MeshLambertMaterial({ color: 0xff0000 }) );
+				cube.position.copy( pos );
+
+				// Add object to scene
+				scene.add( cube );
+
+			}
+
+			function get3DVectorFrom2DScreen(clientX, clientY) {
+
+				var vector = new THREE.Vector3();
+
+				vector.set(
+				    ( clientX / window.innerWidth ) * 2 - 1,
+				    - ( clientY / window.innerHeight ) * 2 + 1,
+				    0.5 );
+
+				var cam = new THREE.Vector3( 1, 0, 0 );
+				var quat = new THREE.Quaternion();
+				quat.copy(camera.quaternion);
+				cam.applyQuaternion(quat);
+
+				vector.unproject( camera );
+
+				var dir = vector.sub( cam ).normalize();
+
+				return dir
+/*
+				var distance = - cam.z / dir.z;
+
+				var pos = cam.clone().add( dir.multiplyScalar( distance ) );
+
+				return pos;*/
+
+			}
+
+			// Gracefully handle screen resizes
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+
+				// Re-calculate object FOV to maintain scene's relative size after a screen rotation / resize
+				var relativeFOVFrustrumHeight = startFOVFrustrumHeight * ( window.innerHeight / startClientHeight );
+				var relativeVerticalFOV = THREE.Math.radToDeg( 2 * Math.atan( relativeFOVFrustrumHeight / 2000 ) );
+				camera.fov = relativeVerticalFOV;
+
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			// Go...
+			setup();
+
+		</script>
+	</body>
+</html>
