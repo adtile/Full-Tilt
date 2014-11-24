@@ -76,7 +76,7 @@ function SensorCheck(sensorRootObj) {
 
 					resolve();
 
-				} else if (tries >= 5) {
+				} else if (tries >= 20) {
 
 					reject();
 
