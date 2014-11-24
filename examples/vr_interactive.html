@@ -181,15 +181,13 @@
 				    - ( clientY / window.innerHeight ) * 2 + 1,
 				    0.5 );
 
-				// Obtain camera position vector from camera quaternion
-				var quat = new THREE.Quaternion();
-				quat.copy(camera.quaternion);
-				var cam = new THREE.Vector3();
-				cam.applyQuaternion(quat);
+				// Convert current camera quaternion value to vector
+				var cameraPosition = new THREE.Vector3();
+				cameraPosition.applyQuaternion(camera.quaternion);
 
 				vector.unproject( camera );
 
-				var pos = vector.sub( cam ).normalize();
+				var pos = vector.sub( cameraPosition ).normalize();
 
 				return pos;
 
