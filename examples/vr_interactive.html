@@ -53,12 +53,14 @@
 
 				scene = new THREE.Scene();
 
-				light = new THREE.DirectionalLight(0xffffff);
-
-				scene.add(light);
+				hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+				hemiLight.color.setHSL( 0.6, 1, 0.6 );
+				hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
+				hemiLight.position.set( -1000, -250, -1000 );
+				hemiLight.shadowCameraVisible = true;
+				scene.add( hemiLight );
 
 				var cube = generateCubeMap('Beach');
-
 				scene.add( cube );
 
 				renderer = new THREE.WebGLRenderer();
@@ -155,10 +157,14 @@
 
 			function addDynmaic3DObject(event) {
 
-				var pos = get3DVectorFrom2DScreen(event.clientX, event.clientY);
+				var pos = get3DPositionFromScreen(event.clientX, event.clientY);
+
 				pos.multiplyScalar(1000);
 
-				var cube = new THREE.Mesh( new THREE.BoxGeometry(200, 200, 200), new THREE.MeshLambertMaterial({ color: 0xff0000 }) );
+				var cube = new THREE.Mesh(
+					new THREE.BoxGeometry(150, 150, 150),
+					new THREE.MeshLambertMaterial({ color: 0xff0000 })
+				);
 				cube.position.copy( pos );
 
 				// Add object to scene
@@ -166,7 +172,7 @@
 
 			}
 
-			function get3DVectorFrom2DScreen(clientX, clientY) {
+			function get3DPositionFromScreen(clientX, clientY) {
 
 				var vector = new THREE.Vector3();
 
@@ -175,22 +181,17 @@
 				    - ( clientY / window.innerHeight ) * 2 + 1,
 				    0.5 );
 
-				var cam = new THREE.Vector3( 1, 0, 0 );
+				// Obtain camera position vector from camera quaternion
 				var quat = new THREE.Quaternion();
 				quat.copy(camera.quaternion);
+				var cam = new THREE.Vector3();
 				cam.applyQuaternion(quat);
 
 				vector.unproject( camera );
 
-				var dir = vector.sub( cam ).normalize();
+				var pos = vector.sub( cam ).normalize();
 
-				return dir
-/*
-				var distance = - cam.z / dir.z;
-
-				var pos = cam.clone().add( dir.multiplyScalar( distance ) );
-
-				return pos;*/
+				return pos;
 
 			}
 
