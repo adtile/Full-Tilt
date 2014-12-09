@@ -11,6 +11,9 @@
  *
  * Copyright: 2014 Rich Tibbett
  * Modified: 2014 Eduard Los
+ * This version uses jQuery.Deferred() instead of original Promise() object.
+ * Provides a little-bit wider compatibility for older devices,
+ * like apple iOS 7.*, Galaxy S3 on Android and some other older stuff
  * License:   MIT
  *
  */
