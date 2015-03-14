@@ -1,6 +1,8 @@
 \_o/ Full Tilt \o\_
 ================
 
+See [Practical Application and Usage of the W3C Device Orientation API](https://dev.opera.com/articles/w3c-device-orientation-usage/)
+
 #### Standalone device orientation + motion detection, normalization and conversion library ####
 
 Full Tilt is a Promise-based JavaScript library that detects support for device orientation and device motion sensor data and then normalizes that data across different platforms for web applications to use within their own 'world' or 'game' based frames.
