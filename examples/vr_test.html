@@ -157,66 +157,89 @@
 			}
 
 			// Computed device orientation rotation vector
-			var orientationQuat = new THREE.Quaternion();
+			var threejs_quaternion = new THREE.Quaternion();
+			var fulltilt_quaternion;
 
-			// World frame transform (- PI/2 around the x-axis)
-			var worldQuat = new THREE.Quaternion( - Math.sqrt( 0.5 ), 0, 0, Math.sqrt( 0.5 ) );
+			// Rotation matrix objects
+			// (used below when we work with rotation matrices)
+			var threejs_matrix4 = new THREE.Matrix4();
+			var fulltilt_matrix3;
 
-			// Render three.js world
+			// Euler angles container object
+			// (used below when we work with Euler angles)
+			var threejs_euler = new THREE.Euler();
+			var fulltilt_euler;
+
+			// World frame quaternion transform (- PI/2 around the x-axis)
+			var world_transform = new THREE.Quaternion( - Math.sqrt( 0.5 ), 0, 0, Math.sqrt( 0.5 ) );
+
+			// Render three.js world + update camera position based on current device orientation
 			function draw() {
 
 				// Use the currently selected rotation representation to set our camera position
+				// (But always convert results to an intermediate quartenion so we can then apply our world transform)
 
 				switch( currentControlType ) {
 					case 0: // Use Quaternion
 
-						var quat = controls.getScreenAdjustedQuaternion();
+						fulltilt_quaternion = controls.getScreenAdjustedQuaternion();
 
-						orientationQuat.set( quat.x, quat.y, quat.z, quat.w );
+						threejs_quaternion.set(
+							fulltilt_quaternion.x,
+							fulltilt_quaternion.y,
+							fulltilt_quaternion.z,
+							fulltilt_quaternion.w
+						);
 
-						debugQuat(quat);
+						debugQuat( fulltilt_quaternion );
 
 						break;
 
 					case 1: // Use Rotation Matrix
 
-						var matrix = controls.getScreenAdjustedMatrix();
+						fulltilt_matrix3 = controls.getScreenAdjustedMatrix();
 
-						orientationQuat.setFromRotationMatrix( new THREE.Matrix4(
-							matrix.elements[0], matrix.elements[1], matrix.elements[2], 0,
-							matrix.elements[3], matrix.elements[4], matrix.elements[5], 0,
-							matrix.elements[6], matrix.elements[7], matrix.elements[8], 0,
-							0                 , 0                 , 0                 , 1
-						) );
+						// Convert 3x3 Full-Tilt matrix to 4x4 Three.js matrix
+						threejs_matrix4.set(
+							fulltilt_matrix3.elements[0], fulltilt_matrix3.elements[1], fulltilt_matrix3.elements[2], 0,
+							fulltilt_matrix3.elements[3], fulltilt_matrix3.elements[4], fulltilt_matrix3.elements[5], 0,
+							fulltilt_matrix3.elements[6], fulltilt_matrix3.elements[7], fulltilt_matrix3.elements[8], 0,
+							0                           , 0                           , 0                           , 1
+						);
 
-						debugRotMat(matrix);
+						threejs_quaternion.setFromRotationMatrix( threejs_matrix4 );
+
+						debugRotMat( fulltilt_matrix3 );
 
 						break;
 
 					case 2: // Use Euler
 
-						var euler = controls.getScreenAdjustedEuler();
+						fulltilt_euler = controls.getScreenAdjustedEuler();
 
-						orientationQuat.setFromEuler( new THREE.Euler(
-							THREE.Math.degToRad( euler.beta  ),
-							THREE.Math.degToRad( euler.gamma ),
-							THREE.Math.degToRad( euler.alpha ),
+						// Convert Full-Tilt Euler to Three.js Euler object
+						threejs_euler.set(
+							THREE.Math.degToRad( fulltilt_euler.beta  ),
+							THREE.Math.degToRad( fulltilt_euler.gamma ),
+							THREE.Math.degToRad( fulltilt_euler.alpha ),
 							'ZXY'
-						) );
+						);
 
-						debugEuler(euler);
+						threejs_quaternion.setFromEuler( threejs_euler );
+
+						debugEuler( fulltilt_euler );
 
 						break;
 				};
 
 				// IMPORTANT! set deviceorientation camera to three.js world frame
 				// (i.e. make camera look out the back of the screen by rotating the camera x-axis by -PI/2)
-				camera.quaternion.multiplyQuaternions( worldQuat, orientationQuat );
+				camera.quaternion.multiplyQuaternions( world_transform, threejs_quaternion );
 
 				// Render scene
 				renderer.render( scene, camera );
 
-				// Re-draw at next browser paint
+				// Re-draw at next browser animation frame
 				requestAnimationFrame( draw );
 
 			}
@@ -283,7 +306,7 @@
 
 				camera.aspect = window.innerWidth / window.innerHeight;
 
-				// Re-calculate object FOV to maintain scene's relative size after a screen rotation / resize
+				// Re-calculate object FOV to maintain scene object's relative size after a screen rotation / resize
 				var relativeFOVFrustrumHeight = startFOVFrustrumHeight * ( window.innerHeight / startClientHeight );
 				var relativeVerticalFOV = THREE.Math.radToDeg( 2 * Math.atan( relativeFOVFrustrumHeight / 2000 ) );
 				camera.fov = relativeVerticalFOV;
@@ -294,7 +317,7 @@
 
 			}
 
-			// Go...
+			// Let's go...
 			setup();
 
 		</script>
