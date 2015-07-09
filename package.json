@@ -1,41 +1,44 @@
 {
-	"name": "fulltilt",
-	"title": "Full Tilt",
-	"version": "0.5.2",
-	"description": "Standalone device orientation + device motion normalization and conversion library",
-	"homepage": "http://github.com/richtr/Full-Tilt",
-	"author": {
-		"name" : "Rich Tibbett"
-	},
-	"keywords": [
-		"full tilt",
-		"fulltilt",
-		"deviceorientation",
-		"devicemotion",
-		"compass",
-		"quaternions",
-		"rotation",
-		"matrix",
-		"euler",
-		"tait bryan",
-		"angles"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/richtr/Full-Tilt"
-	},
-	"bugs": { "url": "https://github.com/richtr/Full-Tilt/issues" },
-	"licenses": [
-		{
-			"type": "MIT",
-			"url": "https://github.com/richtr/Full-Tilt/blob/master/LICENSE.txt"
-		}
-	],
-	"dependencies": {},
-	"devDependencies": {
-		"grunt": "~0.4.5",
-		"grunt-contrib-jshint": "~0.10.0",
-		"grunt-contrib-uglify": "~0.5.0",
-		"grunt-contrib-concat": "~0.5.0"
-	}
+  "name": "fulltilt",
+  "title": "Full Tilt",
+  "version": "0.5.3",
+  "description": "Standalone device orientation + device motion normalization and conversion library",
+  "homepage": "http://github.com/richtr/Full-Tilt",
+  "author": {
+    "name": "Rich Tibbett"
+  },
+  "keywords": [
+    "full tilt",
+    "fulltilt",
+    "deviceorientation",
+    "devicemotion",
+    "compass",
+    "quaternions",
+    "rotation",
+    "matrix",
+    "euler",
+    "tait bryan",
+    "angles"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/richtr/Full-Tilt"
+  },
+  "bugs": {
+    "url": "https://github.com/richtr/Full-Tilt/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/richtr/Full-Tilt/blob/master/LICENSE.txt"
+    }
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-concat": "~0.5.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-install-dependencies": "^0.2.0"
+  }
 }

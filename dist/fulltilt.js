@@ -144,7 +144,7 @@ function handleDeviceMotionChange ( event ) {
 
 var FULLTILT = {};
 
-FULLTILT.version = "0.5.2";
+FULLTILT.version = "0.5.3";
 
 ///// FULLTILT API Root Methods /////
 
@@ -217,6 +217,7 @@ FULLTILT.getDeviceMotion = function(options) {
 	return promise;
 
 };
+
 
 ////// FULLTILT.Quaternion //////
 
@@ -1078,6 +1079,8 @@ FULLTILT.DeviceOrientation.prototype = {
 					euler.alpha += 360;
 				}
 
+				euler.alpha %= 360;
+
 				adjustedAlpha -= euler.alpha;
 			}
 
@@ -1131,6 +1134,8 @@ FULLTILT.DeviceOrientation.prototype = {
 				if (euler.alpha < 0) {
 					euler.alpha += 360;
 				}
+
+				euler.alpha %= 360;
 
 				adjustedAlpha -= euler.alpha;
 			}
@@ -1218,7 +1223,7 @@ FULLTILT.DeviceOrientation.prototype = {
 
 	_alphaAvailable: false,
 	_betaAvailable: false,
-	_gammaAvailable: false, 
+	_gammaAvailable: false,
 
 	isAvailable: function(_valueType){
 
@@ -1232,7 +1237,7 @@ FULLTILT.DeviceOrientation.prototype = {
 			case this.GAMMA:
 				return this._gammaAvailable;
 		}
-		
+
 	},
 
 	ALPHA: 'alpha',
@@ -1240,6 +1245,7 @@ FULLTILT.DeviceOrientation.prototype = {
 	GAMMA: 'gamma'
 
 };
+
 
 ///// FULLTILT.DeviceMotion //////
 

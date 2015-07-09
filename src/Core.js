@@ -2,7 +2,7 @@
 
 var FULLTILT = {};
 
-FULLTILT.version = "0.5.2";
+FULLTILT.version = "0.5.3";
 
 ///// FULLTILT API Root Methods /////
 

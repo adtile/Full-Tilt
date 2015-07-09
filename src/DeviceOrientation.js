@@ -140,6 +140,8 @@ FULLTILT.DeviceOrientation.prototype = {
 					euler.alpha += 360;
 				}
 
+				euler.alpha %= 360;
+
 				adjustedAlpha -= euler.alpha;
 			}
 
@@ -193,6 +195,8 @@ FULLTILT.DeviceOrientation.prototype = {
 				if (euler.alpha < 0) {
 					euler.alpha += 360;
 				}
+
+				euler.alpha %= 360;
 
 				adjustedAlpha -= euler.alpha;
 			}
@@ -280,7 +284,7 @@ FULLTILT.DeviceOrientation.prototype = {
 
 	_alphaAvailable: false,
 	_betaAvailable: false,
-	_gammaAvailable: false, 
+	_gammaAvailable: false,
 
 	isAvailable: function(_valueType){
 
@@ -294,7 +298,7 @@ FULLTILT.DeviceOrientation.prototype = {
 			case this.GAMMA:
 				return this._gammaAvailable;
 		}
-		
+
 	},
 
 	ALPHA: 'alpha',
