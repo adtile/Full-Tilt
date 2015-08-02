@@ -13,7 +13,6 @@ This library also provides all the functions necessary to convert between differ
 * [Installation](#installation)
 * [Usage](#usage)
 * [Documentation](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation)
-* [References](#references)
 
 ## Demos ##
 
@@ -98,12 +97,7 @@ Here is a quick example of how to use Full Tilt:
 
 Full [API documentation](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation) is available on the project wiki and [usage examples](https://github.com/richtr/Full-Tilt/tree/master/examples) are also provided.
 
----
-
-**Want to debug your Full-Tilt based web application on Desktop computers?** Check out [doe](https://github.com/richtr/doe)!
-
 ## References ##
 
 * [Full Tilt API Documentation](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation)
-* Article: [Practical application and usage of the W3C Device Orientation API](http://dev.opera.com/articles/view/w3c-device-orientation-usage/)
 * [W3C DeviceOrientation Events Spec](http://w3c.github.io/deviceorientation/spec-source-orientation.html)
