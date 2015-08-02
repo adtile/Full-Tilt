@@ -157,62 +157,6 @@ FULLTILT.DeviceMotion.prototype = {
 
 		return sensors.motion.data || {};
 
-	},
-
-	_accelerationXAvailable: false,
-	_accelerationYAvailable: false,
-	_accelerationZAvailable: false,
-
-	_accelerationIncludingGravityXAvailable: false,
-	_accelerationIncludingGravityYAvailable: false,
-	_accelerationIncludingGravityZAvailable: false,
-
-	_rotationRateAlphaAvailable: false,
-	_rotationRateBetaAvailable: false,
-	_rotationRateGammaAvailable: false,
-
-	isAvailable: function(_valueType){
-
-		switch(_eventType){
-			case this.ACCELERATION_X:
-				return this._accelerationXAvailable;
-
-			case this.ACCELERATION_Y:
-				return this._accelerationYAvailable;
-
-			case this.ACCELERATION_Z:
-				return this._accelerationZAvailable;
-
-			case this.ACCELERATION_INCLUDING_GRAVITY_X:
-				return this._accelerationIncludingGravityXAvailable;
-
-			case this.ACCELERATION_INCLUDING_GRAVITY_Y:
-				return this._accelerationIncludingGravityYAvailable;
-
-			case this.ACCELERATION_INCLUDING_GRAVITY_Z:
-				return this._accelerationIncludingGravityZAvailable;
-
-			case this.ROTATION_RATE_ALPHA:
-				return this._rotationRateAlphaAvailable;
-
-			case this.ROTATION_RATE_BETA:
-				return this._rotationRateBetaAvailable;
-
-			case this.ROTATION_RATE_GAMMA:
-				return this._rotationRateGammaAvailable;
-		}
-	},
-
-	ACCELERATION_X: 'accelerationX',
-	ACCELERATION_Y: 'accelerationY',
-	ACCELERATION_Z: 'accelerationZ',
-
-	ACCELERATION_INCLUDING_GRAVITY_X: 'accelerationIncludingGravityX',
-	ACCELERATION_INCLUDING_GRAVITY_Y: 'accelerationIncludingGravityY',
-	ACCELERATION_INCLUDING_GRAVITY_Z: 'accelerationIncludingGravityZ',
-
-	ROTATION_RATE_ALPHA: 'rotationRateAlpha',
-	ROTATION_RATE_BETA: 'rotationRateAlpha',
-	ROTATION_RATE_GAMMA: 'rotationRateAlpha'
+	}
 
 };
