@@ -1,5 +1,5 @@
-\_o/ Full Tilt \o\_
-================
+Full Tilt
+==========
 
 #### Standalone device orientation + motion detection, normalization and conversion library ####
 
