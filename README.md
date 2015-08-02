@@ -9,19 +9,9 @@ Full Tilt provides developers with three complementary device orientation sensor
 
 This library also provides all the functions necessary to convert between different device orientation types. Orientation angle conversion is possible via this API from/to Device Orientation and Motion API-derived [Euler Angles](http://en.wikipedia.org/wiki/Euler_angles), [Rotation Matrices](http://en.wikipedia.org/wiki/Rotation_matrix) and/or [Quaternions](http://en.wikipedia.org/wiki/Quaternion) (i.e. from raw sensor inputs that supply intrinsic Tait-Bryan angles of type Z-X'-Y').
 
-* [Demos](#demos)
 * [Installation](#installation)
 * [Usage](#usage)
 * [Documentation](https://github.com/richtr/Full-Tilt/wiki/Full-Tilt-API-Documentation)
-
-## Demos ##
-
-* [Virtual Reality](https://richtr.github.io/Full-Tilt/examples/vr_test.html) - CSS 3D / non-interactive
-* [Virtual Reality](https://richtr.github.io/Full-Tilt/examples/vr_interactive.html) - WebGL / interactive
-* [3D Compass](https://richtr.github.io/Marine-Compass/)
-* [2D Box Control](https://richtr.github.io/Full-Tilt/examples/box2d.html)
-* [Basic 2D Compass](https://richtr.github.io/Full-Tilt/examples/compass.html)
-* [Full Tilt Data Inspector](https://richtr.github.io/Full-Tilt/examples/data_display.html)
 
 ## Installation ##
 
