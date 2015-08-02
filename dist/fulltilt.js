@@ -1203,7 +1203,11 @@ FULLTILT.DeviceOrientation.prototype = {
 
 		return sensors.orientation.data || {};
 
-	}
+	},
+
+	ALPHA: 'alpha',
+	BETA: 'beta',
+	GAMMA: 'gamma'
 
 };
 
@@ -1370,6 +1374,7 @@ FULLTILT.DeviceMotion.prototype = {
 	}
 
 };
+
 
 ////// Attach FULLTILT to root DOM element //////
 
