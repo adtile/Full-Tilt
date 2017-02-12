@@ -115,16 +115,16 @@ function handleScreenOrientationChange () {
 }
 
 function handleDeviceOrientationChange ( event ) {
+	if (event.absolute) {
+		sensors.orientation.data = event;
 
-	sensors.orientation.data = event;
+		// Fire every callback function each time deviceorientation is updated
+		for ( var i in sensors.orientation.callbacks ) {
 
-	// Fire every callback function each time deviceorientation is updated
-	for ( var i in sensors.orientation.callbacks ) {
+			sensors.orientation.callbacks[ i ].call( this );
 
-		sensors.orientation.callbacks[ i ].call( this );
-
+		}
 	}
-
 }
 
 function handleDeviceMotionChange ( event ) {
@@ -1015,7 +1015,7 @@ FULLTILT.DeviceOrientation.prototype = {
 		}
 
 		if ( !sensors.orientation.active ) {
-
+			window.addEventListener( 'deviceorientationabsolute', handleDeviceOrientationChange, false );
 			window.addEventListener( 'deviceorientation', handleDeviceOrientationChange, false );
 
 			sensors.orientation.active = true;
@@ -1028,6 +1028,7 @@ FULLTILT.DeviceOrientation.prototype = {
 
 		if ( sensors.orientation.active ) {
 
+			window.removeEventListener( 'deviceorientationabsolute', handleDeviceOrientationChange, false );
 			window.removeEventListener( 'deviceorientation', handleDeviceOrientationChange, false );
 
 			sensors.orientation.active = false;
