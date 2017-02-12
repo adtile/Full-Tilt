@@ -1,7 +1,7 @@
 {
   "name": "fulltilt",
   "title": "Full Tilt",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Standalone device orientation + device motion normalization and conversion library",
   "homepage": "http://github.com/richtr/Full-Tilt",
   "author": {
