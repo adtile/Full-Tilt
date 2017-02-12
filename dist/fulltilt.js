@@ -21,6 +21,8 @@ if ( window.FULLTILT !== undefined && window.FULLTILT !== null ) {
 	return;
 }
 
+var orientationChangeAbsolute = undefined;
+
 var M_PI   = Math.PI;
 var M_PI_2 = M_PI / 2;
 var M_2_PI = 2 * M_PI;
@@ -100,6 +102,7 @@ function SensorCheck(sensorRootObj) {
 
 ////// Internal Event Handlers //////
 
+
 function handleScreenOrientationChange () {
 
 	if ( hasScreenOrientationAPI ) {
@@ -115,16 +118,17 @@ function handleScreenOrientationChange () {
 }
 
 function handleDeviceOrientationChange ( event ) {
-	if (event.absolute) {
-		sensors.orientation.data = event;
-
-		// Fire every callback function each time deviceorientation is updated
-		for ( var i in sensors.orientation.callbacks ) {
-
-			sensors.orientation.callbacks[ i ].call( this );
-
+		if (event.absolute === true) {
+			orientationChangeAbsolute = true;
 		}
-	}
+		if (event.absolute == orientationChangeAbsolute) {
+			sensors.orientation.data = event;
+
+			// Fire every callback function each time deviceorientation is updated
+			for ( var i in sensors.orientation.callbacks ) {
+				sensors.orientation.callbacks[ i ].call( this );
+			}
+		}
 }
 
 function handleDeviceMotionChange ( event ) {
