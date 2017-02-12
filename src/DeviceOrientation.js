@@ -92,7 +92,7 @@ FULLTILT.DeviceOrientation.prototype = {
 		}
 
 		if ( !sensors.orientation.active ) {
-
+			window.addEventListener( 'deviceorientationabsolute', handleDeviceOrientationChange, false );
 			window.addEventListener( 'deviceorientation', handleDeviceOrientationChange, false );
 
 			sensors.orientation.active = true;
@@ -104,7 +104,7 @@ FULLTILT.DeviceOrientation.prototype = {
 	stop: function () {
 
 		if ( sensors.orientation.active ) {
-
+			window.removeEventListener( 'deviceorientationabsolute', handleDeviceOrientationChange, false );
 			window.removeEventListener( 'deviceorientation', handleDeviceOrientationChange, false );
 
 			sensors.orientation.active = false;
