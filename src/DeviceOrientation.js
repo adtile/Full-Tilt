@@ -4,6 +4,12 @@ FULLTILT.DeviceOrientation = function (options) {
 
 	this.options = options || {}; // by default use UA deviceorientation 'type' ("game" on iOS, "world" on Android)
 
+	if (this.options.type === "world" && 'ondeviceorientationabsolute' in window) {
+		this.deviceorientationEvent = 'deviceorientationabsolute';
+	} else {
+		this.deviceorientationEvent = 'deviceorientation';
+	}
+
 	var tries = 0;
 	var maxTries = 200;
 	var successCount = 0;
@@ -23,18 +29,18 @@ FULLTILT.DeviceOrientation = function (options) {
 
 				// Discard first {successThreshold} responses while a better compass lock is found by UA
 				if(++successCount >= successThreshold) {
-					window.removeEventListener( 'deviceorientation', setGameAlphaOffset, false );
+					window.removeEventListener( this.deviceorientationEvent, setGameAlphaOffset, false );
 					return;
 				}
 			}
 
 			if(++tries >= maxTries) {
-				window.removeEventListener( 'deviceorientation', setGameAlphaOffset, false );
+				window.removeEventListener( this.deviceorientationEvent, setGameAlphaOffset, false );
 			}
 
 		}.bind(this);
 
-		window.addEventListener( 'deviceorientation', setGameAlphaOffset, false );
+		window.addEventListener( this.deviceorientationEvent, setGameAlphaOffset, false );
 
 	// Create a compass-based deviceorientation object (initial alpha === compass degrees)
 	} else if (this.options.type === "world") {
@@ -48,18 +54,18 @@ FULLTILT.DeviceOrientation = function (options) {
 
 				// Discard first {successThreshold} responses while a better compass lock is found by UA
 				if(++successCount >= successThreshold) {
-					window.removeEventListener( 'deviceorientation', setCompassAlphaOffset, false );
+					window.removeEventListener( this.deviceorientationEvent, setCompassAlphaOffset, false );
 					return;
 				}
 			}
 
 			if(++tries >= maxTries) {
-				window.removeEventListener( 'deviceorientation', setCompassAlphaOffset, false );
+				window.removeEventListener( this.deviceorientationEvent, setCompassAlphaOffset, false );
 			}
 
 		}.bind(this);
 
-		window.addEventListener( 'deviceorientation', setCompassAlphaOffset, false );
+		window.addEventListener( this.deviceorientationEvent, setCompassAlphaOffset, false );
 
 	} // else... use whatever orientation system the UA provides ("game" on iOS, "world" on Android)
 
@@ -93,7 +99,7 @@ FULLTILT.DeviceOrientation.prototype = {
 
 		if ( !sensors.orientation.active ) {
 
-			window.addEventListener( 'deviceorientation', handleDeviceOrientationChange, false );
+			window.addEventListener( this.deviceorientationEvent, handleDeviceOrientationChange, false );
 
 			sensors.orientation.active = true;
 
@@ -105,7 +111,7 @@ FULLTILT.DeviceOrientation.prototype = {
 
 		if ( sensors.orientation.active ) {
 
-			window.removeEventListener( 'deviceorientation', handleDeviceOrientationChange, false );
+			window.removeEventListener( this.deviceorientationEvent, handleDeviceOrientationChange, false );
 
 			sensors.orientation.active = false;
 
